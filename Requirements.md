@@ -45,6 +45,9 @@
 |----|-------------|----------|-------|
 | F5.1 | System shall provide a help button/command for users needing assistance | Medium | Display instructions and tips |
 
+### 1.6 Intelligent Task Input
+| ID | Requirement | Priority | Notes |
+|----|-------------|----------|-------|
 | F6.1 | Users shall input tasks using natural language (unstructured text or "brain dumps") | High | e.g "finish  assignment tomorrow and email tutor" |
 | F6.2 | System shall extract individual tasks from a single input | High | Split multiple tasks automatically |
 | F6.3 | System shall identify and assign due dates from user input | High | e.g "tommorow" -> the next date based on user's locale |
