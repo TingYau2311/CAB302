@@ -45,15 +45,11 @@
 |----|-------------|----------|-------|
 | F5.1 | System shall provide a help button/command for users needing assistance | Medium | Display instructions and tips |
 
-### 1.6 Intelligent Task Input (NLP)
-| ID | Requirement | Priority | Notes |
-|----|-------------|----------|-------|
-| F6.1 | Users shall input tasks using natural language (“brain dump” text) | High | e.g., “Finish assignment tomorrow and email tutor” |
-| F6.2 | System shall extract individual tasks from a single input | High | Split multiple tasks automatically | 
-| F6.3 | System shall identify and assign due dates from user input | High | e.g., “tomorrow”, “next Friday” |
-| F6.4 | System shall automatically categorise tasks based on content | Medium | e.g., “study” → Education category
-| F6.5 | System shall allow users to review and confirm parsed tasks before saving | High | Prevent incorrect interpretations
----
+| F6.1 | Users shall input tasks using natural language (unstructured text or "brain dumps") | High | e.g "finish  assignment tomorrow and email tutor" |
+| F6.2 | System shall extract individual tasks from a single input | High | Split multiple tasks automatically |
+| F6.3 | System shall identify and assign due dates from user input | High | e.g "tommorow" -> the next date based on user's locale |
+| F6.4 | System shall automatically catoragise tasks based on content | High | e.g "study" -> Education category| 
+| F6.5 | System shall allow users to review and confirm parsed tasks before saving | High | Prevents categorisation and language interpretation errors.
 
 ## 2. Non-Functional Requirements
 *How well the system performs*
