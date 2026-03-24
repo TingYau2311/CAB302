@@ -85,6 +85,6 @@
 ---
 
 ## 4. User Stories
-*To be completed during team brainstorming session*
+*To be completed during team brainstorming session before week 7 checkpoint*
 
 *Example format:*
