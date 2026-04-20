@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>TaskTopia — Smart Task</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<div class="app-shell">
+
+    <!-- ══════════════ SIDEBAR ══════════════ -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">Task<span>Topia</span></div>
+
+        <div class="sidebar-section-label">Categories</div>
+        <nav class="sidebar-nav">
+            <a class="nav-item" href="homepage.html"><span class="nav-icon">🏠</span> All Tasks</a>
+            <a class="nav-item" href="category-work.html"><span class="nav-icon">💼</span> Work</a>
+            <a class="nav-item" href="category-grocery.html"><span class="nav-icon">🛒</span> Grocery</a>
+            <a class="nav-item" href="category-personal.html"><span class="nav-icon">👤</span> Personal</a>
+            <a class="nav-item" href="category-school.html"><span class="nav-icon">📚</span> School</a>
+            <a class="nav-item" href="category-medical.html"><span class="nav-icon">🏥</span> Medical</a>
+            <a class="nav-item" href="category-social.html"><span class="nav-icon">🎉</span> Social</a>
+            <a class="nav-item" href="category-fitness.html"><span class="nav-icon">🏋️</span> Fitness</a>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-new-cat" onclick="showToast('Feature coming soon!')">
+            <span>＋</span> New Category
+        </div>
+
+        <div class="sidebar-bottom">
+            <button class="btn-settings-side" onclick="window.location.href='help-and-settings.html'">
+                ⚙️ Help &amp; Settings
+            </button>
+            <button class="btn-logout" onclick="window.location.href='login.html'">
+                🚪 Log Out
+            </button>
+        </div>
+    </aside>
+
+    <!-- ══════════════ MAIN ══════════════ -->
+    <main class="main">
+        <div class="ai-page-wrap">
+
+            <a class="back-btn" href="homepage.html">← Back to Tasks</a>
+
+            <div class="ai-card">
+                <div class="ai-icon">✨</div>
+                <div class="ai-card-title">Add Smart Task</div>
+                <div class="ai-card-sub">Describe your task in plain English — we'll handle the rest.</div>
+
+                <div class="ai-input-wrap">
+                    <input
+                            class="ai-input"
+                            id="ai-input"
+                            type="text"
+                            placeholder="e.g. Call boss next tuesday #work #high priority"
+                    />
+                    <button class="ai-send-btn" onclick="submitAI()">➤</button>
+                </div>
+
+                <div class="ai-hint-box">
+                    💡 Tips:<br/>
+                    Use <strong>#work</strong>, <strong>#grocery</strong>, <strong>#personal</strong>, <strong>#school</strong>,
+                    <strong>#medical</strong>, <strong>#social</strong>, or <strong>#fitness</strong> to set the category.<br/>
+                    Use <strong>#high</strong>, <strong>#medium</strong>, or <strong>#low</strong> for priority.<br/>
+                    Include a time like <em>"at 3pm"</em> or a day like <em>"tomorrow"</em> or <em>"next Monday"</em>.
+                </div>
+
+                <button class="btn-submit" style="margin-top:24px" onclick="submitAI()">Submit</button>
+            </div>
+
+        </div>
+    </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    function getTasks() {
+      const raw = sessionStorage.getItem('tt_tasks');
+      if (raw) return JSON.parse(raw);
+      return [];
+    }
+    function saveTasks(tasks) { sessionStorage.setItem('tt_tasks', JSON.stringify(tasks)); }
+
+    function submitAI() {
+      const raw = document.getElementById('ai-input').value.trim();
+      if (!raw) { showToast('Please describe your task first'); return; }
+
+      /* ── Simple NLP-style parser ── */
+      let name = raw.replace(/#\w+/g, '').replace(/\b(at\s+\d{1,2}(:\d{2})?\s*(am|pm)?|tomorrow|today|next\s+\w+)\b/gi, '').replace(/\s{2,}/g, ' ').trim();
+
+      let category = 'personal';
+      const catMatch = raw.match(/#(work|grocery|personal|school|medical|social|fitness)/i);
+      if (catMatch) category = catMatch[1].toLowerCase();
+
+      let priority = 'medium';
+      const priMatch = raw.match(/#(high|medium|low)/i);
+      if (priMatch) priority = priMatch[1].toLowerCase();
+
+      let time = '';
+      const timeMatch = raw.match(/\bat\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+      if (timeMatch) {
+        let h = parseInt(timeMatch[1]);
+        const m = timeMatch[2] ? parseInt(timeMatch[2]) : 0;
+        const ampm = timeMatch[3] ? timeMatch[3].toLowerCase() : '';
+        if (ampm === 'pm' && h < 12) h += 12;
+        if (ampm === 'am' && h === 12) h = 0;
+        time = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+      }
+
+      let date = '';
+      const now = new Date();
+      if (/\btomorrow\b/i.test(raw)) {
+        now.setDate(now.getDate() + 1);
+        date = now.toISOString().slice(0, 10);
+      } else if (/\btoday\b/i.test(raw)) {
+        date = new Date().toISOString().slice(0, 10);
+      } else {
+        const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+        const nextMatch = raw.match(/\bnext\s+(\w+)\b/i);
+        const dayName = nextMatch ? nextMatch[1].toLowerCase() : null;
+        const dayIdx  = days.indexOf(dayName);
+        if (dayIdx !== -1) {
+          const d = new Date();
+          const diff = (dayIdx - d.getDay() + 7) % 7 || 7;
+          d.setDate(d.getDate() + diff);
+          date = d.toISOString().slice(0, 10);
+        }
+      }
+
+      const tasks = getTasks();
+      const maxId = tasks.reduce((m, t) => Math.max(m, t.id), 0);
+      tasks.push({ id: maxId + 1, name: name || raw, desc: '', date, time, category, priority, done: false });
+      saveTasks(tasks);
+
+      showToast('✨ Smart task added!');
+      setTimeout(() => window.location.href = 'homepage.html', 900);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') submitAI();
+    });
+</script>
+</body>
+</html>
