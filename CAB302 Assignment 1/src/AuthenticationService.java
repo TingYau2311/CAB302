@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class AuthenticationService implements IAuthenticationService {
+public abstract class AuthenticationService implements IAuthenticationService {
     private ArrayList<User> users;
 
     // TODO Now: Add a constructor to initialize the users list with the default user
