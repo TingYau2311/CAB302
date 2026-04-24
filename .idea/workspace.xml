@@ -1,42 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd5df90d-1f96-4972-9cfd-4d8f4b127cd6" name="Changes" comment="" />
+    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/CAB302DB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/IContactDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/MockContactDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteContactDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="McpProjectServerCommands">
-    <commands />
-    <urls />
-  </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 6
-}]]></component>
-  <component name="ProjectId" id="3Cef8cDlFa2AjcPM2tY5DSMmTM9" />
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Therealtoast2249&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/TingYau2311/CAB302.git&quot;,
+    &quot;accountId&quot;: &quot;98ff99c7-0997-4d6b-b84a-824c72ed82bf&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="3Cn6wTkhKS6zSaJPkN4LqVy9ZPC" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "DataBaseImplementation",
-    "kotlin-language-version-configured": "true",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DataBaseImplementation&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
+    ]
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="CAB302" />
@@ -95,12 +141,35 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="fd5df90d-1f96-4972-9cfd-4d8f4b127cd6" name="Changes" comment="" />
-      <created>1776750800032</created>
+      <changelist id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="" />
+      <created>1777009226110</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1776750800032</updated>
+      <updated>1777009226110</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/DataBaseImplementation" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
