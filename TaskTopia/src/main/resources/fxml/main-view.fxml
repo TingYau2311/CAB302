@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory?>
+
+<VBox alignment="TOP_LEFT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.tasktopia.controller.MainController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <TabPane VBox.vgrow="ALWAYS">
+
+        <!-- CONTACTS TAB -->
+        <Tab text="Contacts" closable="false">
+            <VBox spacing="20.0">
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+                <Label text="Select a contact to view or edit." />
+                <HBox VBox.vgrow="ALWAYS" spacing="20.0">
+                    <VBox spacing="10.0">
+                        <ListView fx:id="contactsListView" prefHeight="250.0" />
+                        <HBox spacing="10.0">
+                            <Button text="New" onAction="#onAddContact" maxWidth="Infinity"/>
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="10.0" prefWidth="400" fx:id="contactContainer">
+                        <Label text="Enter the contact's details below." />
+                        <GridPane hgap="5.0" vgap="5.0">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="70" />
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label text="Last Name:"  GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <Label text="Email:"      GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <Label text="Password:"   GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <TextField fx:id="firstNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+                            <TextField fx:id="lastNameTextField"  GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <TextField fx:id="emailTextField"     GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <TextField fx:id="passwordTextField"  GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        </GridPane>
+                        <HBox spacing="10.0" alignment="CENTER">
+                            <Button text="Confirm" onAction="#onEditContactConfirm"/>
+                            <Button text="Cancel"  onAction="#onCancelContact"/>
+                            <Button text="Delete"  onAction="#onDeleteContact"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- TASKS TAB -->
+        <Tab text="Tasks" closable="false">
+            <VBox spacing="20.0">
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+                <Label text="Select a task to view or edit." />
+                <HBox VBox.vgrow="ALWAYS" spacing="20.0">
+                    <VBox spacing="10.0">
+                        <ListView fx:id="tasksListView" prefHeight="250.0" />
+                        <HBox spacing="10.0">
+                            <Button text="New" onAction="#onAddTask" maxWidth="Infinity"/>
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="10.0" prefWidth="400" fx:id="taskContainer">
+                        <Label text="Enter the task's details below." />
+                        <GridPane hgap="5.0" vgap="5.0">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="90" />
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            <Label text="Title:"       GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label text="Start Date:"  GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <Label text="End Date:"    GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <Label text="Tags:"        GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                            <TextField fx:id="taskTitleTextField"       GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+                            <Label text="Start Date:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <HBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <DatePicker fx:id="taskStartDatePicker" />
+                                <Spinner fx:id="taskStartHourSpinner" prefWidth="60" />
+                                <Label text=":" />
+                                <Spinner fx:id="taskStartMinuteSpinner" prefWidth="60" />
+                            </HBox>
+
+                            <Label text="End Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <HBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <DatePicker fx:id="taskEndDatePicker" />
+                                <Spinner fx:id="taskEndHourSpinner" prefWidth="60" />
+                                <Label text=":" />
+                                <Spinner fx:id="taskEndMinuteSpinner" prefWidth="60" />
+                            </HBox>
+                            <TextField fx:id="taskDescriptionTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <TextField fx:id="taskTagsTextField"        GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        </GridPane>
+                        <HBox spacing="10.0" alignment="CENTER">
+                            <Button text="Confirm" onAction="#onEditTaskConfirm"/>
+                            <Button text="Cancel"  onAction="#onCancelTask"/>
+                            <Button text="Delete"  onAction="#onDeleteTask"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+</VBox>

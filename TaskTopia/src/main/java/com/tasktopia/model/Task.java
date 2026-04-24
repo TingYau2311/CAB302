@@ -1,18 +1,104 @@
 package com.tasktopia.model;
 
+import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Task {
+    private int id;
+    private String title;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private String description;
+    private String tags;
+    private int userId;
+
+    public Task(String title, LocalDateTime startDate, LocalDateTime endDate, String description, String tags, int userId) {
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+        this.tags = tags;
+        this.userId = userId;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    //--------------------------------------------------------------
+
 
     public enum Priority { HIGH, MEDIUM, LOW }
     public enum Category { WORK, GROCERY, PERSONAL, SCHOOL, MEDICAL, SOCIAL, FITNESS }
 
     private static int nextId = 1;
 
-    private final int id;
     private String name;
-    private String description;
     private LocalDate date;
     private LocalTime time;
     private Category category;
@@ -31,9 +117,7 @@ public class Task {
         this.done        = false;
     }
 
-    public int       getId()          { return id; }
     public String    getName()        { return name; }
-    public String    getDescription() { return description; }
     public LocalDate getDate()        { return date; }
     public LocalTime getTime()        { return time; }
     public Category  getCategory()    { return category; }
@@ -41,7 +125,6 @@ public class Task {
     public boolean   isDone()         { return done; }
 
     public void setName(String name)               { this.name = name; }
-    public void setDescription(String description) { this.description = description; }
     public void setDate(LocalDate date)            { this.date = date; }
     public void setTime(LocalTime time)            { this.time = time; }
     public void setCategory(Category category)     { this.category = category; }
