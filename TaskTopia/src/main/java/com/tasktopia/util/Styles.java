@@ -181,11 +181,6 @@ public final class Styles {
                 + "-fx-text-fill: " + TEXT_MUTED + "; -fx-wrap-text: true;";
     }
 
-    public static String mainTitle() {
-        return "-fx-font-size: 26px; -fx-font-weight: bold; "
-                + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + TEXT + ";";
-    }
-
     public static String mainSubtitle() {
         return "-fx-font-size: 12px; -fx-font-family: 'Segoe UI'; "
                 + "-fx-text-fill: " + TEXT_MUTED + ";";
@@ -196,5 +191,13 @@ public final class Styles {
                 + "-fx-padding: 7 16; -fx-font-family: 'Segoe UI'; "
                 + "-fx-font-size: 12px; -fx-text-fill: " + TEXT_MUTED + "; "
                 + "-fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);";
+    }
+
+    // box around tasks
+    public static String taskListCard() {
+        return "-fx-background-color: white; "
+                + "-fx-background-radius: 18; "
+                + "-fx-padding: 20; "
+                + "-fx-effect: dropshadow(gaussian, rgba(30,42,74,0.12), 20, 0, 0, 6);";
     }
 }

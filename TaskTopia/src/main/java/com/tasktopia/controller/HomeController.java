@@ -27,7 +27,7 @@ public class HomeController {
     @FXML private Label     pageTitle;
     @FXML private Label     pageSubtitle;
     @FXML private Label     headerDate;
-    @FXML private VBox      tasksList;
+    @FXML private VBox      tasksCard;
     @FXML private StackPane rootStack;
 
     // ── State ─────────────────────────────────────────────────
@@ -108,7 +108,7 @@ public class HomeController {
     //  RENDER TASK LIST
     // ══════════════════════════════════════════════════════════
     private void renderTasks() {
-        tasksList.getChildren().clear();
+        tasksCard.getChildren().clear();
 
         List<Task> filtered = TaskStore.getInstance().getTasks().stream()
                 .filter(t -> currentCategory.equals("all") ||
@@ -119,12 +119,12 @@ public class HomeController {
             Label empty = new Label("📋  No tasks here yet. Add one below!");
             empty.setStyle(Styles.emptyState());
             VBox.setMargin(empty, new Insets(60, 0, 0, 0));
-            tasksList.getChildren().add(empty);
+            tasksCard.getChildren().add(empty);
             return;
         }
 
         for (Task task : filtered) {
-            tasksList.getChildren().add(buildTaskCard(task));
+            tasksCard.getChildren().add(buildTaskCard(task));
         }
     }
 
@@ -132,7 +132,7 @@ public class HomeController {
     private HBox buildTaskCard(Task task) {
         HBox card = new HBox(16);
         card.setAlignment(Pos.CENTER_LEFT);
-        card.setStyle(Styles.card(task.getPriority()));
+        card.setStyle(Styles.card(task.getPriority())); // style for tasks
         HBox.setHgrow(card, Priority.ALWAYS);
 
         // Checkbox circle
