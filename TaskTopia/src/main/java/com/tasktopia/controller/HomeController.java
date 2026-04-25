@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class HomeController {
 
     // ── FXML ─────────────────────────────────────────────────
-    @FXML private VBox      sidebarNav;
+    @FXML private HBox      topbarNav;
     @FXML private Label     pageTitle;
     @FXML private Label     pageSubtitle;
     @FXML private Label     headerDate;
@@ -92,7 +92,7 @@ public class HomeController {
     }
 
     private void refreshNavHighlights(String activeKey) {
-        for (var node : sidebarNav.getChildren()) {
+        for (var node : topbarNav.getChildren()) {
             if (node instanceof Button btn && btn.getId() != null) {
                 boolean active = btn.getId().equals("nav-" + activeKey);
                 btn.setStyle(Styles.navItem(active));
