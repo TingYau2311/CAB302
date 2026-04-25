@@ -1,8 +1,7 @@
 package com.tasktopia.controller;
 
 import com.tasktopia.MainApp;
-import com.tasktopia.model.Task;
-import com.tasktopia.model.TaskStore;
+import com.tasktopia.model.*;
 import com.tasktopia.util.Styles;
 import javafx.animation.*;
 import javafx.fxml.FXML;
@@ -13,12 +12,14 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class HomeController {
 
@@ -31,16 +32,19 @@ public class HomeController {
     @FXML private StackPane rootStack;
 
     // ── State ─────────────────────────────────────────────────
-    private String currentCategory = "all";
-    private Task   selectedTask    = null;
+    private String   currentCategory = "all";
+    private Task     selectedTask    = null;
+    private ITaskDAO taskDAO;
+    private List<Task> allTasks;
 
     // Overlays
     private StackPane manualOverlay;
     private StackPane aiOverlay;
     private StackPane detailOverlay;
     private StackPane settingsOverlay;
+    private StackPane editOverlay;
 
-    // Detail modal labels (need updating when task selected)
+    // Detail modal labels
     private Label  detailNameLbl;
     private Label  detailTimeLbl;
     private Label  detailDateLbl;
@@ -51,10 +55,19 @@ public class HomeController {
     // ── Initialise ────────────────────────────────────────────
     @FXML
     public void initialize() {
+        // Load from database instead of TaskStore
+        taskDAO = new SqliteTaskDAO();
+        allTasks = taskDAO.getAllTasks();
+
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
         buildOverlays();
         renderTasks();
+    }
+
+    // ── Reload tasks from DB ──────────────────────────────────
+    private void reloadTasks() {
+        allTasks = taskDAO.getAllTasks();
     }
 
     // ══════════════════════════════════════════════════════════
@@ -110,10 +123,20 @@ public class HomeController {
     private void renderTasks() {
         tasksList.getChildren().clear();
 
-        List<Task> filtered = TaskStore.getInstance().getTasks().stream()
-                .filter(t -> currentCategory.equals("all") ||
-                        t.getCategory().name().equalsIgnoreCase(currentCategory))
-                .toList();
+        List<Task> filtered;
+        if (currentCategory.equals("all")) {
+            filtered = allTasks;
+        } else {
+            filtered = allTasks.stream()
+                    .filter(t -> {
+                        if (t.getTags() != null &&
+                                t.getTags().toLowerCase().contains(currentCategory)) return true;
+                        if (t.getCategory() != null &&
+                                t.getCategory().name().equalsIgnoreCase(currentCategory)) return true;
+                        return false;
+                    })
+                    .collect(Collectors.toList());
+        }
 
         if (filtered.isEmpty()) {
             Label empty = new Label("📋  No tasks here yet. Add one below!");
@@ -132,7 +155,11 @@ public class HomeController {
     private HBox buildTaskCard(Task task) {
         HBox card = new HBox(16);
         card.setAlignment(Pos.CENTER_LEFT);
-        card.setStyle(Styles.card(task.getPriority()));
+
+        String cardStyle = task.getPriority() != null
+                ? Styles.card(task.getPriority())
+                : Styles.card(Task.Priority.MEDIUM);
+        card.setStyle(cardStyle);
         HBox.setHgrow(card, Priority.ALWAYS);
 
         // Checkbox circle
@@ -140,6 +167,7 @@ public class HomeController {
         check.setStyle(Styles.checkCircle(task.isDone()));
         check.setOnAction(e -> {
             task.setDone(!task.isDone());
+            if (task.getId() > 0) taskDAO.updateTask(task);
             renderTasks();
             showToast(task.isDone() ? "✅ Task completed!" : "Task marked incomplete");
         });
@@ -148,41 +176,70 @@ public class HomeController {
         VBox info = new VBox(5);
         HBox.setHgrow(info, Priority.ALWAYS);
 
-        Label name = new Label(task.getName());
+        String displayName = task.getTitle() != null ? task.getTitle() : task.getName();
+        Label name = new Label(displayName);
         name.setStyle(Styles.taskName(task.isDone()));
 
         HBox meta = new HBox(8);
         meta.setAlignment(Pos.CENTER_LEFT);
 
-        Label catBadge = new Label(task.getCategoryLabel());
-        catBadge.setStyle(Styles.badge("category"));
+        // Category badge
+        String catLabel = "";
+        if (task.getCategory() != null) catLabel = task.getCategoryLabel();
+        else if (task.getTags() != null && !task.getTags().isEmpty()) catLabel = task.getTags();
+        if (!catLabel.isEmpty()) {
+            Label catBadge = new Label(catLabel);
+            catBadge.setStyle(Styles.badge("category"));
+            meta.getChildren().add(catBadge);
+        }
 
-        Label priBadge = new Label("Priority: " + task.getPriorityLabel());
-        priBadge.setStyle(Styles.badge(task.getPriority().name().toLowerCase()));
+        // Priority badge
+        if (task.getPriority() != null) {
+            Label priBadge = new Label("Priority: " + task.getPriorityLabel());
+            priBadge.setStyle(Styles.badge(task.getPriority().name().toLowerCase()));
+            meta.getChildren().add(priBadge);
+        }
 
-        meta.getChildren().addAll(catBadge, priBadge);
-
+        // Date
         if (task.getDate() != null) {
             Label dateLbl = new Label("📅  " + task.getDate().format(
                     DateTimeFormatter.ofPattern("EEE, d MMM yyyy")));
+            dateLbl.setStyle(Styles.taskMeta());
+            meta.getChildren().add(dateLbl);
+        } else if (task.getStartDate() != null) {
+            Label dateLbl = new Label("📅  " + task.getStartDate().format(
+                    DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm")));
             dateLbl.setStyle(Styles.taskMeta());
             meta.getChildren().add(dateLbl);
         }
 
         info.getChildren().addAll(name, meta);
 
-        // Time
-        Label timeLbl = new Label(task.getTimeString());
+        // Time label
+        String timeStr = task.getTimeString();
+        if ((timeStr == null || timeStr.isEmpty()) && task.getStartDate() != null)
+            timeStr = task.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+        Label timeLbl = new Label(timeStr != null ? timeStr : "");
         timeLbl.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; "
                 + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + Styles.TEXT_MUTED + ";");
 
-        card.getChildren().addAll(check, info, timeLbl);
+        // Edit button
+        Button editBtn = new Button("✏️");
+        editBtn.setStyle("-fx-background-color: rgba(74,108,247,0.10); "
+                + "-fx-text-fill: #4a6cf7; -fx-background-radius: 10; -fx-cursor: hand; "
+                + "-fx-font-size: 13px;");
+        editBtn.setOnAction(e -> {
+            e.consume(); // prevent card click from also firing
+            openEdit(task);
+        });
 
-        // Hover
+        card.getChildren().addAll(check, info, timeLbl, editBtn);
+
+        // Hover + click
+        final String fs = cardStyle;
         card.setOnMouseEntered(e -> card.setStyle(
-                Styles.card(task.getPriority()).replace(
-                        "rgba(74,108,247,0.10), 16", "rgba(74,108,247,0.18), 24")));
-        card.setOnMouseExited(e  -> card.setStyle(Styles.card(task.getPriority())));
+                fs.replace("rgba(74,108,247,0.10), 16", "rgba(74,108,247,0.18), 24")));
+        card.setOnMouseExited(e  -> card.setStyle(fs));
         card.setOnMouseClicked(e -> openDetail(task));
 
         return card;
@@ -196,6 +253,7 @@ public class HomeController {
         aiOverlay       = buildAiModal();
         detailOverlay   = buildDetailModal();
         settingsOverlay = buildSettingsModal();
+        editOverlay     = buildEditModal();
     }
 
     private void openOverlay(StackPane overlay) {
@@ -203,7 +261,6 @@ public class HomeController {
             rootStack.getChildren().add(overlay);
         overlay.setVisible(true);
 
-        // Pop-in animation on the inner card
         var inner = overlay.getChildren().get(0);
         inner.setScaleX(0.88); inner.setScaleY(0.88);
         inner.setOpacity(0);
@@ -218,7 +275,6 @@ public class HomeController {
         overlay.setVisible(false);
     }
 
-    /** Wraps a card VBox in a dimmed full-screen overlay */
     private StackPane wrapOverlay(VBox card) {
         StackPane shell = new StackPane(card);
         shell.setStyle(Styles.overlayBg());
@@ -236,11 +292,9 @@ public class HomeController {
         card.setMaxWidth(480);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        // Header
         HBox header = modalHeader("Add Task");
         Button closeBtn = (Button) ((HBox) header).getChildren().get(1);
 
-        // Fields
         TextField nameField  = field("Task name");
         TextArea  descField  = area("Task description...");
         TextField dateField  = field("Date  (yyyy-MM-dd)");
@@ -264,8 +318,8 @@ public class HomeController {
         closeBtn.setOnAction(e -> closeOverlay(shell));
 
         submit.setOnAction(e -> {
-            String name = nameField.getText().trim();
-            if (name.isEmpty()) { showToast("Please enter a task name"); return; }
+            String taskName = nameField.getText().trim();
+            if (taskName.isEmpty()) { showToast("Please enter a task name"); return; }
 
             LocalDate date = null;
             LocalTime time = null;
@@ -286,8 +340,19 @@ public class HomeController {
                 try { pri = Task.Priority.valueOf(priBox.getValue().toUpperCase()); }
                 catch (Exception ignored) {}
 
-            TaskStore.getInstance().addTask(
-                    new Task(name, descField.getText().trim(), date, time, cat, pri));
+            LocalDate finalDate = date != null ? date : LocalDate.now();
+            LocalTime finalTime = time != null ? time : LocalTime.now();
+            LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
+
+            Task newTask = new Task(taskName, startDT, startDT.plusHours(1),
+                    descField.getText().trim(), cat.name().toLowerCase(), 0);
+            newTask.setCategory(cat);
+            newTask.setPriority(pri);
+            newTask.setDate(finalDate);
+            newTask.setTime(finalTime);
+
+            taskDAO.addTask(newTask);
+            reloadTasks();
             closeOverlay(shell);
             renderTasks();
             showToast("✅ Task added!");
@@ -335,25 +400,21 @@ public class HomeController {
             String raw = inputField.getText().trim();
             if (raw.isEmpty()) { showToast("Please describe your task"); return; }
 
-            // Strip tags to get name
-            String name = raw.replaceAll("#\\w+", "").trim();
-
-            // Category
-            Task.Category cat = Task.Category.PERSONAL;
+            String taskName = raw.replaceAll("#\\w+", "").trim();
             String lower = raw.toLowerCase();
-            if      (lower.contains("#work"))    cat = Task.Category.WORK;
-            else if (lower.contains("#grocery")) cat = Task.Category.GROCERY;
-            else if (lower.contains("#school"))  cat = Task.Category.SCHOOL;
-            else if (lower.contains("#medical")) cat = Task.Category.MEDICAL;
-            else if (lower.contains("#social"))  cat = Task.Category.SOCIAL;
-            else if (lower.contains("#fitness")) cat = Task.Category.FITNESS;
 
-            // Priority
+            Task.Category cat = Task.Category.PERSONAL;
+            if      (lower.contains("#work"))     cat = Task.Category.WORK;
+            else if (lower.contains("#grocery"))  cat = Task.Category.GROCERY;
+            else if (lower.contains("#school"))   cat = Task.Category.SCHOOL;
+            else if (lower.contains("#medical"))  cat = Task.Category.MEDICAL;
+            else if (lower.contains("#social"))   cat = Task.Category.SOCIAL;
+            else if (lower.contains("#fitness"))  cat = Task.Category.FITNESS;
+
             Task.Priority pri = Task.Priority.MEDIUM;
             if      (lower.contains("#high")) pri = Task.Priority.HIGH;
             else if (lower.contains("#low"))  pri = Task.Priority.LOW;
 
-            // Date
             LocalDate date = null;
             if      (lower.contains("tomorrow")) date = LocalDate.now().plusDays(1);
             else if (lower.contains("today"))    date = LocalDate.now();
@@ -368,7 +429,6 @@ public class HomeController {
                 }
             }
 
-            // Time
             LocalTime time = null;
             Matcher m = Pattern.compile("(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm)?",
                     Pattern.CASE_INSENSITIVE).matcher(raw);
@@ -382,7 +442,19 @@ public class HomeController {
                 } catch (Exception ignored) {}
             }
 
-            TaskStore.getInstance().addTask(new Task(name, "", date, time, cat, pri));
+            LocalDate finalDate = date != null ? date : LocalDate.now();
+            LocalTime finalTime = time != null ? time : LocalTime.now();
+            LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
+
+            Task newTask = new Task(taskName, startDT, startDT.plusHours(1),
+                    "", cat.name().toLowerCase(), 0);
+            newTask.setCategory(cat);
+            newTask.setPriority(pri);
+            newTask.setDate(finalDate);
+            newTask.setTime(finalTime);
+
+            taskDAO.addTask(newTask);
+            reloadTasks();
             closeOverlay(shell);
             inputField.clear();
             renderTasks();
@@ -449,6 +521,8 @@ public class HomeController {
         detailDoneBtn.setOnAction(e -> {
             if (selectedTask != null) {
                 selectedTask.setDone(!selectedTask.isDone());
+                if (selectedTask.getId() > 0) taskDAO.updateTask(selectedTask);
+                reloadTasks();
                 renderTasks();
                 closeOverlay(shell);
                 showToast(selectedTask.isDone() ? "✅ Task completed!" : "Task marked incomplete");
@@ -457,8 +531,9 @@ public class HomeController {
 
         deleteBtn.setOnAction(e -> {
             if (selectedTask != null) {
-                TaskStore.getInstance().removeTask(selectedTask);
+                if (selectedTask.getId() > 0) taskDAO.deleteTask(selectedTask);
                 selectedTask = null;
+                reloadTasks();
                 renderTasks();
                 closeOverlay(shell);
                 showToast("🗑️  Task deleted");
@@ -472,19 +547,41 @@ public class HomeController {
 
     private void openDetail(Task task) {
         selectedTask = task;
-        detailNameLbl.setText(task.getName());
-        detailTimeLbl.setText(task.getTimeString().isEmpty() ? "—" : task.getTimeString());
-        detailDateLbl.setText(task.getDate() != null
-                ? task.getDate().format(DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")) : "—");
-        detailDescLbl.setText(task.getDescription().isEmpty()
+        String displayName = task.getTitle() != null ? task.getTitle() : task.getName();
+        detailNameLbl.setText(displayName);
+
+        String timeStr = task.getTimeString();
+        if ((timeStr == null || timeStr.isEmpty()) && task.getStartDate() != null)
+            timeStr = task.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+        detailTimeLbl.setText(timeStr != null && !timeStr.isEmpty() ? timeStr : "—");
+
+        if (task.getDate() != null)
+            detailDateLbl.setText(task.getDate().format(
+                    DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
+        else if (task.getStartDate() != null)
+            detailDateLbl.setText(task.getStartDate().format(
+                    DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
+        else
+            detailDateLbl.setText("—");
+
+        detailDescLbl.setText(task.getDescription() == null || task.getDescription().isEmpty()
                 ? "No description provided." : task.getDescription());
 
         detailBadges.getChildren().clear();
-        Label cat = new Label(task.getCategoryLabel());
-        cat.setStyle(Styles.badge("category"));
-        Label pri = new Label("Priority: " + task.getPriorityLabel());
-        pri.setStyle(Styles.badge(task.getPriority().name().toLowerCase()));
-        detailBadges.getChildren().addAll(cat, pri);
+        if (task.getCategory() != null) {
+            Label cat = new Label(task.getCategoryLabel());
+            cat.setStyle(Styles.badge("category"));
+            detailBadges.getChildren().add(cat);
+        } else if (task.getTags() != null && !task.getTags().isEmpty()) {
+            Label cat = new Label(task.getTags());
+            cat.setStyle(Styles.badge("category"));
+            detailBadges.getChildren().add(cat);
+        }
+        if (task.getPriority() != null) {
+            Label pri = new Label("Priority: " + task.getPriorityLabel());
+            pri.setStyle(Styles.badge(task.getPriority().name().toLowerCase()));
+            detailBadges.getChildren().add(pri);
+        }
         if (task.isDone()) {
             Label done = new Label("✓ Completed");
             done.setStyle(Styles.badge("low"));
@@ -493,6 +590,152 @@ public class HomeController {
 
         detailDoneBtn.setText(task.isDone() ? "Mark as Incomplete" : "Mark as Done");
         openOverlay(detailOverlay);
+    }
+
+    // ══════════════════════════════════════════════════════════
+    //  EDIT TASK MODAL
+    // ══════════════════════════════════════════════════════════
+    private StackPane buildEditModal() {
+        VBox card = new VBox(14);
+        card.setStyle(Styles.modalCard());
+        card.setMaxWidth(480);
+        card.setMaxHeight(Region.USE_PREF_SIZE);
+
+        HBox header = modalHeader("✏️  Edit Task");
+        Button closeBtn = (Button) ((HBox) header).getChildren().get(1);
+
+        TextField nameField  = field("Task name");
+        TextArea  descField  = area("Task description...");
+        TextField dateField  = field("Date  (yyyy-MM-dd)");
+        TextField timeField  = field("Time  (HH:mm)");
+        ComboBox<String> catBox = combo("Select Category",
+                "Work","Grocery","Personal","School","Medical","Social","Fitness");
+        ComboBox<String> priBox = combo("Select Priority","High","Medium","Low");
+
+        HBox row1 = new HBox(14, labeled("Date", dateField), labeled("Time", timeField));
+        HBox row2 = new HBox(14, labeled("Category", catBox), labeled("Priority", priBox));
+        HBox.setHgrow(((VBox)row1.getChildren().get(0)), Priority.ALWAYS);
+        HBox.setHgrow(((VBox)row1.getChildren().get(1)), Priority.ALWAYS);
+        HBox.setHgrow(((VBox)row2.getChildren().get(0)), Priority.ALWAYS);
+        HBox.setHgrow(((VBox)row2.getChildren().get(1)), Priority.ALWAYS);
+
+        Button submit = new Button("Save Changes");
+        submit.setStyle(Styles.primaryButton());
+        submit.setMaxWidth(Double.MAX_VALUE);
+
+        StackPane shell = wrapOverlay(card);
+        closeBtn.setOnAction(e -> closeOverlay(shell));
+
+        // Store reference so openEdit() can pre-fill fields
+        card.setUserData(new Object[]{nameField, descField, dateField, timeField, catBox, priBox});
+
+        submit.setOnAction(e -> {
+            if (selectedTask == null) return;
+            String taskName = nameField.getText().trim();
+            if (taskName.isEmpty()) { showToast("Please enter a task name"); return; }
+
+            LocalDate date = null;
+            LocalTime time = null;
+            try { if (!dateField.getText().isBlank())
+                date = LocalDate.parse(dateField.getText().trim()); }
+            catch (DateTimeParseException ignored) { showToast("Date format: yyyy-MM-dd"); return; }
+            try { if (!timeField.getText().isBlank())
+                time = LocalTime.parse(timeField.getText().trim()); }
+            catch (DateTimeParseException ignored) { showToast("Time format: HH:mm"); return; }
+
+            Task.Category cat = Task.Category.PERSONAL;
+            if (catBox.getValue() != null)
+                try { cat = Task.Category.valueOf(catBox.getValue().toUpperCase()); }
+                catch (Exception ignored) {}
+
+            Task.Priority pri = Task.Priority.MEDIUM;
+            if (priBox.getValue() != null)
+                try { pri = Task.Priority.valueOf(priBox.getValue().toUpperCase()); }
+                catch (Exception ignored) {}
+
+            LocalDate finalDate = date != null ? date : LocalDate.now();
+            LocalTime finalTime = time != null ? time : LocalTime.now();
+            LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
+
+            // Update selected task fields
+            selectedTask.setTitle(taskName);
+            selectedTask.setDescription(descField.getText().trim());
+            selectedTask.setStartDate(startDT);
+            selectedTask.setEndDate(startDT.plusHours(1));
+            selectedTask.setTags(cat.name().toLowerCase());
+            selectedTask.setCategory(cat);
+            selectedTask.setPriority(pri);
+            selectedTask.setDate(finalDate);
+            selectedTask.setTime(finalTime);
+
+            if (selectedTask.getId() > 0) taskDAO.updateTask(selectedTask);
+            reloadTasks();
+            closeOverlay(shell);
+            renderTasks();
+            showToast("✅ Task updated!");
+        });
+
+        card.getChildren().addAll(header,
+                labeled("Task Name", nameField),
+                labeled("Description", descField),
+                row1, row2, submit);
+        return shell;
+    }
+
+    private void openEdit(Task task) {
+        selectedTask = task;
+
+        // Retrieve the pre-stored field references from the card's userData
+        VBox card = (VBox) editOverlay.getChildren().get(0);
+        Object[] fields = (Object[]) card.getUserData();
+        TextField nameField  = (TextField)       fields[0];
+        TextArea  descField  = (TextArea)         fields[1];
+        TextField dateField  = (TextField)        fields[2];
+        TextField timeField  = (TextField)        fields[3];
+        ComboBox<String> catBox = (ComboBox<String>) fields[4];
+        ComboBox<String> priBox = (ComboBox<String>) fields[5];
+
+        // Pre-fill with existing task data
+        nameField.setText(task.getTitle() != null ? task.getTitle() : "");
+        descField.setText(task.getDescription() != null ? task.getDescription() : "");
+
+        // Date — prefer LocalDate, fall back to startDate
+        if (task.getDate() != null) {
+            dateField.setText(task.getDate().toString());
+        } else if (task.getStartDate() != null) {
+            dateField.setText(task.getStartDate().toLocalDate().toString());
+        } else {
+            dateField.clear();
+        }
+
+        // Time — prefer LocalTime, fall back to startDate
+        if (task.getTime() != null) {
+            timeField.setText(task.getTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        } else if (task.getStartDate() != null) {
+            timeField.setText(task.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm")));
+        } else {
+            timeField.clear();
+        }
+
+        // Category
+        if (task.getCategory() != null) {
+            catBox.setValue(task.getCategoryLabel());
+        } else if (task.getTags() != null && !task.getTags().isEmpty()) {
+            String tag = task.getTags().substring(0, 1).toUpperCase()
+                    + task.getTags().substring(1).toLowerCase();
+            catBox.setValue(tag);
+        } else {
+            catBox.setValue(null);
+        }
+
+        // Priority
+        if (task.getPriority() != null) {
+            priBox.setValue(task.getPriorityLabel());
+        } else {
+            priBox.setValue(null);
+        }
+
+        openOverlay(editOverlay);
     }
 
     // ══════════════════════════════════════════════════════════
@@ -542,8 +785,6 @@ public class HomeController {
     // ══════════════════════════════════════════════════════════
     //  SHARED HELPERS
     // ══════════════════════════════════════════════════════════
-
-    /** Creates a modal header with a title label + close button */
     private HBox modalHeader(String titleText) {
         Label title = new Label(titleText);
         title.setStyle(Styles.modalTitle());
@@ -587,7 +828,6 @@ public class HomeController {
         return cb;
     }
 
-    /** Wraps a label + field together in a VBox with a form label above */
     private VBox labeled(String labelText, javafx.scene.Node field) {
         Label lbl = new Label(labelText.toUpperCase());
         lbl.setStyle(Styles.formLabel());
