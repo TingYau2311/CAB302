@@ -50,6 +50,16 @@ public class LoginController {
         }
     }
 
+    @FXML
+    private void onGoToSignUp() {
+        System.out.println("CLICKED");
+        try {
+            MainApp.showSignUp();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showError(String msg) {
         errorLabel.setText(msg);
         errorLabel.setVisible(true);

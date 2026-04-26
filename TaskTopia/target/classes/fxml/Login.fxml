@@ -88,7 +88,7 @@
                       -fx-font-family: 'Segoe UI';
                       -fx-font-size: 12px;" />
 
-                <!-- Button -->
+                <!-- Sign In Button -->
                 <Button text="Sign in"
                         onAction="#handleLogin"
                         prefWidth="292"
@@ -106,6 +106,14 @@
                         <Insets top="6"/>
                     </VBox.margin>
                 </Button>
+
+                <!-- Create Account Button -->
+                <Label text="Create Account"
+                       onMouseClicked="#onGoToSignUp"
+                       style="-fx-text-fill: #714255;
+                              -fx-underline: true;
+                              -fx-cursor: hand;
+                              -fx-font-size: 13px;" />
             </VBox>
         </VBox>
     </HBox>
