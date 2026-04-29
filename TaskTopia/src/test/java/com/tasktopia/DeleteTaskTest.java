@@ -1,0 +1,31 @@
+package com.tasktopia;
+
+import com.tasktopia.model.Task;
+import com.tasktopia.model.TaskStore;
+
+import org.junit.jupiter.api.*;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class DeleteTaskTest {
+
+    private Task task;
+
+    @BeforeEach
+    void setupStore() {
+        TaskStore.getInstance().getTasks().clear();
+        task = new Task("Submit Report", "Final report",
+                LocalDate.now(), null, Task.Category.WORK, Task.Priority.HIGH);
+        TaskStore.getInstance().addTask(task);
+    }
+
+    @Test
+    @DisplayName("Deleting a task removes it from the store")
+    void deleteTask_removesTaskFromStore() {
+        TaskStore.getInstance().removeTask(task);
+
+        assertFalse(TaskStore.getInstance().getTasks().contains(task));
+    }
+}
