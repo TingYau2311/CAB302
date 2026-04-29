@@ -47,6 +47,7 @@ public class SignUpController {
         }
     }
 
+    // displays error pop up for user
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -55,6 +56,7 @@ public class SignUpController {
         alert.showAndWait();
     }
 
+    //
     private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(msg);

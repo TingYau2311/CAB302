@@ -62,7 +62,7 @@
                        -fx-background: transparent;">
 
                     <!-- IMPORTANT: ALL buttons must be inside this HBox -->
-                    <HBox fx:id="sidebarNav"
+                    <HBox fx:id="topbarNav"
                           spacing="8"
                           alignment="CENTER_LEFT"
                           style="-fx-padding: 5 0 5 0;">
@@ -158,7 +158,7 @@
                            -fx-pref-height: 1;"/>
         </VBox>
 
-        <!-- ── MAIN CONTENT ── -->
+        <!-- MAIN CONTENT -->
         <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
                     style="-fx-background: #f4f6fb; -fx-background-color: #f4f6fb;
                            -fx-border-color: transparent;">
@@ -169,11 +169,11 @@
                 <!-- Header -->
                 <HBox alignment="CENTER_LEFT">
                     <VBox HBox.hgrow="ALWAYS">
-                        <Label fx:id="pageTitle" text="Today's Tasks"
+                        <Label fx:id="pageTitle" text="All Tasks"
                                style="-fx-font-size: 26px; -fx-font-weight: bold;
                                       -fx-font-family: 'Segoe UI'; -fx-text-fill: #1e2a4a;"/>
 
-                        <Label fx:id="pageSubtitle" text="All your tasks for today"
+                        <Label fx:id="pageSubtitle" text="All your created tasks."
                                style="-fx-font-size: 12px; -fx-font-family: 'Segoe UI';
                                       -fx-text-fill: #8898aa;"/>
                     </VBox>
