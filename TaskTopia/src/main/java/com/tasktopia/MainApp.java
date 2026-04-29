@@ -27,6 +27,14 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
     }
 
+    public static void showSignup() throws Exception {
+        FXMLLoader loader = new FXMLLoader(
+                MainApp.class.getResource("/fxml/Signup.fxml")
+        );
+        Scene scene = new Scene(loader.load(), 1099, 700);
+        primaryStage.setScene(scene);
+    }
+
     public static void showHome() throws Exception {
         FXMLLoader loader = new FXMLLoader(
                 MainApp.class.getResource("/fxml/Home.fxml")

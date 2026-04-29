@@ -10,17 +10,14 @@ import javafx.scene.input.KeyCode;
 
 public class LoginController {
 
-    @FXML private TextField usernameField;
+    @FXML private TextField     usernameField;
     @FXML private PasswordField passwordField;
-    @FXML private Label errorLabel;
+    @FXML private Label         errorLabel;
 
     @FXML
     public void initialize() {
-
-        // Hide error label initially
         errorLabel.setVisible(false);
 
-        // Pressing Enter triggers login
         usernameField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) handleLogin();
         });
@@ -39,14 +36,23 @@ public class LoginController {
             return;
         }
 
-        // Prototype: accept any non-empty credentials
+        // Accept any non-empty credentials
         TaskStore.getInstance().setLoggedInUser(user);
 
         try {
-            MainApp.showHome();   // This MUST load /fxml/home.fxml
+            MainApp.showHome();
         } catch (Exception ex) {
             ex.printStackTrace();
             showError("Failed to load home screen.");
+        }
+    }
+
+    @FXML
+    private void goToSignup() {
+        try {
+            MainApp.showSignup();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

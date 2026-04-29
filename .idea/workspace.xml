@@ -5,16 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done">
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignupController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HelloController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/hello-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HelloController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cab302db.db" beforeDir="false" afterPath="$PROJECT_DIR$/Cab302db.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/MainApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/MainApp.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/Task$Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/Task$Category.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/Task$Priority.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/Task$Priority.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/Task.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/Task.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,11 +24,15 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../CAB302\exportToHTML" />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="FxmlFile" />
       </list>
     </option>
   </component>
@@ -48,9 +54,13 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/TingYau2311/CAB302.git&quot;,
-    &quot;accountId&quot;: &quot;98ff99c7-0997-4d6b-b84a-824c72ed82bf&quot;
+    &quot;accountId&quot;: &quot;fc2b2ccd-c254-4622-bfa9-5abfa13b4966&quot;
   }
 }</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -68,12 +78,16 @@
     &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
     &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;DataBaseImplementation&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;FunctionalBase&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/harry/IdeaProjects/CAB302&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/harry/IdeaProjects/CAB302&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
     &quot;ChangesTree.GroupingKeys&quot;: [
@@ -84,17 +98,6 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="CAB302" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="CAB302" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="CAB302" />
       <option name="ENV_FILES" value="" />
@@ -129,6 +132,17 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="RUN_TOOL" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="CAB302" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="CAB302" />
+      <option name="filePath" />
       <method v="2" />
     </configuration>
   </component>
