@@ -89,7 +89,8 @@
                       -fx-font-size: 12px;" />
 
                 <!-- Sign In Button -->
-                <Button text="Sign in"
+                <Button fx:id="signInBtn"
+                        text="Sign in"
                         onAction="#handleLogin"
                         prefWidth="292"
                         style="-fx-background-color: linear-gradient(to right, #995954, #714255);

@@ -65,30 +65,24 @@ public class HomeController {
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
 
-        // stores navigation buttons + adds hover effects
+        // applying hover to top bar categories
         for (var node : topbarNav.getChildren()) {
             if (node instanceof Button btn) {
-                baseStyles.put(btn, btn.getStyle());
-
-                // hover in
-                btn.setOnMouseEntered(e -> {
-                    btn.setStyle(baseStyles.get(btn)
-                            + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");
-                });
-
-                // hover out
-                btn.setOnMouseExited(e -> {
-                    btn.setStyle(baseStyles.get(btn));
-                });
+                applyHover(btn, "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");;
             }
         }
+
+        // applying to your other buttons
+        applyHover(addAiBtn, "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");
+        applyHover(addManualBtn, "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");
+        applyHover(addCategoryBtn, "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");
 
         buildOverlays();
         renderTasks();
     }
 
     // ══════════════════════════════════════════════════════════
-    //  SIDEBAR ACTIONS
+    //  TOPBAR ACTIONS
     // ══════════════════════════════════════════════════════════
     @FXML private void onAllTasks()    { selectCategory("all",      "Today's Tasks",  "All your tasks for today"); }
     @FXML private void onWork()        { selectCategory("work",     "Work Tasks",     "Tasks in the Work category"); }
@@ -98,7 +92,7 @@ public class HomeController {
     @FXML private void onMedical()     { selectCategory("medical",  "Medical Tasks",  "Tasks in the Medical category"); }
     @FXML private void onSocial()      { selectCategory("social",   "Social Tasks",   "Tasks in the Social category"); }
     @FXML private void onFitness()     { selectCategory("fitness",  "Fitness Tasks",  "Tasks in the Fitness category"); }
-    @FXML private void onNewCategory() { showToast("Feature coming soon!"); }
+    @FXML private void onAddCategory() { showToast("Feature coming soon!"); }
     @FXML private void onSettings()    { openOverlay(settingsOverlay); }
 
     @FXML
@@ -107,8 +101,15 @@ public class HomeController {
         catch (Exception e) { e.printStackTrace(); }
     }
 
+    // click behaviour for adding tasks
     @FXML private void onAddAI()     { openOverlay(aiOverlay); }
     @FXML private void onAddManual() { openOverlay(manualOverlay); }
+
+    // defining add task buttons for hover effect
+    @FXML private Button addAiBtn;
+    @FXML private Button addManualBtn;
+    @FXML private Button addCategoryBtn;
+
 
     // ══════════════════════════════════════════════════════════
     //  CATEGORY SELECTION
@@ -705,15 +706,15 @@ public class HomeController {
     }
 
     // helper function to apply hover effect to other buttons in all pages (sign up, login + home)
-    private void addHoverEffect(Button btn) {
+    private void applyHover(Button btn, String hoverStyle) {
+
         String base = btn.getStyle();
+        baseStyles.put(btn, base);
 
         btn.setOnMouseEntered(e -> {
-            btn.setStyle(base + "-fx-scale-x: 1.04; -fx-scale-y: 1.04;");
-        });
-
-        btn.setOnMouseExited(e -> {
-            btn.setStyle(base);
+            if (!btn.getStyle().contains("active")) {
+                btn.setStyle(baseStyles.get(btn) + hoverStyle);
+            }
         });
     }
 
