@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done" />
+    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="add more details about the login and sign up">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -195,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777118183568</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add more details about the login and sign up">
+      <option name="closed" value="true" />
+      <created>1777473631098</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1777473631098</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -223,6 +233,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done" />
-    <option name="LAST_COMMIT_MESSAGE" value="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done" />
+    <MESSAGE value="add more details about the login and sign up" />
+    <option name="LAST_COMMIT_MESSAGE" value="add more details about the login and sign up" />
   </component>
 </project>
