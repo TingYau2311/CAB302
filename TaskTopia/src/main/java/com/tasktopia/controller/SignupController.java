@@ -35,7 +35,6 @@ public class SignupController {
         String password = passwordField.getText().trim();
         String confirm  = confirmPasswordField.getText().trim();
 
-        // Only check that fields are not empty and passwords match
         if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
             showError("All fields are required.");
             return;
@@ -45,9 +44,6 @@ public class SignupController {
             return;
         }
 
-        // Save new user
-        Contact newUser = new Contact(username, "", username + "@tasktopia.local", password);
-        contactDAO.addContact(newUser);
 
         try {
             MainApp.showLogin();

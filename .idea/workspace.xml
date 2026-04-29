@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done">
-      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignupController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cab302db.db" beforeDir="false" afterPath="$PROJECT_DIR$/Cab302db.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/MainApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/MainApp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" afterDir="false" />
-    </list>
+    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,7 +26,7 @@
     <branch-grouping />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="FunctionalBase" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

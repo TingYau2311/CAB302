@@ -36,7 +36,6 @@ public class LoginController {
             return;
         }
 
-        // Accept any non-empty credentials
         TaskStore.getInstance().setLoggedInUser(user);
 
         try {
