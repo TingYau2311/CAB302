@@ -2,8 +2,27 @@ package com.tasktopia.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
 
 public class Task {
+
+    public void setId(int autoIncrementedId) {
+    }
+
+    public int size() {
+        return 0;
+    }
+
+    public Task get(int i) {
+        return null;
+    }
+
+    public void set(int i, Task task) {
+    }
+
+    public Collection<Object> getString() {
+        return java.util.List.of();
+    }
 
     public enum Priority { HIGH, MEDIUM, LOW }
     public enum Category { WORK, GROCERY, PERSONAL, SCHOOL, MEDICAL, SOCIAL, FITNESS }

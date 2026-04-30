@@ -1,14 +1,17 @@
 package com.tasktopia;
 
+import com.tasktopia.model.MockTaskDAO;
 import com.tasktopia.model.Task;
 import com.tasktopia.model.Task.Category;
 import com.tasktopia.model.Task.Priority;
+import com.tasktopia.model.TaskList;
 import com.tasktopia.model.TaskStore;
 
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,6 +75,63 @@ class AddTaskTest {
     }
 }
 
+class SearchTest {
+
+    //Test code
+    private TaskList taskList;
+    private Task[] tasks = {
+            new Task("Team Meeting", "Discuss sprint goals",
+                    LocalDate.now(), LocalTime.of(9, 0),
+                    Category.WORK, Priority.HIGH),
+            new Task("Buy Groceries", "",
+                    LocalDate.now(), null, Category.GROCERY, Priority.LOW)
+    };
+
+    @BeforeEach
+    void setup() {
+        taskList = new TaskList(new MockTaskDAO());
+    }
+    //void clearStore() { TaskStore.getInstance().getTasks().clear(); }
+
+    @Test
+   //
+     //
+    // void testSearchInMultipleContact() {
+    //    for (Task task: tasks) {
+    //        taskList.addTask(task);
+    //    }
+    //    List<Task> tasks = taskList.searchTasks("Buy Groceries");
+    //    assertEquals(1, tasks.size());
+    //    for (Task task : tasks) {
+    //        assertEquals(task.getString().equals("Buy Groceries"));
+    //    }
+    //}
+
+
+    //private void assertEquals(int, int) {
+    //}
+
+    @DisplayName("Searching for Task in list")
+    void addTask_taskIsStoredInList() {
+        Task t = new Task("Team Meeting", "Discuss sprint goals",
+                LocalDate.now(), LocalTime.of(9, 0),
+                Category.WORK, Priority.HIGH);
+
+        TaskStore.getInstance().addTask(t);
+
+        Task l = new Task("Buy Groceries", "",
+                LocalDate.now(), null, Category.GROCERY, Priority.LOW);
+
+        TaskStore.getInstance().addTask(l);
+
+
+        assertTrue(TaskStore.getInstance().getTasks().contains(l));
+
+
+    }
+
+
+}
 
 class LogoutTest {
 
