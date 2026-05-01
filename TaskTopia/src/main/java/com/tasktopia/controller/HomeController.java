@@ -500,26 +500,23 @@ public class HomeController {
         detailDescLbl.setStyle(Styles.taskMeta() + " -fx-font-size: 13px;");
         detailDescLbl.setWrapText(true);
 
+        // ── Mark as Done button ───────────────────────────────
         detailDoneBtn = new Button("Mark as Done");
-        detailDoneBtn.setStyle(Styles.primaryButton());
+        String doneBase  = Styles.primaryButton();
+        String doneHover = doneBase + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;";
+        Styles.applyHoverEffect(detailDoneBtn, doneBase, doneHover);
 
-
-        String base = "-fx-background-color: #6D6551; -fx-text-fill: white; "
-                + "-fx-font-size: 13px; -fx-font-weight: bold; "
-                + "-fx-background-radius: 10; -fx-padding: 0 14;";
-
-        String hover = "-fx-background-color: #857a60; -fx-text-fill: white; "
-                + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;";
-
+        // ── Delete button ─────────────────────────────────────
         Button deleteBtn = new Button("🗑️  Delete");
-        deleteBtn.setStyle(Styles.dangerButton());
-        Styles.applyHoverEffect(deleteBtn, base, hover);
+        String deleteBase  = Styles.dangerButton();
+        String deleteHover = deleteBase + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;";
+        Styles.applyHoverEffect(deleteBtn, deleteBase, deleteHover);
 
-
-        // edit button for each task
+        // ── Edit button ───────────────────────────────────────
         Button editBtn = new Button("✏️ Edit");
-        editBtn.setStyle(Styles.primaryButton());
-        Styles.applyHoverEffect(editBtn, base, hover);
+        String editBase  = Styles.secondaryButton();
+        String editHover = editBase + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;";
+        Styles.applyHoverEffect(editBtn, editBase, editHover);
 
         // when user clicks button, closes previous popup and edits existing tasks
         // to avoid creating multiple tasks when editing
