@@ -16,7 +16,6 @@ public class TaskStore {
     private String loggedInUser = "";
 
     private TaskStore() {
-        // Demo tasks so the app loads with data
         tasks.add(new Task(
                 "Buy Milk",
                 "Full cream, 2L from Woolworths",
@@ -37,6 +36,10 @@ public class TaskStore {
     public static TaskStore getInstance() {
         if (instance == null) instance = new TaskStore();
         return instance;
+    }
+
+    public static void resetInstance() {
+        instance = null;
     }
 
     public ObservableList<Task> getTasks() {
@@ -88,7 +91,7 @@ public class TaskStore {
     }
 
     // ---------------------------------------------------
-    // Sorting Methods (Required for Sorting Tests)
+    // Sorting Methods
     // ---------------------------------------------------
 
     public List<Task> sortByDate() {
@@ -109,4 +112,3 @@ public class TaskStore {
                 .collect(Collectors.toList());
     }
 }
-

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,7 +17,7 @@ class MarkCompleteTest {
     @BeforeEach
     void setupTask() {
         task = new Task("Buy Groceries", "",
-                LocalDate.now(), null, Task.Category.GROCERY, Task.Priority.LOW);
+                LocalDate.now(), LocalTime.NOON, Task.Category.GROCERY, Task.Priority.LOW);
     }
 
     @Test

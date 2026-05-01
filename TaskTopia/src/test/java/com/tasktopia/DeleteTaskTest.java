@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -16,9 +17,9 @@ class DeleteTaskTest {
 
     @BeforeEach
     void setupStore() {
-        TaskStore.getInstance().getTasks().clear();
+        TaskStore.resetInstance();
         task = new Task("Submit Report", "Final report",
-                LocalDate.now(), null, Task.Category.WORK, Task.Priority.HIGH);
+                LocalDate.now(), LocalTime.of(9, 0), Task.Category.WORK, Task.Priority.HIGH);
         TaskStore.getInstance().addTask(task);
     }
 
