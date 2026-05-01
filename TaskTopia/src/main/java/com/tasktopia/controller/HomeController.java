@@ -1,4 +1,5 @@
 package com.tasktopia.controller;
+import com.tasktopia.model.TaskStore;
 
 import com.tasktopia.MainApp;
 import com.tasktopia.model.*;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 
 public class HomeController {
 
@@ -55,9 +57,9 @@ public class HomeController {
     // ── Initialise ────────────────────────────────────────────
     @FXML
     public void initialize() {
-        // Load from database instead of TaskStore
         taskDAO = new SqliteTaskDAO();
-        allTasks = taskDAO.getAllTasks();
+
+        allTasks = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
 
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
@@ -67,7 +69,7 @@ public class HomeController {
 
     // ── Reload tasks from DB ──────────────────────────────────
     private void reloadTasks() {
-        allTasks = taskDAO.getAllTasks();
+        allTasks = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
     }
 
     // ══════════════════════════════════════════════════════════
@@ -345,7 +347,8 @@ public class HomeController {
             LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
 
             Task newTask = new Task(taskName, startDT, startDT.plusHours(1),
-                    descField.getText().trim(), cat.name().toLowerCase(), 0);
+                    descField.getText().trim(), cat.name().toLowerCase(),
+                    TaskStore.getInstance().getLoggedInUserId());
             newTask.setCategory(cat);
             newTask.setPriority(pri);
             newTask.setDate(finalDate);

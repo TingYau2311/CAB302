@@ -1,16 +1,20 @@
 package com.tasktopia.controller;
 
 import com.tasktopia.MainApp;
+import com.tasktopia.model.Contact;
+import com.tasktopia.model.IContactDAO;
+import com.tasktopia.model.SqliteContactDAO;
 import com.tasktopia.model.TaskStore;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import java.util.List;
 
 public class LoginController {
 
-    @FXML private TextField     usernameField;
+    @FXML private TextField     emailField;
     @FXML private PasswordField passwordField;
     @FXML private Label         errorLabel;
 
@@ -18,7 +22,8 @@ public class LoginController {
     public void initialize() {
         errorLabel.setVisible(false);
 
-        usernameField.setOnKeyPressed(e -> {
+        // Pressing Enter triggers login
+        emailField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) handleLogin();
         });
         passwordField.setOnKeyPressed(e -> {
@@ -28,20 +33,43 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        String user = usernameField.getText().trim();
-        String pass = passwordField.getText().trim();
+        String email = emailField.getText().trim();
+        String pass  = passwordField.getText().trim();
 
-        if (user.isEmpty() || pass.isEmpty()) {
-            showError("Please enter both username and password.");
+        if (email.isEmpty() || pass.isEmpty()) {
+            showError("Please enter both email and password.");
             return;
         }
 
-        TaskStore.getInstance().setLoggedInUser(user);
+        if (!email.contains("@") || !email.contains(".")) {
+            showError("Please enter a valid email address.");
+            return;
+        }
+
+        // Check credentials against database
+        IContactDAO contactDAO = new SqliteContactDAO();
+        List<Contact> contacts = contactDAO.getAllContacts();
+
+        Contact matched = contacts.stream()
+                .filter(c -> c.getEmail().equalsIgnoreCase(email)
+                        && c.getPassword().equals(pass))
+                .findFirst()
+                .orElse(null);
+
+        if (matched == null) {
+            showError("Invalid email or password.");
+            return;
+        }
+
+
+        // Store logged in user's full name and go to home
+        TaskStore.getInstance().setLoggedInUser(matched.getFirstName()
+                + " " + matched.getLastName());
+        TaskStore.getInstance().setLoggedInUserId(matched.getId());
 
         try {
             MainApp.showHome();
         } catch (Exception ex) {
-            ex.printStackTrace();
             showError("Failed to load home screen.");
         }
     }
@@ -51,7 +79,7 @@ public class LoginController {
         try {
             MainApp.showSignup();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            showError("Could not navigate to sign up. Please restart.");
         }
     }
 

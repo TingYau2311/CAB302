@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <StackPane
         xmlns="http://javafx.com/javafx/17"
         xmlns:fx="http://javafx.com/fxml/1"
@@ -40,8 +41,26 @@
                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 50, 0, 0, 12);">
             <VBox.margin><Insets top="24"/></VBox.margin>
 
-            <TextField fx:id="usernameField"
-                       promptText="Username"
+            <TextField fx:id="firstNameField"
+                       promptText="First Name"
+                       style="-fx-background-color: rgba(255,255,255,0.10);
+                              -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12;
+                              -fx-background-radius: 12; -fx-border-width: 1.5;
+                              -fx-padding: 12 16; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
+                              -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45);"
+                       prefWidth="292"/>
+
+            <TextField fx:id="lastNameField"
+                       promptText="Last Name"
+                       style="-fx-background-color: rgba(255,255,255,0.10);
+                              -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12;
+                              -fx-background-radius: 12; -fx-border-width: 1.5;
+                              -fx-padding: 12 16; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
+                              -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45);"
+                       prefWidth="292"/>
+
+            <TextField fx:id="emailField"
+                       promptText="Email"
                        style="-fx-background-color: rgba(255,255,255,0.10);
                               -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12;
                               -fx-background-radius: 12; -fx-border-width: 1.5;

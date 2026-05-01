@@ -9,10 +9,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import java.util.List;
 
 public class SignupController {
 
-    @FXML private TextField     usernameField;
+    @FXML private TextField     firstNameField;
+    @FXML private TextField     lastNameField;
+    @FXML private TextField     emailField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
     @FXML private Label         errorLabel;
@@ -31,12 +34,20 @@ public class SignupController {
 
     @FXML
     private void handleSignup() {
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
-        String confirm  = confirmPasswordField.getText().trim();
+        String firstName = firstNameField.getText().trim();
+        String lastName  = lastNameField.getText().trim();
+        String email     = emailField.getText().trim();
+        String password  = passwordField.getText().trim();
+        String confirm   = confirmPasswordField.getText().trim();
 
-        if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
+
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()
+                || password.isEmpty() || confirm.isEmpty()) {
             showError("All fields are required.");
+            return;
+        }
+        if (!email.contains("@") || !email.contains(".")) {
+            showError("Please enter a valid email address.");
             return;
         }
         if (!password.equals(confirm)) {
@@ -44,12 +55,21 @@ public class SignupController {
             return;
         }
 
+        List<Contact> existing = contactDAO.getAllContacts();
+        boolean emailTaken = existing.stream()
+                .anyMatch(c -> c.getEmail().equalsIgnoreCase(email));
+        if (emailTaken) {
+            showError("An account with that email already exists.");
+            return;
+        }
+
+        Contact newContact = new Contact(firstName, lastName, email, password);
+        contactDAO.addContact(newContact);
 
         try {
             MainApp.showLogin();
         } catch (Exception ex) {
-            ex.printStackTrace();
-            showError("Account created! Please return to login.");
+            showError("Account created! Please log in.");
         }
     }
 
@@ -58,7 +78,7 @@ public class SignupController {
         try {
             MainApp.showLogin();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            showError("Could not navigate to login. Please restart.");
         }
     }
 

@@ -18,4 +18,6 @@ public interface ITaskDAO {
 
 
     public List<Task> getAllTasks();
+
+    public List<Task> getTasksByUser(int userId);
 }

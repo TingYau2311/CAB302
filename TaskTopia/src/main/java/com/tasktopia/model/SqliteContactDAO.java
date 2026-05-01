@@ -15,11 +15,11 @@ public class SqliteContactDAO implements IContactDAO {
     @Override
     public void addContact(Contact contact) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO contacts (firstName, lastName, password, email) VALUES (?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO contacts (firstName, lastName, email, password) VALUES (?, ?, ?, ?)");
             statement.setString(1, contact.getFirstName());
             statement.setString(2, contact.getLastName());
-            statement.setString(3, contact.getPassword());
-            statement.setString(4, contact.getEmail());
+            statement.setString(3, contact.getEmail());
+            statement.setString(4, contact.getPassword());
             statement.executeUpdate();
             // Set the id of the new contact
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -33,11 +33,11 @@ public class SqliteContactDAO implements IContactDAO {
     @Override
     public void updateContact(Contact contact) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE contacts SET firstName = ?, lastName = ?, password = ?, email = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE contacts SET firstName = ?, lastName = ?, email = ?, password = ? WHERE id = ?");
             statement.setString(1, contact.getFirstName());
             statement.setString(2, contact.getLastName());
-            statement.setString(3, contact.getPassword());
-            statement.setString(4, contact.getEmail());
+            statement.setString(3, contact.getEmail());
+            statement.setString(4, contact.getPassword());
             statement.setInt(5, contact.getId());
             statement.executeUpdate();
         } catch (Exception e) {
@@ -65,9 +65,9 @@ public class SqliteContactDAO implements IContactDAO {
             if (resultSet.next()) {
                 String firstName = resultSet.getString("firstName");
                 String lastName = resultSet.getString("lastName");
-                String password = resultSet.getString("password");
                 String email = resultSet.getString("email");
-                Contact contact = new Contact(firstName, lastName, password, email);
+                String password = resultSet.getString("password");
+                Contact contact = new Contact(firstName, lastName, email, password);
                 contact.setId(id);
                 return contact;
             }
@@ -88,9 +88,9 @@ public class SqliteContactDAO implements IContactDAO {
                 int id = resultSet.getInt("id");
                 String firstName = resultSet.getString("firstName");
                 String lastName = resultSet.getString("lastName");
-                String password = resultSet.getString("password");
                 String email = resultSet.getString("email");
-                Contact contact = new Contact(firstName, lastName, password , email);
+                String password = resultSet.getString("password");
+                Contact contact = new Contact(firstName, lastName, email , password );
                 contact.setId(id);
                 contacts.add(contact);
             }
@@ -99,4 +99,6 @@ public class SqliteContactDAO implements IContactDAO {
         }
         return contacts;
     }
+
+
 }

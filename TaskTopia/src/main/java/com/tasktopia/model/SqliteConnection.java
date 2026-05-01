@@ -42,6 +42,7 @@ public class SqliteConnection {
                     + "endDate VARCHAR,"
                     + "description VARCHAR,"
                     + "tags VARCHAR,"
+                    + "priority VARCHAR,"
                     + "userId INTEGER,"
                     + "FOREIGN KEY (userId) REFERENCES contacts(id)"
                     + ")");

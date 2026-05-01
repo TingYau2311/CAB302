@@ -5,7 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="add more details about the login and sign up">
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/IAuthenticationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cab302db.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/Cab302db.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HelloController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/ITaskDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/ITaskDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/MockContactDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteContactDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteContactDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteTaskDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteTaskDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/TaskStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/TaskStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/ITaskDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/ITaskDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteConnection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteContactDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteContactDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteTaskDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteTaskDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/TaskStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/TaskStore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +46,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -28,7 +55,7 @@
     <branch-grouping />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="FunctionalBase" />
+        <entry key="$PROJECT_DIR$" value="DataBaseImplementation" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -86,6 +113,17 @@
   }
 }</component>
   <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="CAB302" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="CAB302" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="CAB302" />
       <option name="ENV_FILES" value="" />
@@ -120,17 +158,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="RUN_TOOL" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="CAB302" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="CAB302" />
-      <option name="filePath" />
       <method v="2" />
     </configuration>
   </component>
