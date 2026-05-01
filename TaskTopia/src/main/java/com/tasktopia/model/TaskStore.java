@@ -16,21 +16,8 @@ public class TaskStore {
     private String loggedInUser = "";
 
     private TaskStore() {
-        tasks.add(new Task(
-                "Buy Milk",
-                "Full cream, 2L from Woolworths",
-                LocalDate.now(),
-                LocalTime.of(15, 4),
-                Task.Category.GROCERY,
-                Task.Priority.MEDIUM));
-
-        tasks.add(new Task(
-                "Team Meeting",
-                "Discuss final design with team.",
-                LocalDate.now(),
-                LocalTime.of(7, 35),
-                Task.Category.WORK,
-                Task.Priority.HIGH));
+        // REMOVE the default tasks - they interfere with tests
+        // Tests should add their own tasks
     }
 
     public static TaskStore getInstance() {

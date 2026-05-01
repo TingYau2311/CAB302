@@ -12,9 +12,11 @@ public class TaskList {
 
     public List<Task> searchTasks(String query) {
         ArrayList<Task> results = new ArrayList<>();
+        String trimmed = query.trim();
+        if (trimmed.isEmpty()) return results;
         for (Task task : taskDAO.getAllTasks()) {
             String combined = (task.getName() + " " + task.getDescription()).toLowerCase();
-            if (combined.contains(query.toLowerCase())) {
+            if (combined.contains(trimmed.toLowerCase())) {
                 results.add(task);
             }
         }

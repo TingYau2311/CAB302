@@ -50,7 +50,7 @@ public class Task {
         // --- ASSIGN FIELDS ---
         this.id          = nextId++;
         this.name        = name;
-        this.description = description; // empty allowed, null not allowed
+        this.description = description;
         this.date        = date;
         this.time        = time;
         this.category    = category;
@@ -58,22 +58,60 @@ public class Task {
         this.done        = false;
     }
 
-    public int       getId()          { return id; }
-    public String    getName()        { return name; }
-    public String    getDescription() { return description; }
-    public LocalDate getDate()        { return date; }
-    public LocalTime getTime()        { return time; }
-    public Category  getCategory()    { return category; }
-    public Priority  getPriority()    { return priority; }
-    public boolean   isDone()         { return done; }
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public LocalDate getDate() { return date; }
+    public LocalTime getTime() { return time; }
+    public Category getCategory() { return category; }
+    public Priority getPriority() { return priority; }
+    public boolean isDone() { return done; }
 
-    public void setName(String name)               { this.name = name; }
-    public void setDescription(String description) { this.description = description; }
-    public void setDate(LocalDate date)            { this.date = date; }
-    public void setTime(LocalTime time)            { this.time = time; }
-    public void setCategory(Category category)     { this.category = category; }
-    public void setPriority(Priority priority)     { this.priority = priority; }
-    public void setDone(boolean done)              { this.done = done; }
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Task name cannot be empty");
+        }
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        if (description == null) {
+            throw new IllegalArgumentException("Description cannot be null");
+        }
+        this.description = description;
+    }
+
+    public void setDate(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        this.date = date;
+    }
+
+    public void setTime(LocalTime time) {
+        if (time == null) {
+            throw new IllegalArgumentException("Time cannot be null");
+        }
+        this.time = time;
+    }
+
+    public void setCategory(Category category) {
+        if (category == null) {
+            throw new IllegalArgumentException("Category cannot be null");
+        }
+        this.category = category;
+    }
+
+    public void setPriority(Priority priority) {
+        if (priority == null) {
+            throw new IllegalArgumentException("Priority cannot be null");
+        }
+        this.priority = priority;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 
     public String getTimeString() {
         return time != null ? time.toString() : "";
