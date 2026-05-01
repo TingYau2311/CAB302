@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.tasktopia.controller.SignUpController"
+           style="-fx-background-color: white;">
+
+    <VBox alignment="CENTER" spacing="16">
+
+        <VBox alignment="CENTER"
+              maxWidth="380"
+              spacing="14"
+              style="-fx-background-color: white;
+                     -fx-background-radius: 28;
+                     -fx-padding: 48 44 44 44;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 30, 0, 0, 8);">
+
+            <!-- TITLE -->
+            <TextFlow textAlignment="CENTER">
+                <Text text="Create "
+                      style="-fx-font-size: 40px; -fx-font-weight: bold;
+                             -fx-font-family: 'Segoe UI'; -fx-fill: #995954;" />
+                <Text text="Account"
+                      style="-fx-font-size: 40px; -fx-font-weight: bold;
+                             -fx-font-family: 'Segoe UI'; -fx-fill: #714255;" />
+            </TextFlow>
+
+            <!-- Username -->
+            <TextField fx:id="usernameField"
+                       prefWidth="292"
+                       promptText="Username"
+                       style="-fx-background-color: #f4f6fb;
+                              -fx-border-color: #e4e9f4;
+                              -fx-border-radius: 12;
+                              -fx-background-radius: 12;
+                              -fx-border-width: 1.5;
+                              -fx-padding: 12 16;
+                              -fx-font-family: 'Segoe UI';
+                              -fx-font-size: 13px;
+                              -fx-text-fill: #1e2a4a;
+                              -fx-prompt-text-fill: #8898aa;" />
+
+            <!-- Password -->
+            <PasswordField fx:id="passwordField"
+                           prefWidth="292"
+                           promptText="Password"
+                           style="-fx-background-color: #f4f6fb;
+                                  -fx-border-color: #e4e9f4;
+                                  -fx-border-radius: 12;
+                                  -fx-background-radius: 12;
+                                  -fx-border-width: 1.5;
+                                  -fx-padding: 12 16;
+                                  -fx-font-family: 'Segoe UI';
+                                  -fx-font-size: 13px;
+                                  -fx-text-fill: #1e2a4a;
+                                  -fx-prompt-text-fill: #8898aa;" />
+
+            <!-- Confirm Password -->
+            <PasswordField fx:id="confirmPasswordField"
+                           prefWidth="292"
+                           promptText="Confirm Password"
+                           style="-fx-background-color: #f4f6fb;
+                                  -fx-border-color: #e4e9f4;
+                                  -fx-border-radius: 12;
+                                  -fx-background-radius: 12;
+                                  -fx-border-width: 1.5;
+                                  -fx-padding: 12 16;
+                                  -fx-font-family: 'Segoe UI';
+                                  -fx-font-size: 13px;
+                                  -fx-text-fill: #1e2a4a;
+                                  -fx-prompt-text-fill: #8898aa;" />
+
+            <!-- Sign Up Button -->
+            <Button fx:id="signUpBtn"
+                    text="Sign Up"
+                    onAction="#onSignUp"
+                    prefWidth="292"
+                    style="-fx-background-color: linear-gradient(to right, #995954, #714255);
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 12;
+                           -fx-padding: 14 0;" />
+
+            <!-- Back -->
+            <Button text="← Back to Login"
+                    onAction="#onBackToLogin"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #714255;
+                           -fx-cursor: hand;" />
+
+        </VBox>
+    </VBox>
+</StackPane>
