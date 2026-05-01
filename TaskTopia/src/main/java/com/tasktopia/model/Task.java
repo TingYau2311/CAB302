@@ -21,9 +21,36 @@ public class Task {
 
     public Task(String name, String description, LocalDate date, LocalTime time,
                 Category category, Priority priority) {
+
+        // --- VALIDATION (must match test messages exactly) ---
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Task name cannot be empty");
+        }
+
+        if (description == null) {
+            throw new IllegalArgumentException("Description cannot be null");
+        }
+
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+
+        if (time == null) {
+            throw new IllegalArgumentException("Time cannot be null");
+        }
+
+        if (category == null) {
+            throw new IllegalArgumentException("Category cannot be null");
+        }
+
+        if (priority == null) {
+            throw new IllegalArgumentException("Priority cannot be null");
+        }
+
+        // --- ASSIGN FIELDS ---
         this.id          = nextId++;
         this.name        = name;
-        this.description = description;
+        this.description = description; // empty allowed, null not allowed
         this.date        = date;
         this.time        = time;
         this.category    = category;

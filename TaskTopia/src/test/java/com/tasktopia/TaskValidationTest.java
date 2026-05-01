@@ -27,6 +27,7 @@ public class TaskValidationTest {
 
     @Test
     void testDescriptionCanBeEmptyButNotNull() {
+        // Empty description is allowed
         assertDoesNotThrow(() ->
                 new Task(
                         "Valid",
@@ -38,6 +39,7 @@ public class TaskValidationTest {
                 )
         );
 
+        // Null description is NOT allowed
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
                 new Task(
                         "Valid",
