@@ -2,15 +2,16 @@ package com.tasktopia;
 
 import com.tasktopia.model.Task;
 import com.tasktopia.model.TaskStore;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AddTaskTest {
+class AddTaskTest {
 
     @BeforeEach
     void clearStore() {
@@ -29,6 +30,3 @@ public class AddTaskTest {
         assertTrue(TaskStore.getInstance().getTasks().contains(t));
     }
 }
-
-
-

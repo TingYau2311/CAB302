@@ -5,31 +5,25 @@ import java.util.List;
 
 public class MockTaskDAO implements ITaskDAO {
 
-    public final ArrayList<Task> tasks =  new ArrayList<>();
-    private int autoIncrementedId = 0;
+    public final ArrayList<Task> tasks = new ArrayList<>();
 
     @Override
     public void addTask(Task task) {
-        task.setId(autoIncrementedId);
-        autoIncrementedId++;
         tasks.add(task);
     }
 
-
     public void updateTask(Task task) {
-        for (int i = 0; i < task.size(); i++) {
-            if (task.get(i).getId() == task.getId()) {
-                task.set(i, task);
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId() == task.getId()) {
+                tasks.set(i, task);
                 break;
             }
         }
     }
 
-
-    public void removeTask(Task task){
+    public void removeTask(Task task) {
         tasks.remove(task);
     }
-
 
     public Task getTask(int id) {
         for (Task task : tasks) {
