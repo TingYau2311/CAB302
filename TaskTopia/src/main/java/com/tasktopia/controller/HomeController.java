@@ -6,12 +6,17 @@ import com.tasktopia.model.TaskStore;
 import com.tasktopia.util.Styles;
 import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -435,12 +440,18 @@ public class HomeController {
         detailDoneBtn.setStyle(Styles.primaryButton());
         detailDoneBtn.setMaxWidth(Double.MAX_VALUE);
 
+        // ⭐ NEW: Edit Button
+        Button editBtn = new Button("✏️  Edit");
+        editBtn.setStyle(Styles.editButton());
+        editBtn.setMaxWidth(Double.MAX_VALUE);
+
         Button deleteBtn = new Button("🗑️  Delete");
         deleteBtn.setStyle(Styles.dangerButton());
         deleteBtn.setMaxWidth(Double.MAX_VALUE);
 
-        HBox btnRow = new HBox(12, detailDoneBtn, deleteBtn);
+        HBox btnRow = new HBox(12, detailDoneBtn, editBtn, deleteBtn);
         HBox.setHgrow(detailDoneBtn, Priority.ALWAYS);
+        HBox.setHgrow(editBtn, Priority.ALWAYS);
         HBox.setHgrow(deleteBtn, Priority.ALWAYS);
 
         StackPane shell = wrapOverlay(card);
@@ -452,6 +463,14 @@ public class HomeController {
                 renderTasks();
                 closeOverlay(shell);
                 showToast(selectedTask.isDone() ? "✅ Task completed!" : "Task marked incomplete");
+            }
+        });
+
+        // ⭐ NEW: Edit button action
+        editBtn.setOnAction(e -> {
+            if (selectedTask != null) {
+                closeOverlay(shell);
+                openEditModal(selectedTask);
             }
         });
 
@@ -493,6 +512,28 @@ public class HomeController {
 
         detailDoneBtn.setText(task.isDone() ? "Mark as Incomplete" : "Mark as Done");
         openOverlay(detailOverlay);
+    }
+
+    // ⭐ NEW: Opens the Edit Task modal
+    private void openEditModal(Task task) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EditTask.fxml"));
+            VBox root = loader.load();
+
+            EditTaskController controller = loader.getController();
+            controller.setTask(task);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Edit Task");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            renderTasks(); // refresh after editing
+        } catch (IOException e) {
+            e.printStackTrace();
+            showToast("⚠️ Could not open edit window");
+        }
     }
 
     // ══════════════════════════════════════════════════════════

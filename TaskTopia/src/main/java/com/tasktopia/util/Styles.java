@@ -120,6 +120,18 @@ public final class Styles {
                 + "-fx-padding: 13 22; -fx-background-radius: 12; -fx-cursor: hand;";
     }
 
+    /**
+     * Style for the Edit button used in the detail modal and task rows.
+     * Matches the primary look but slightly more compact for inline placement.
+     */
+    public static String editButton() {
+        return "-fx-background-color: " + PRIMARY + "; "
+                + "-fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; "
+                + "-fx-font-size: 13px; -fx-padding: 10 16; -fx-background-radius: 10; "
+                + "-fx-cursor: hand; "
+                + "-fx-effect: dropshadow(gaussian, rgba(74,108,247,0.22), 10, 0, 0, 3);";
+    }
+
     public static String modalCard() {
         return "-fx-background-color: white; -fx-background-radius: 24; "
                 + "-fx-padding: 36 36 32 36; "
