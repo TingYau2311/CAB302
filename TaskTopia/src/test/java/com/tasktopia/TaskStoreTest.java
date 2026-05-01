@@ -18,6 +18,15 @@ public class TaskStoreTest {
     void setup() {
         store = TaskStore.getInstance();
         store.getTasks().clear(); // Reset list for clean tests
+        store.setLoggedInUser(null); // Reset user state
+    }
+
+    @Test
+    void testSingletonInstance() {
+        TaskStore s1 = TaskStore.getInstance();
+        TaskStore s2 = TaskStore.getInstance();
+
+        assertSame(s1, s2, "TaskStore should always return the same instance");
     }
 
     @Test
@@ -58,5 +67,56 @@ public class TaskStoreTest {
     void testLoggedInUserSetAndGet() {
         store.setLoggedInUser("angela");
         assertEquals("angela", store.getLoggedInUser());
+    }
+
+    @Test
+    void testClearAllTasks() {
+        Task t1 = new Task("A", "d", LocalDate.now(), LocalTime.NOON, Task.Category.WORK, Task.Priority.LOW);
+        Task t2 = new Task("B", "d", LocalDate.now(), LocalTime.NOON, Task.Category.WORK, Task.Priority.LOW);
+
+        store.addTask(t1);
+        store.addTask(t2);
+
+        store.getTasks().clear(); // Clear list
+
+        assertEquals(0, store.getTasks().size());
+    }
+
+    @Test
+    void testAddingDuplicateTasksAllowed() {
+        Task task = new Task(
+                "Repeat",
+                "desc",
+                LocalDate.now(),
+                LocalTime.NOON,
+                Task.Category.PERSONAL,
+                Task.Priority.MEDIUM
+        );
+
+        store.addTask(task);
+        store.addTask(task); // same instance added twice
+
+        assertEquals(2, store.getTasks().size());
+    }
+
+    @Test
+    void testAddNullTaskDoesNotCrash() {
+        assertDoesNotThrow(() -> store.addTask(null));
+    }
+
+    @Test
+    void testStoreStartsEmptyAfterSetup() {
+        assertEquals(0, store.getTasks().size(), "Store should be empty after setup()");
+    }
+
+    @Test
+    void testRemoveTaskThatDoesNotExistDoesNotCrash() {
+        Task t1 = new Task("A", "d", LocalDate.now(), LocalTime.NOON, Task.Category.WORK, Task.Priority.LOW);
+        Task t2 = new Task("B", "d", LocalDate.now(), LocalTime.NOON, Task.Category.WORK, Task.Priority.LOW);
+
+        store.addTask(t1);
+
+        assertDoesNotThrow(() -> store.removeTask(t2));
+        assertEquals(1, store.getTasks().size());
     }
 }

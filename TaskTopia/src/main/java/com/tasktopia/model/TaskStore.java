@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskStore {
 
@@ -36,10 +38,51 @@ public class TaskStore {
         return instance;
     }
 
-    public ObservableList<Task> getTasks() { return tasks; }
-    public void addTask(Task t)            { tasks.add(t); }
-    public void removeTask(Task t)         { tasks.remove(t); }
+    public ObservableList<Task> getTasks() {
+        return tasks;
+    }
 
-    public String getLoggedInUser()           { return loggedInUser; }
-    public void   setLoggedInUser(String user){ loggedInUser = user; }
+    public void addTask(Task t) {
+        tasks.add(t);
+    }
+
+    public void removeTask(Task t) {
+        tasks.remove(t);
+    }
+
+    public String getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(String user) {
+        loggedInUser = user;
+    }
+
+    // ---------------------------------------------------
+    // Filtering Methods (Required for Your Test Files)
+    // ---------------------------------------------------
+
+    public List<Task> filterByCategory(Task.Category category) {
+        return tasks.stream()
+                .filter(t -> t != null && t.getCategory() == category)
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> filterByPriority(Task.Priority priority) {
+        return tasks.stream()
+                .filter(t -> t != null && t.getPriority() == priority)
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> filterByDone(boolean done) {
+        return tasks.stream()
+                .filter(t -> t != null && t.isDone() == done)
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> filterByDate(LocalDate date) {
+        return tasks.stream()
+                .filter(t -> t != null && date.equals(t.getDate()))
+                .collect(Collectors.toList());
+    }
 }
