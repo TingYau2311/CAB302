@@ -4,11 +4,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import com.tasktopia.MainApp;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class SignUpController {
 
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
+
+    // defining sign up/create account for hover effect
+    @FXML private Button signUpBtn;
+
+    // initializing for hover effect
+    @FXML
+    public void initialize() {
+        applyHover(signUpBtn);
+    }
 
     @FXML
     private void onSignUp() {
@@ -47,6 +60,7 @@ public class SignUpController {
         }
     }
 
+    // displays error pop up for user
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -55,9 +69,25 @@ public class SignUpController {
         alert.showAndWait();
     }
 
+    //
     private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(msg);
         alert.showAndWait();
+    }
+
+    private final Map<Button, String> baseStyles = new HashMap<>();
+
+    private void applyHover(Button btn) {
+        String base = btn.getStyle();
+        baseStyles.put(btn, base);
+
+        btn.setOnMouseEntered(e ->
+                btn.setStyle(baseStyles.get(btn) + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;")
+        );
+
+        btn.setOnMouseExited(e ->
+                btn.setStyle(baseStyles.get(btn))
+        );
     }
 }

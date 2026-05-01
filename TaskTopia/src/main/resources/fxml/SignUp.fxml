@@ -76,7 +76,8 @@
                                   -fx-prompt-text-fill: #8898aa;" />
 
             <!-- Sign Up Button -->
-            <Button text="Sign Up"
+            <Button fx:id="signUpBtn"
+                    text="Sign Up"
                     onAction="#onSignUp"
                     prefWidth="292"
                     style="-fx-background-color: linear-gradient(to right, #995954, #714255);
