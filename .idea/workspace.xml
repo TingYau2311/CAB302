@@ -4,33 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="add more details about the login and sign up">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cab302db.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/TaskTopia.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/MainController.java" afterDir="false" />
+    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="transfered GUI to new GUI and fixed all following issues">
       <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/CAB302DB.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Home.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Home.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/MainApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/MainApp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/SignUpController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/SignUpController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteConnection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/TaskStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/TaskStore.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/util/Styles.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/util/Styles.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Home.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Home.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/SignUp.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777473631098</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="transfered GUI to new GUI and fixed all following issues">
+      <option name="closed" value="true" />
+      <created>1777791912433</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1777791912433</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -288,7 +272,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done" />
     <MESSAGE value="add more details about the login and sign up" />
-    <option name="LAST_COMMIT_MESSAGE" value="add more details about the login and sign up" />
+    <MESSAGE value="transfered GUI to new GUI and fixed all following issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="transfered GUI to new GUI and fixed all following issues" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
 </project>
