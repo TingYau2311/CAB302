@@ -1,17 +1,16 @@
 package com.tasktopia.util;
 
 import com.tasktopia.model.Task;
+import javafx.scene.control.Button;
 
 
 public final class Styles {
 
     // Colours
     public static final String BG          = "#f4f6fb";
-    public static final String SIDEBAR_BG  = "#1e2a4a";
-    public static final String SIDEBAR_ACC = "#2e3f6e";
+    public static final String TOPBAR_ACC = "#2e3f6e";
     public static final String PRIMARY     = "#4a6cf7";
     public static final String ACCENT_RED  = "#ff6b6b";
-    public static final String ACCENT_YEL  = "#ffd93d";
     public static final String TEXT        = "#1e2a4a";
     public static final String TEXT_MUTED  = "#8898aa";
     public static final String BORDER      = "#e4e9f4";
@@ -31,12 +30,25 @@ public final class Styles {
                 + "-fx-cursor: hand; -fx-alignment: CENTER_LEFT;";
     }
 
+    // to make navigation button hover + effects applied to button
     public static String navItemHover() {
-        return "-fx-background-color: " + SIDEBAR_ACC + "; "
+        return "-fx-background-color: " + TOPBAR_ACC + "; "
                 + "-fx-text-fill: white; "
                 + "-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
                 + "-fx-padding: 10 14; -fx-background-radius: 10; "
-                + "-fx-cursor: hand; -fx-alignment: CENTER_LEFT;";
+                + "-fx-cursor: hand; -fx-alignment: CENTER_LEFT;"
+                + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;"
+                + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0.2, 0, 4);";
+    }
+
+    // changed navItemHover() method to apply hover effect to other buttons in other pages too
+    public static void applyHoverEffect(Button btn, String baseStyle, String hoverStyle) {
+
+        btn.setStyle(baseStyle);
+
+        btn.setOnMouseEntered(e -> btn.setStyle(hoverStyle));
+
+        btn.setOnMouseExited(e -> btn.setStyle(baseStyle));
     }
 
     public static String card(Task.Priority priority) {
@@ -182,11 +194,6 @@ public final class Styles {
                 + "-fx-text-fill: " + TEXT_MUTED + "; -fx-wrap-text: true;";
     }
 
-    public static String mainTitle() {
-        return "-fx-font-size: 26px; -fx-font-weight: bold; "
-                + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + TEXT + ";";
-    }
-
     public static String mainSubtitle() {
         return "-fx-font-size: 12px; -fx-font-family: 'Segoe UI'; "
                 + "-fx-text-fill: " + TEXT_MUTED + ";";
@@ -198,4 +205,13 @@ public final class Styles {
                 + "-fx-font-size: 12px; -fx-text-fill: " + TEXT_MUTED + "; "
                 + "-fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);";
     }
+
+    // box around tasks
+    public static String taskListCard() {
+        return "-fx-background-color: white; "
+                + "-fx-background-radius: 18; "
+                + "-fx-padding: 20; "
+                + "-fx-effect: dropshadow(gaussian, rgba(30,42,74,0.12), 20, 0, 0, 6);";
+    }
+
 }

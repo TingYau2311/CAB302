@@ -12,138 +12,169 @@
         style="-fx-background-color: #f4f6fb;"
         prefWidth="1100" prefHeight="700">
 
-    <HBox>
+    <VBox>
 
-        <!-- ── SIDEBAR ── -->
-        <VBox prefWidth="220" minWidth="220"
-              style="-fx-background-color: #1e2a4a; -fx-padding: 0;">
+        <!-- ── TOP SECTION ── -->
+        <VBox style="-fx-background-color: #f4f6fb;">
 
-            <Label text="TaskTopia"
-                   style="-fx-font-size: 22px; -fx-font-weight: bold;
-                          -fx-font-family: 'Segoe UI'; -fx-text-fill: white;
-                          -fx-padding: 28 24 24 24;"/>
+            <!-- TITLE ROW -->
+            <HBox alignment="CENTER_LEFT"
+                  style="-fx-padding: 20 24 10 24;">
 
-            <Label text="CATEGORIES"
-                   style="-fx-font-size: 10px; -fx-font-weight: bold;
-                          -fx-font-family: 'Segoe UI'; -fx-text-fill: rgba(168,184,216,0.55);
-                          -fx-padding: 0 24 8 24;"/>
+                <Label text="Task"
+                       style="-fx-font-size: 45px; -fx-font-weight: bold;
+                              -fx-font-family: 'Segoe UI'; -fx-text-fill: #995954;" />
+                <Label text="Topia"
+                       style="-fx-font-size: 45px; -fx-font-weight: bold;
+                              -fx-font-family: 'Segoe UI'; -fx-text-fill: #714255;" />
 
-            <!-- Nav items -->
-            <VBox fx:id="sidebarNav" spacing="2" style="-fx-padding: 0 12 0 12;">
 
-                <Button fx:id="navAll" id="nav-all" text="🏠  All Tasks"
-                        onAction="#onAllTasks" maxWidth="Infinity"
-                        style="-fx-background-color: #4a6cf7; -fx-text-fill: white;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+                <Region HBox.hgrow="ALWAYS"/>
 
-                <Button fx:id="navWork" id="nav-work" text="💼  Work"
-                        onAction="#onWork" maxWidth="Infinity"
-                        style="-fx-background-color: transparent; -fx-text-fill: #a8b8d8;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+                <!-- Right-side actions -->
+                <HBox spacing="10">
+                    <Button text="⚙️ Settings"
+                            onAction="#onSettings"
+                            style="-fx-background-color: transparent;
+                                   -fx-text-fill: #a8b8d8;" />
 
-                <Button fx:id="navGrocery" id="nav-grocery" text="🛒  Grocery"
-                        onAction="#onGrocery" maxWidth="Infinity"
-                        style="-fx-background-color: transparent; -fx-text-fill: #a8b8d8;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+                    <Button text="🚪 Log Out"
+                            onAction="#onLogout"
+                            style="-fx-background-color: rgba(255,107,107,0.15);
+                                   -fx-text-fill: #ff6b6b;
+                                   -fx-background-radius: 10;" />
+                </HBox>
+            </HBox>
 
-                <Button fx:id="navPersonal" id="nav-personal" text="👤  Personal"
-                        onAction="#onPersonal" maxWidth="Infinity"
-                        style="-fx-background-color: transparent; -fx-text-fill: #a8b8d8;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+            <!-- CATEGORY BAR -->
+            <HBox alignment="CENTER_LEFT"
+                  spacing="10"
+                  style="-fx-padding: 10 20 16 20;">
 
-                <Button fx:id="navSchool" id="nav-school" text="📚  School"
-                        onAction="#onSchool" maxWidth="Infinity"
-                        style="-fx-background-color: transparent; -fx-text-fill: #a8b8d8;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+                <!-- Scrollable categories -->
+                <ScrollPane HBox.hgrow="ALWAYS"
+                            hbarPolicy="AS_NEEDED"
+                            vbarPolicy="NEVER"
+                            fitToHeight="true"
+                            fitToWidth="false"
+                            prefHeight="60"
+                            style="-fx-background-color: transparent;
+                       -fx-background: transparent;">
 
-                <Button fx:id="navMedical" id="nav-medical" text="🏥  Medical"
-                        onAction="#onMedical" maxWidth="Infinity"
-                        style="-fx-background-color: transparent; -fx-text-fill: #a8b8d8;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+                    <!-- IMPORTANT: ALL buttons must be inside this HBox -->
+                    <HBox fx:id="topbarNav"
+                          spacing="8"
+                          alignment="CENTER_LEFT"
+                          style="-fx-padding: 5 0 5 0;">
 
-                <Button fx:id="navSocial" id="nav-social" text="🎉  Social"
-                        onAction="#onSocial" maxWidth="Infinity"
-                        style="-fx-background-color: transparent; -fx-text-fill: #a8b8d8;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+                        <Button fx:id="navAll" text="🏠 All"
+                                onAction="#onAllTasks"
+                                style="-fx-background-color: #714255;
+                           -fx-text-fill: black;
+                           -fx-background-radius: 10;
+                           -fx-padding: 8 16;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;" />
 
-                <Button fx:id="navFitness" id="nav-fitness" text="🏋️  Fitness"
-                        onAction="#onFitness" maxWidth="Infinity"
-                        style="-fx-background-color: transparent; -fx-text-fill: #a8b8d8;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+                        <Button fx:id="navWork" text="💼 Work"
+                                onAction="#onWork"
+                                style="-fx-background-color: #A3CFF5;
+                           -fx-text-fill: black;
+                           -fx-padding: 8 16;
+                           -fx-background-radius: 10;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;" />
 
-            </VBox>
+                        <Button fx:id="navGrocery" text="🛒 Grocery"
+                                onAction="#onGrocery"
+                                style="-fx-background-color: #7BA75F;
+                           -fx-text-fill: black;
+                           -fx-padding: 8 16;
+                           -fx-background-radius: 10;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;" />
 
-            <Region style="-fx-background-color: rgba(255,255,255,0.07);
-                           -fx-min-height: 1; -fx-max-height: 1; -fx-pref-height: 1;">
-                <VBox.margin><Insets top="14" bottom="10" left="12" right="12"/></VBox.margin>
-            </Region>
+                        <Button fx:id="navPersonal" text="👤 Personal"
+                                onAction="#onPersonal"
+                                style="-fx-background-color: #CFD95B;
+                           -fx-text-fill: black;
+                           -fx-padding: 8 16;
+                           -fx-background-radius: 10;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;" />
 
-            <Button text="＋  New Category"
-                    onAction="#onNewCategory"
-                    maxWidth="Infinity"
-                    style="-fx-background-color: transparent;
-                           -fx-border-color: rgba(255,255,255,0.25); -fx-border-style: dashed;
-                           -fx-border-radius: 10; -fx-background-radius: 10;
-                           -fx-text-fill: rgba(255,255,255,0.45);
-                           -fx-font-family: 'Segoe UI'; -fx-font-size: 12px;
-                           -fx-padding: 10 14; -fx-cursor: hand;">
-                <VBox.margin><Insets left="12" right="12"/></VBox.margin>
-            </Button>
+                        <Button fx:id="navSchool" text="📚 School"
+                                onAction="#onSchool"
+                                style="-fx-background-color: #ECCBBC;
+                           -fx-text-fill: #333;
+                           -fx-padding: 8 16;
+                           -fx-background-radius: 10;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;" />
 
-            <Region VBox.vgrow="ALWAYS"/>
+                        <Button fx:id="navMedical" text="🏥 Medical"
+                                onAction="#onMedical"
+                                style="-fx-background-color: #340D0C;
+                           -fx-text-fill: white;
+                           -fx-padding: 8 16;
+                           -fx-background-radius: 10;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;" />
 
-            <VBox spacing="4" style="-fx-padding: 0 12 20 12;">
-                <Button text="⚙️  Help &amp; Settings"
-                        onAction="#onSettings"
-                        maxWidth="Infinity"
-                        style="-fx-background-color: transparent; -fx-text-fill: #a8b8d8;
-                               -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                               -fx-padding: 10 14; -fx-background-radius: 10;
-                               -fx-cursor: hand; -fx-alignment: CENTER_LEFT;"/>
+                        <Button fx:id="navSocial" text="🎉 Social"
+                                onAction="#onSocial"
+                                style="-fx-background-color: #9E3B2E;
+                           -fx-text-fill: black;
+                           -fx-padding: 8 16;
+                           -fx-background-radius: 10;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;" />
 
-                <Button text="🚪  Log Out"
-                        onAction="#onLogout"
-                        maxWidth="Infinity"
-                        style="-fx-background-color: rgba(255,107,107,0.15);
-                               -fx-text-fill: #ff6b6b;
-                               -fx-font-family: 'Segoe UI'; -fx-font-weight: bold;
-                               -fx-font-size: 13px; -fx-padding: 10 14;
-                               -fx-background-radius: 10; -fx-cursor: hand;
-                               -fx-alignment: CENTER_LEFT;"/>
-            </VBox>
+                        <Button fx:id="navFitness" text="🏋️ Fitness"
+                                onAction="#onFitness"
+                                style="-fx-background-color: #2B394B;
+                           -fx-text-fill: white;
+                           -fx-padding: 8 16;
+                           -fx-background-radius: 10;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;" />
+                    </HBox>
+                </ScrollPane>
+
+                <!-- Add category button -->
+                <Button fx:id="addCategoryBtn"
+                        text="＋ Add"
+                        onAction="#onAddCategory"
+                        prefHeight="40"
+                        style="-fx-background-color: #6D6551;
+                               -fx-text-fill: white;
+                               -fx-font-size: 13px;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 10;
+                               -fx-padding: 0 14;" />
+            </HBox>
+
+            <!-- Divider -->
+            <Region style="-fx-background-color: rgba(255,255,255,0.1);
+                           -fx-pref-height: 1;"/>
         </VBox>
 
-        <!-- ── MAIN CONTENT ── -->
-        <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS"
+        <!-- MAIN CONTENT -->
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
                     style="-fx-background: #f4f6fb; -fx-background-color: #f4f6fb;
                            -fx-border-color: transparent;">
 
             <VBox style="-fx-background-color: #f4f6fb; -fx-padding: 40 40 60 40;"
                   spacing="0">
 
+                <!-- Header -->
                 <HBox alignment="CENTER_LEFT">
                     <VBox HBox.hgrow="ALWAYS">
-                        <Label fx:id="pageTitle" text="Today's Tasks"
+                        <Label fx:id="pageTitle" text="All Tasks"
                                style="-fx-font-size: 26px; -fx-font-weight: bold;
                                       -fx-font-family: 'Segoe UI'; -fx-text-fill: #1e2a4a;"/>
 
-                        <Label fx:id="pageSubtitle" text="All your tasks for today"
+                        <Label fx:id="pageSubtitle" text="All your created tasks."
                                style="-fx-font-size: 12px; -fx-font-family: 'Segoe UI';
                                       -fx-text-fill: #8898aa;"/>
                     </VBox>
@@ -156,10 +187,22 @@
                     <HBox.margin><Insets bottom="28"/></HBox.margin>
                 </HBox>
 
-                <VBox fx:id="tasksList" spacing="14" style="-fx-padding: 28 0 0 0;"/>
+                <!-- Tasks (inside purple box) -->
+                <VBox style="-fx-background-color: transparent;">
 
+                    <VBox fx:id="tasksCard"
+                          spacing="14"
+                          style="-fx-padding: 20;
+                                 -fx-background-color: #714255;
+                                 -fx-background-radius: 18;
+                                 -fx-effect: dropshadow(gaussian, rgba(30,42,74,0.12), 20, 0, 0, 6);"/>
+
+                </VBox>
+
+                <!-- Buttons -->
                 <HBox spacing="16" style="-fx-padding: 28 0 0 0;">
-                    <Button text="✨  Add Smart Task"
+                    <Button fx:id="addAiBtn"
+                            text="✨  Add Smart Task"
                             onAction="#onAddAI"
                             style="-fx-background-color: linear-gradient(to right, #4a6cf7, #7b5cf7);
                                    -fx-text-fill: white; -fx-font-family: 'Segoe UI';
@@ -167,7 +210,8 @@
                                    -fx-padding: 13 22; -fx-background-radius: 12; -fx-cursor: hand;
                                    -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.35), 14, 0, 0, 5);"/>
 
-                    <Button text="＋  Add Task Manually"
+                    <Button fx:id="addManualBtn"
+                            text="＋  Add Task Manually"
                             onAction="#onAddManual"
                             style="-fx-background-color: white; -fx-text-fill: #1e2a4a;
                                    -fx-font-family: 'Segoe UI'; -fx-font-weight: bold;
@@ -175,7 +219,9 @@
                                    -fx-background-radius: 12; -fx-cursor: hand;
                                    -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);"/>
                 </HBox>
+
             </VBox>
         </ScrollPane>
-    </HBox>
+
+    </VBox>
 </StackPane>

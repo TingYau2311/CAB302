@@ -1,0 +1,36 @@
+### Maven ###
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IntelliJ workspace files (should NOT be committed)
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/shelf/
+
+# IntelliJ generated files
+out/
+
+### Java ###
+*.class
+*.log
+
+### JavaFX ###
+# Prevent compiled FXML copies from being committed
+target/classes/**/*.fxml
+
+### OS files ###
+.DS_Store
+Thumbs.db

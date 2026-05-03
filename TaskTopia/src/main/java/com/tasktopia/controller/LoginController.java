@@ -6,17 +6,24 @@ import com.tasktopia.model.IContactDAO;
 import com.tasktopia.model.SqliteContactDAO;
 import com.tasktopia.model.TaskStore;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import java.util.List;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginController {
 
     @FXML private TextField     emailField;
     @FXML private PasswordField passwordField;
     @FXML private Label         errorLabel;
+
+    // defining sign up/create account for hover effect
+    @FXML private Button signInBtn;
 
     @FXML
     public void initialize() {
@@ -29,6 +36,8 @@ public class LoginController {
         passwordField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) handleLogin();
         });
+
+        applyHover(signInBtn);
     }
 
     @FXML
@@ -75,16 +84,32 @@ public class LoginController {
     }
 
     @FXML
-    private void goToSignup() {
+    private void onGoToSignUp() {
+        System.out.println("CLICKED");
         try {
             MainApp.showSignup();
-        } catch (Exception ex) {
-            showError("Could not navigate to sign up. Please restart.");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void showError(String msg) {
         errorLabel.setText(msg);
         errorLabel.setVisible(true);
+    }
+
+    private final Map<Button, String> baseStyles = new HashMap<>();
+
+    private void applyHover(Button btn) {
+        String base = btn.getStyle();
+        baseStyles.put(btn, base);
+
+        btn.setOnMouseEntered(e ->
+                btn.setStyle(baseStyles.get(btn) + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;")
+        );
+
+        btn.setOnMouseExited(e ->
+                btn.setStyle(baseStyles.get(btn))
+        );
     }
 }

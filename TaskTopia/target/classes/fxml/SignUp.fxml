@@ -1,113 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.tasktopia.controller.SignUpController"
+           style="-fx-background-color: white;">
 
-<StackPane
-        xmlns="http://javafx.com/javafx/17"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="com.tasktopia.controller.SignupController"
-        style="-fx-background-color: linear-gradient(to bottom right, #1e2a4a, #2e3f6e, #4a6cf7);"
-        prefWidth="1100" prefHeight="700">
+    <VBox alignment="CENTER" spacing="16">
 
-    <VBox alignment="CENTER" spacing="0" maxWidth="380">
-
-        <!-- Logo — identical to Login.fxml -->
-        <VBox alignment="CENTER" spacing="4">
-            <TextFlow textAlignment="CENTER">
-                <Text text="Task"
-                      style="-fx-font-size: 36px; -fx-font-weight: bold;
-                             -fx-font-family: 'Segoe UI'; -fx-fill: white;"/>
-                <Text text="Topia"
-                      style="-fx-font-size: 36px; -fx-font-weight: bold;
-                             -fx-font-family: 'Segoe UI'; -fx-fill: #ffd93d;"/>
-            </TextFlow>
-            <Text text="CREATE YOUR ACCOUNT"
-                  style="-fx-font-size: 10px; -fx-font-family: 'Segoe UI';
-                         -fx-fill: rgba(255,255,255,0.5);
-                         -fx-letter-spacing: 2px;"/>
-        </VBox>
-
-        <!-- Glass card — identical styling to Login.fxml -->
-        <VBox alignment="CENTER" spacing="14"
-              style="-fx-background-color: rgba(255,255,255,0.07);
+        <VBox alignment="CENTER"
+              maxWidth="380"
+              spacing="14"
+              style="-fx-background-color: white;
                      -fx-background-radius: 28;
-                     -fx-border-color: rgba(255,255,255,0.15);
-                     -fx-border-radius: 28; -fx-border-width: 1;
                      -fx-padding: 48 44 44 44;
-                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 50, 0, 0, 12);">
-            <VBox.margin><Insets top="24"/></VBox.margin>
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 30, 0, 0, 8);">
 
-            <TextField fx:id="firstNameField"
-                       promptText="First Name"
-                       style="-fx-background-color: rgba(255,255,255,0.10);
-                              -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12;
-                              -fx-background-radius: 12; -fx-border-width: 1.5;
-                              -fx-padding: 12 16; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                              -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45);"
-                       prefWidth="292"/>
+            <!-- TITLE -->
+            <TextFlow textAlignment="CENTER">
+                <Text text="Create "
+                      style="-fx-font-size: 40px; -fx-font-weight: bold;
+                             -fx-font-family: 'Segoe UI'; -fx-fill: #995954;" />
+                <Text text="Account"
+                      style="-fx-font-size: 40px; -fx-font-weight: bold;
+                             -fx-font-family: 'Segoe UI'; -fx-fill: #714255;" />
+            </TextFlow>
 
-            <TextField fx:id="lastNameField"
-                       promptText="Last Name"
-                       style="-fx-background-color: rgba(255,255,255,0.10);
-                              -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12;
-                              -fx-background-radius: 12; -fx-border-width: 1.5;
-                              -fx-padding: 12 16; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                              -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45);"
-                       prefWidth="292"/>
+            <!-- Username -->
+            <TextField fx:id="usernameField"
+                       prefWidth="292"
+                       promptText="Username"
+                       style="-fx-background-color: #f4f6fb;
+                              -fx-border-color: #e4e9f4;
+                              -fx-border-radius: 12;
+                              -fx-background-radius: 12;
+                              -fx-border-width: 1.5;
+                              -fx-padding: 12 16;
+                              -fx-font-family: 'Segoe UI';
+                              -fx-font-size: 13px;
+                              -fx-text-fill: #1e2a4a;
+                              -fx-prompt-text-fill: #8898aa;" />
 
-            <TextField fx:id="emailField"
-                       promptText="Email"
-                       style="-fx-background-color: rgba(255,255,255,0.10);
-                              -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12;
-                              -fx-background-radius: 12; -fx-border-width: 1.5;
-                              -fx-padding: 12 16; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                              -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45);"
-                       prefWidth="292"/>
-
+            <!-- Password -->
             <PasswordField fx:id="passwordField"
+                           prefWidth="292"
                            promptText="Password"
-                           style="-fx-background-color: rgba(255,255,255,0.10);
-                                  -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12;
-                                  -fx-background-radius: 12; -fx-border-width: 1.5;
-                                  -fx-padding: 12 16; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                                  -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45);"
-                           prefWidth="292"/>
+                           style="-fx-background-color: #f4f6fb;
+                                  -fx-border-color: #e4e9f4;
+                                  -fx-border-radius: 12;
+                                  -fx-background-radius: 12;
+                                  -fx-border-width: 1.5;
+                                  -fx-padding: 12 16;
+                                  -fx-font-family: 'Segoe UI';
+                                  -fx-font-size: 13px;
+                                  -fx-text-fill: #1e2a4a;
+                                  -fx-prompt-text-fill: #8898aa;" />
 
+            <!-- Confirm Password -->
             <PasswordField fx:id="confirmPasswordField"
-                           promptText="Confirm password"
-                           style="-fx-background-color: rgba(255,255,255,0.10);
-                                  -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12;
-                                  -fx-background-radius: 12; -fx-border-width: 1.5;
-                                  -fx-padding: 12 16; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px;
-                                  -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45);"
-                           prefWidth="292"/>
+                           prefWidth="292"
+                           promptText="Confirm Password"
+                           style="-fx-background-color: #f4f6fb;
+                                  -fx-border-color: #e4e9f4;
+                                  -fx-border-radius: 12;
+                                  -fx-background-radius: 12;
+                                  -fx-border-width: 1.5;
+                                  -fx-padding: 12 16;
+                                  -fx-font-family: 'Segoe UI';
+                                  -fx-font-size: 13px;
+                                  -fx-text-fill: #1e2a4a;
+                                  -fx-prompt-text-fill: #8898aa;" />
 
-            <Label fx:id="errorLabel" text=""
-                   visible="false" wrapText="true"
-                   style="-fx-text-fill: #ff6b6b; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px;"
-                   prefWidth="292"/>
-
-            <Button text="Create Account"
-                    onAction="#handleSignup"
+            <!-- Sign Up Button -->
+            <Button fx:id="signUpBtn"
+                    text="Sign Up"
+                    onAction="#onSignUp"
                     prefWidth="292"
-                    style="-fx-background-color: linear-gradient(to right, #4a6cf7, #6b8fff);
-                           -fx-text-fill: white; -fx-font-family: 'Segoe UI';
-                           -fx-font-weight: bold; -fx-font-size: 14px;
-                           -fx-padding: 14 0; -fx-background-radius: 12; -fx-cursor: hand;
-                           -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.4), 16, 0, 0, 6);">
-                <VBox.margin><Insets top="6"/></VBox.margin>
-            </Button>
+                    style="-fx-background-color: linear-gradient(to right, #995954, #714255);
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 12;
+                           -fx-padding: 14 0;" />
 
-            <HBox alignment="CENTER" spacing="6">
-                <Hyperlink text="Log in" onAction="#goToLogin"
-                           style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;
-                                  -fx-text-fill: #ffd93d; -fx-border-width: 0;
-                                  -fx-underline: true; -fx-cursor: hand; -fx-padding: 0;"/>
-            </HBox>
+            <!-- Back -->
+            <Button text="← Back to Login"
+                    onAction="#onBackToLogin"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #714255;
+                           -fx-cursor: hand;" />
 
         </VBox>
     </VBox>
