@@ -5,13 +5,10 @@ import com.tasktopia.model.Contact;
 import com.tasktopia.model.IContactDAO;
 import com.tasktopia.model.SqliteContactDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
+import javafx.scene.control.*;
 import java.util.List;
 
-public class SignupController {
+public class SignUpController {
 
     @FXML private TextField     firstNameField;
     @FXML private TextField     lastNameField;
@@ -28,7 +25,7 @@ public class SignupController {
         errorLabel.setVisible(false);
 
         confirmPasswordField.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) handleSignup();
+            if (e.getCode() == javafx.scene.input.KeyCode.ENTER) handleSignup();
         });
     }
 
@@ -40,21 +37,24 @@ public class SignupController {
         String password  = passwordField.getText().trim();
         String confirm   = confirmPasswordField.getText().trim();
 
-
+        // Validation
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()
                 || password.isEmpty() || confirm.isEmpty()) {
             showError("All fields are required.");
             return;
         }
+
         if (!email.contains("@") || !email.contains(".")) {
             showError("Please enter a valid email address.");
             return;
         }
+
         if (!password.equals(confirm)) {
             showError("Passwords do not match.");
             return;
         }
 
+        // Check if email already exists
         List<Contact> existing = contactDAO.getAllContacts();
         boolean emailTaken = existing.stream()
                 .anyMatch(c -> c.getEmail().equalsIgnoreCase(email));
@@ -63,6 +63,7 @@ public class SignupController {
             return;
         }
 
+        // Save to database
         Contact newContact = new Contact(firstName, lastName, email, password);
         contactDAO.addContact(newContact);
 

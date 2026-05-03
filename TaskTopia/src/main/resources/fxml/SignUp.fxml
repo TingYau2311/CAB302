@@ -7,7 +7,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/17"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.tasktopia.controller.SignupController"
+           fx:controller="com.tasktopia.controller.SignUpController"
            style="-fx-background-color: white;">
 
     <VBox alignment="CENTER" spacing="16">
@@ -30,10 +30,40 @@
                              -fx-font-family: 'Segoe UI'; -fx-fill: #714255;" />
             </TextFlow>
 
-            <!-- Username -->
-            <TextField fx:id="usernameField"
+            <!-- First Name -->
+            <TextField fx:id="firstNameField"
                        prefWidth="292"
-                       promptText="Username"
+                       promptText="First Name"
+                       style="-fx-background-color: #f4f6fb;
+                              -fx-border-color: #e4e9f4;
+                              -fx-border-radius: 12;
+                              -fx-background-radius: 12;
+                              -fx-border-width: 1.5;
+                              -fx-padding: 12 16;
+                              -fx-font-family: 'Segoe UI';
+                              -fx-font-size: 13px;
+                              -fx-text-fill: #1e2a4a;
+                              -fx-prompt-text-fill: #8898aa;" />
+
+            <!-- Last Name -->
+            <TextField fx:id="lastNameField"
+                       prefWidth="292"
+                       promptText="Last Name"
+                       style="-fx-background-color: #f4f6fb;
+                              -fx-border-color: #e4e9f4;
+                              -fx-border-radius: 12;
+                              -fx-background-radius: 12;
+                              -fx-border-width: 1.5;
+                              -fx-padding: 12 16;
+                              -fx-font-family: 'Segoe UI';
+                              -fx-font-size: 13px;
+                              -fx-text-fill: #1e2a4a;
+                              -fx-prompt-text-fill: #8898aa;" />
+
+            <!-- Email -->
+            <TextField fx:id="emailField"
+                       prefWidth="292"
+                       promptText="Email"
                        style="-fx-background-color: #f4f6fb;
                               -fx-border-color: #e4e9f4;
                               -fx-border-radius: 12;
@@ -75,23 +105,35 @@
                                   -fx-text-fill: #1e2a4a;
                                   -fx-prompt-text-fill: #8898aa;" />
 
+            <!-- Error Label -->
+            <Label fx:id="errorLabel"
+                   text=""
+                   visible="false"
+                   wrapText="true"
+                   style="-fx-text-fill: #ff6b6b;
+                          -fx-font-family: 'Segoe UI';
+                          -fx-font-size: 12px;" />
+
             <!-- Sign Up Button -->
-            <Button fx:id="signUpBtn"
-                    text="Sign Up"
-                    onAction="#onSignUp"
+            <Button text="Create Account"
+                    onAction="#handleSignup"
                     prefWidth="292"
                     style="-fx-background-color: linear-gradient(to right, #995954, #714255);
                            -fx-text-fill: white;
                            -fx-font-weight: bold;
                            -fx-background-radius: 12;
-                           -fx-padding: 14 0;" />
-
-            <!-- Back -->
-            <Button text="← Back to Login"
-                    onAction="#onBackToLogin"
-                    style="-fx-background-color: transparent;
-                           -fx-text-fill: #714255;
+                           -fx-font-family: 'Segoe UI';
+                           -fx-font-size: 14px;
+                           -fx-padding: 14 0;
                            -fx-cursor: hand;" />
+
+            <!-- Back to Login -->
+            <Label text="← Back to Login"
+                   onMouseClicked="#goToLogin"
+                   style="-fx-text-fill: #714255;
+                          -fx-underline: true;
+                          -fx-cursor: hand;
+                          -fx-font-size: 13px;" />
 
         </VBox>
     </VBox>

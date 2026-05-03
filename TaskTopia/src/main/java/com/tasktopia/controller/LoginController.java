@@ -41,6 +41,7 @@ public class LoginController {
     }
 
     @FXML
+
     private void handleLogin() {
         String email = emailField.getText().trim();
         String pass  = passwordField.getText().trim();
@@ -79,7 +80,8 @@ public class LoginController {
         try {
             MainApp.showHome();
         } catch (Exception ex) {
-            showError("Failed to load home screen.");
+            ex.printStackTrace();
+            showError("Failed to load home screen: " + ex.getMessage());
         }
     }
 
@@ -87,7 +89,7 @@ public class LoginController {
     private void onGoToSignUp() {
         System.out.println("CLICKED");
         try {
-            MainApp.showSignup();
+            MainApp.showSignUp();
         } catch (Exception e) {
             e.printStackTrace();
         }

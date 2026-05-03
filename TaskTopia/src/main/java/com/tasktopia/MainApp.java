@@ -27,9 +27,9 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
     }
 
-    public static void showSignup() throws Exception {
+    public static void showSignUp() throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                MainApp.class.getResource("/fxml/Signup.fxml")
+                MainApp.class.getResource("/fxml/SignUp.fxml")
         );
         Scene scene = new Scene(loader.load(), 1099, 700);
         primaryStage.setScene(scene);

@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.SpinnerValueFactory;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.tasktopia.model.TaskStore;
 
 public class MainController {
 
@@ -125,15 +126,15 @@ public class MainController {
 
     private void selectTask(Task task) {
         tasksListView.getSelectionModel().select(task);
-        taskTitleTextField.setText(task.getTitle());
+        taskTitleTextField.setText(task.getTitle() != null ? task.getTitle() : "");
         taskStartDatePicker.setValue(task.getStartDate().toLocalDate());
         taskStartHourSpinner.getValueFactory().setValue(task.getStartDate().getHour());
         taskStartMinuteSpinner.getValueFactory().setValue(task.getStartDate().getMinute());
         taskEndDatePicker.setValue(task.getEndDate().toLocalDate());
         taskEndHourSpinner.getValueFactory().setValue(task.getEndDate().getHour());
         taskEndMinuteSpinner.getValueFactory().setValue(task.getEndDate().getMinute());
-        taskDescriptionTextField.setText(task.getDescription());
-        taskTagsTextField.setText(task.getTags());
+        taskDescriptionTextField.setText(task.getDescription() != null ? task.getDescription() : "");
+        taskTagsTextField.setText(task.getTags() != null ? task.getTags() : "");
     }
 
     private ListCell<Task> renderTaskCell(ListView<Task> listView) {
@@ -157,12 +158,31 @@ public class MainController {
         };
     }
 
+    // Reload without reselecting
+    // Reload without reselecting
     private void syncTasks() {
+        syncTasks(-1);
+    }
+    private void syncTasks(int reSelectId) {
         tasksListView.getItems().clear();
-        List<Task> tasks = taskDAO.getAllTasks();
+        // Use getTasksByUser instead of getAllTasks
+        int userId = com.tasktopia.model.TaskStore.getInstance().getLoggedInUserId();
+        List<Task> tasks = userId > 0
+                ? taskDAO.getTasksByUser(userId)
+                : taskDAO.getAllTasks();
         boolean hasTasks = !tasks.isEmpty();
         if (hasTasks) tasksListView.getItems().addAll(tasks);
         taskContainer.setVisible(hasTasks);
+
+        if (reSelectId > 0) {
+            tasks.stream()
+                    .filter(t -> t.getId() == reSelectId)
+                    .findFirst()
+                    .ifPresent(t -> {
+                        tasksListView.getSelectionModel().select(t);
+                        selectTask(t);
+                    });
+        }
     }
 
     @FXML
@@ -170,8 +190,7 @@ public class MainController {
         Task newTask = new Task("New Task", LocalDateTime.now(),
                 LocalDateTime.now().plusDays(1), "", "", 0);
         taskDAO.addTask(newTask);
-        syncTasks();
-        selectTask(newTask);
+        syncTasks(newTask.getId());
         taskTitleTextField.requestFocus();
     }
 
@@ -179,6 +198,7 @@ public class MainController {
     private void onEditTaskConfirm() {
         Task selected = tasksListView.getSelectionModel().getSelectedItem();
         if (selected != null) {
+            int taskId = selected.getId();
             selected.setTitle(taskTitleTextField.getText());
             selected.setStartDate(taskStartDatePicker.getValue().atTime(
                     taskStartHourSpinner.getValue(), taskStartMinuteSpinner.getValue()));
@@ -187,17 +207,19 @@ public class MainController {
             selected.setDescription(taskDescriptionTextField.getText());
             selected.setTags(taskTagsTextField.getText());
             taskDAO.updateTask(selected);
-            syncTasks();
-            Task reSelected = tasksListView.getSelectionModel().getSelectedItem();
-            if (reSelected != null) selectTask(reSelected);
+            syncTasks(taskId);
         }
     }
+
     @FXML
     private void onDeleteTask() {
         Task selected = tasksListView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             taskDAO.deleteTask(selected);
             syncTasks();
+            taskTitleTextField.clear();
+            taskDescriptionTextField.clear();
+            taskTagsTextField.clear();
         }
     }
 
@@ -220,10 +242,15 @@ public class MainController {
         Contact firstContact = contactsListView.getSelectionModel().getSelectedItem();
         if (firstContact != null) selectContact(firstContact);
 
-        taskStartHourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
-        taskStartMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
-        taskEndHourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
-        taskEndMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
+        // Spinners must be set up before syncTasks
+        taskStartHourSpinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
+        taskStartMinuteSpinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
+        taskEndHourSpinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
+        taskEndMinuteSpinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
 
         // Tasks
         tasksListView.setCellFactory(this::renderTaskCell);

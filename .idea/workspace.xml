@@ -5,34 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="add more details about the login and sign up">
-      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/IAuthenticationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cab302db.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/Cab302db.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/TaskTopia.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HelloController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignupController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/ITaskDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/ITaskDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/MockContactDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/CAB302DB.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteContactDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteContactDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteTaskDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/SqliteTaskDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/TaskStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/TaskStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Home.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Home.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/Login.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/MainApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/MainApp.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/ITaskDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/ITaskDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/MainController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/SignUpController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/SignUpController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteConnection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteContactDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteContactDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteTaskDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/SqliteTaskDAO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/TaskStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/model/TaskStore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/util/Styles.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/util/Styles.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Home.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Home.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/hello-view.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/SignUp.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,23 +53,47 @@
     <branch-grouping />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="DataBaseImplementation" />
+        <entry key="$PROJECT_DIR$" value="FunctionalBase" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;Therealtoast2249&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "history": [
+    {
+      "state": "OPEN",
+      "author": "Therealtoast2249"
+    },
+    {
+      "state": "OPEN"
+    }
+  ],
+  "lastFilter": {
+    "state": "OPEN"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/TingYau2311/CAB302.git&quot;,
-    &quot;accountId&quot;: &quot;fc2b2ccd-c254-4622-bfa9-5abfa13b4966&quot;
+}]]></component>
+  <component name="GitHubPullRequestState"><![CDATA[{
+  "prStates": [
+    {
+      "id": {
+        "id": "PR_kwDORdB3gc7XuGbl",
+        "number": 3
+      },
+      "lastSeen": 1777786406469
+    }
+  ]
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/TingYau2311/CAB302.git",
+    "accountId": "98ff99c7-0997-4d6b-b84a-824c72ed82bf"
   }
-}</component>
+}]]></component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/tmp_10_LoginController.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/tmp_4_LoginController.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/tmp_8_LoginController.class" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -88,30 +110,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;FunctionalBase&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/harry/IdeaProjects/CAB302&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.HelloApplication.executor": "Run",
+    "Application.MainApp.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "FunctionalBase",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/harry/IdeaProjects/CAB302",
+    "to.speed.mode.migration.done": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: [
-      &quot;directory&quot;,
-      &quot;module&quot;,
-      &quot;repository&quot;
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="CAB302" />
@@ -241,12 +263,17 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/DataBaseImplementation" />
+                        <option value="origin/FunctionalBase" />
                       </list>
                     </value>
                   </entry>
@@ -262,5 +289,6 @@
     <MESSAGE value="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done" />
     <MESSAGE value="add more details about the login and sign up" />
     <option name="LAST_COMMIT_MESSAGE" value="add more details about the login and sign up" />
+    <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
 </project>

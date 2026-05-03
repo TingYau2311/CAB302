@@ -16,8 +16,6 @@
         <VBox prefWidth="550" style="-fx-background-color: #714255;" />
     </HBox>
 
-
-
     <!-- for foreground content to stay on top -->
     <HBox>
 
@@ -49,10 +47,10 @@
                  -fx-padding: 48 44 44 44;
                  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 30, 0, 0, 8);">
 
-                <!-- Username -->
-                <TextField fx:id="usernameField"
+                <!-- Email -->
+                <TextField fx:id="emailField"
                            prefWidth="292"
-                           promptText="Username"
+                           promptText="Email"
                            style="-fx-background-color: #f4f6fb;
                           -fx-border-color: #e4e9f4;
                           -fx-border-radius: 12;
@@ -102,13 +100,12 @@
                        -fx-background-radius: 12;
                        -fx-cursor: hand;
                        -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.4), 16, 0, 0, 6);">
-
                     <VBox.margin>
                         <Insets top="6"/>
                     </VBox.margin>
                 </Button>
 
-                <!-- Create Account Button -->
+                <!-- Create Account Link -->
                 <Label text="Create Account"
                        onMouseClicked="#onGoToSignUp"
                        style="-fx-text-fill: #714255;

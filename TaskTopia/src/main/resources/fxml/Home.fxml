@@ -15,7 +15,7 @@
     <VBox>
 
         <!-- ── TOP SECTION ── -->
-        <VBox style="-fx-background-color: #f4f6fb;">
+        <VBox style="-fx-background-color: #f4f6fb;" VBox.vgrow="NEVER">
 
             <!-- TITLE ROW -->
             <HBox alignment="CENTER_LEFT"
@@ -33,12 +33,12 @@
 
                 <!-- Right-side actions -->
                 <HBox spacing="10">
-                    <Button text="⚙️ Settings"
+                    <Button text="⚙️Settings"
                             onAction="#onSettings"
                             style="-fx-background-color: transparent;
                                    -fx-text-fill: #a8b8d8;" />
 
-                    <Button text="🚪 Log Out"
+                    <Button text="🚪Log Out"
                             onAction="#onLogout"
                             style="-fx-background-color: rgba(255,107,107,0.15);
                                    -fx-text-fill: #ff6b6b;
@@ -67,7 +67,7 @@
                           alignment="CENTER_LEFT"
                           style="-fx-padding: 5 0 5 0;">
 
-                        <Button fx:id="navAll" text="🏠 All"
+                        <Button fx:id="navAll" text="🏠All"
                                 onAction="#onAllTasks"
                                 style="-fx-background-color: #714255;
                            -fx-text-fill: black;
@@ -76,7 +76,7 @@
                            -fx-font-size: 20px;
                            -fx-font-weight: bold;" />
 
-                        <Button fx:id="navWork" text="💼 Work"
+                        <Button fx:id="navWork" text="💼Work"
                                 onAction="#onWork"
                                 style="-fx-background-color: #A3CFF5;
                            -fx-text-fill: black;
@@ -85,7 +85,7 @@
                            -fx-font-size: 20px;
                            -fx-font-weight: bold;" />
 
-                        <Button fx:id="navGrocery" text="🛒 Grocery"
+                        <Button fx:id="navGrocery" text="🛒Grocery"
                                 onAction="#onGrocery"
                                 style="-fx-background-color: #7BA75F;
                            -fx-text-fill: black;
@@ -94,7 +94,7 @@
                            -fx-font-size: 20px;
                            -fx-font-weight: bold;" />
 
-                        <Button fx:id="navPersonal" text="👤 Personal"
+                        <Button fx:id="navPersonal" text="👤Personal"
                                 onAction="#onPersonal"
                                 style="-fx-background-color: #CFD95B;
                            -fx-text-fill: black;
@@ -103,7 +103,7 @@
                            -fx-font-size: 20px;
                            -fx-font-weight: bold;" />
 
-                        <Button fx:id="navSchool" text="📚 School"
+                        <Button fx:id="navSchool" text="📚School"
                                 onAction="#onSchool"
                                 style="-fx-background-color: #ECCBBC;
                            -fx-text-fill: #333;
@@ -112,7 +112,7 @@
                            -fx-font-size: 20px;
                            -fx-font-weight: bold;" />
 
-                        <Button fx:id="navMedical" text="🏥 Medical"
+                        <Button fx:id="navMedical" text="🏥Medical"
                                 onAction="#onMedical"
                                 style="-fx-background-color: #340D0C;
                            -fx-text-fill: white;
@@ -121,7 +121,7 @@
                            -fx-font-size: 20px;
                            -fx-font-weight: bold;" />
 
-                        <Button fx:id="navSocial" text="🎉 Social"
+                        <Button fx:id="navSocial" text="🎉Social"
                                 onAction="#onSocial"
                                 style="-fx-background-color: #9E3B2E;
                            -fx-text-fill: black;
@@ -130,7 +130,7 @@
                            -fx-font-size: 20px;
                            -fx-font-weight: bold;" />
 
-                        <Button fx:id="navFitness" text="🏋️ Fitness"
+                        <Button fx:id="navFitness" text="🏋️Fitness"
                                 onAction="#onFitness"
                                 style="-fx-background-color: #2B394B;
                            -fx-text-fill: white;
@@ -160,7 +160,7 @@
         </VBox>
 
         <!-- MAIN CONTENT -->
-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" maxHeight="500"
                     style="-fx-background: #f4f6fb; -fx-background-color: #f4f6fb;
                            -fx-border-color: transparent;">
 

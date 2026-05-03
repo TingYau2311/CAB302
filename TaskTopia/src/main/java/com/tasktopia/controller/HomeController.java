@@ -1,8 +1,10 @@
 package com.tasktopia.controller;
-import com.tasktopia.model.TaskStore;
 
 import com.tasktopia.MainApp;
-import com.tasktopia.model.*;
+import com.tasktopia.model.ITaskDAO;
+import com.tasktopia.model.SqliteTaskDAO;
+import com.tasktopia.model.Task;
+import com.tasktopia.model.TaskStore;
 import com.tasktopia.util.Styles;
 import javafx.animation.*;
 import javafx.fxml.FXML;
@@ -22,7 +24,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-
 public class HomeController {
 
     // ── FXML ─────────────────────────────────────────────────
@@ -33,23 +34,11 @@ public class HomeController {
     @FXML private VBox      tasksCard;
     @FXML private StackPane rootStack;
 
-    // ── Task View State ─────────────────────────────────────────────────
-    private String currentCategory = "all";
-    private Task   selectedTask    = null;
-    private Task editingTask = null;
-    private final Map<Button, String> baseStyles = new HashMap<>();
-
-    private TextField nameField;
-    private TextArea descField;
-    private TextField dateField;
-    private TextField timeField;
-    private ComboBox<String> categoryBox;
-    private ComboBox<String> priorityBox;
     // ── State ─────────────────────────────────────────────────
-    private String   currentCategory = "all";
-    private Task     selectedTask    = null;
     private ITaskDAO taskDAO;
     private List<Task> allTasks;
+    private String currentCategory = "all";
+    private Task   selectedTask    = null;
 
     // Overlays
     private StackPane manualOverlay;
@@ -70,23 +59,10 @@ public class HomeController {
     @FXML
     public void initialize() {
         taskDAO = new SqliteTaskDAO();
-
         allTasks = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
 
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
-
-        // applying hover to top bar categories
-        for (var node : topbarNav.getChildren()) {
-            if (node instanceof Button btn) {
-                applyHover(btn, "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");;
-            }
-        }
-
-        // applying to your other buttons
-        applyHover(addAiBtn, "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");
-        applyHover(addManualBtn, "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");
-        applyHover(addCategoryBtn, "-fx-scale-x: 1.05; -fx-scale-y: 1.05;");
 
         buildOverlays();
         renderTasks();
@@ -100,7 +76,7 @@ public class HomeController {
     // ══════════════════════════════════════════════════════════
     //  SIDEBAR ACTIONS
     // ══════════════════════════════════════════════════════════
-    @FXML private void onAllTasks()    { selectCategory("all",      "Today's Tasks",  "All your tasks for today"); }
+    @FXML private void onAllTasks()    { selectCategory("all",      "All Tasks",      "All your tasks"); }
     @FXML private void onWork()        { selectCategory("work",     "Work Tasks",     "Tasks in the Work category"); }
     @FXML private void onGrocery()     { selectCategory("grocery",  "Grocery Tasks",  "Tasks in the Grocery category"); }
     @FXML private void onPersonal()    { selectCategory("personal", "Personal Tasks", "Tasks in the Personal category"); }
@@ -120,12 +96,6 @@ public class HomeController {
     @FXML private void onAddAI()     { openOverlay(aiOverlay); }
     @FXML private void onAddManual() { openOverlay(manualOverlay); }
 
-    // defining add task buttons for hover effect
-    @FXML private Button addAiBtn;
-    @FXML private Button addManualBtn;
-    @FXML private Button addCategoryBtn;
-
-
     // ══════════════════════════════════════════════════════════
     //  CATEGORY SELECTION
     // ══════════════════════════════════════════════════════════
@@ -137,20 +107,7 @@ public class HomeController {
         renderTasks();
     }
 
-    // changed some of this so that category buttons maintained the same styling
     private void refreshNavHighlights(String activeKey) {
-        for (var node : topbarNav.getChildren()) {
-            if (node instanceof Button btn && btn.getId() != null) {
-
-                boolean active = btn.getId().equals("nav-" + activeKey);
-
-                if (active) {
-                    btn.setStyle(Styles.navItemHover());
-                } else {
-                    btn.setStyle(baseStyles.get(btn));
-                }
-            }
-        }
     }
 
     // ══════════════════════════════════════════════════════════
@@ -191,7 +148,6 @@ public class HomeController {
     private HBox buildTaskCard(Task task) {
         HBox card = new HBox(16);
         card.setAlignment(Pos.CENTER_LEFT);
-        card.setStyle(Styles.card(task.getPriority())); // style for tasks
 
         String cardStyle = task.getPriority() != null
                 ? Styles.card(task.getPriority())
@@ -199,7 +155,7 @@ public class HomeController {
         card.setStyle(cardStyle);
         HBox.setHgrow(card, Priority.ALWAYS);
 
-        // Checkbox circle
+        // Checkbox
         Button check = new Button(task.isDone() ? "✓" : "");
         check.setStyle(Styles.checkCircle(task.isDone()));
         check.setOnAction(e -> {
@@ -220,7 +176,6 @@ public class HomeController {
         HBox meta = new HBox(8);
         meta.setAlignment(Pos.CENTER_LEFT);
 
-        // Category badge
         String catLabel = "";
         if (task.getCategory() != null) catLabel = task.getCategoryLabel();
         else if (task.getTags() != null && !task.getTags().isEmpty()) catLabel = task.getTags();
@@ -230,14 +185,12 @@ public class HomeController {
             meta.getChildren().add(catBadge);
         }
 
-        // Priority badge
         if (task.getPriority() != null) {
             Label priBadge = new Label("Priority: " + task.getPriorityLabel());
             priBadge.setStyle(Styles.badge(task.getPriority().name().toLowerCase()));
             meta.getChildren().add(priBadge);
         }
 
-        // Date
         if (task.getDate() != null) {
             Label dateLbl = new Label("📅  " + task.getDate().format(
                     DateTimeFormatter.ofPattern("EEE, d MMM yyyy")));
@@ -252,7 +205,6 @@ public class HomeController {
 
         info.getChildren().addAll(name, meta);
 
-        // Time label
         String timeStr = task.getTimeString();
         if ((timeStr == null || timeStr.isEmpty()) && task.getStartDate() != null)
             timeStr = task.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -260,11 +212,16 @@ public class HomeController {
         timeLbl.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; "
                 + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + Styles.TEXT_MUTED + ";");
 
-        card.getChildren().addAll(check, info, timeLbl);
+        Button editBtn = new Button("✏️");
+        editBtn.setStyle("-fx-background-color: rgba(74,108,247,0.10); "
+                + "-fx-text-fill: #4a6cf7; -fx-background-radius: 10; -fx-cursor: hand;");
+        editBtn.setOnAction(e -> {
+            e.consume();
+            openEditModal(task);
+        });
 
         card.getChildren().addAll(check, info, timeLbl, editBtn);
 
-        // Hover + click
         final String fs = cardStyle;
         card.setOnMouseEntered(e -> card.setStyle(
                 fs.replace("rgba(74,108,247,0.10), 16", "rgba(74,108,247,0.18), 24")));
@@ -290,7 +247,6 @@ public class HomeController {
             rootStack.getChildren().add(overlay);
         overlay.setVisible(true);
 
-        // Pop-in animation on the inner card
         var inner = overlay.getChildren().get(0);
         inner.setScaleX(0.88); inner.setScaleY(0.88);
         inner.setOpacity(0);
@@ -305,7 +261,6 @@ public class HomeController {
         overlay.setVisible(false);
     }
 
-    /** Wraps a card VBox in a dimmed full-screen overlay */
     private StackPane wrapOverlay(VBox card) {
         StackPane shell = new StackPane(card);
         shell.setStyle(Styles.overlayBg());
@@ -323,37 +278,32 @@ public class HomeController {
         card.setMaxWidth(480);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        // Header
-        Button[] closeRef = new Button[1];
-        HBox header = modalHeader("Add Task", closeRef);
-        Button closeBtn = closeRef[0];
+        HBox header = modalHeader("Add Task");
+        Button closeBtn = (Button) header.getChildren().get(1);
 
-        // Fields
-        nameField  = field("Task name");
-        descField  = area("Task description...");
-        dateField  = field("Date  (yyyy-MM-dd)");
-        timeField  = field("Time  (HH:mm)");
-        categoryBox = combo("Select Category",
+        TextField nameField  = field("Task name");
+        TextArea  descField  = area("Task description...");
+        TextField dateField  = field("Date  (yyyy-MM-dd)");
+        TextField timeField  = field("Time  (HH:mm)");
+        ComboBox<String> catBox = combo("Select Category",
                 "Work","Grocery","Personal","School","Medical","Social","Fitness");
-        priorityBox = combo("Select Priority","High","Medium","Low");
+        ComboBox<String> priBox = combo("Select Priority","High","Medium","Low");
 
         HBox row1 = new HBox(14, labeled("Date", dateField), labeled("Time", timeField));
-        HBox row2 = new HBox(14, labeled("Category", categoryBox), labeled("Priority", priorityBox));
+        HBox row2 = new HBox(14, labeled("Category", catBox), labeled("Priority", priBox));
         HBox.setHgrow(((VBox)row1.getChildren().get(0)), Priority.ALWAYS);
         HBox.setHgrow(((VBox)row1.getChildren().get(1)), Priority.ALWAYS);
         HBox.setHgrow(((VBox)row2.getChildren().get(0)), Priority.ALWAYS);
         HBox.setHgrow(((VBox)row2.getChildren().get(1)), Priority.ALWAYS);
 
-        Button addManual = new Button("Submit");
-        String base = Styles.secondaryButton();
-        String hover = base + "-fx-background-color: #e8ecff; -fx-scale-x: 1.05; -fx-scale-y: 1.05;";
-        Styles.applyHoverEffect(addManual, base, hover);
-        addManual.setMaxWidth(Double.MAX_VALUE);
+        Button submit = new Button("Submit");
+        submit.setStyle(Styles.primaryButton());
+        submit.setMaxWidth(Double.MAX_VALUE);
 
         StackPane shell = wrapOverlay(card);
         closeBtn.setOnAction(e -> closeOverlay(shell));
 
-        addManual.setOnAction(e -> {
+        submit.setOnAction(e -> {
             String taskName = nameField.getText().trim();
             if (taskName.isEmpty()) { showToast("Please enter a task name"); return; }
 
@@ -367,13 +317,13 @@ public class HomeController {
             catch (DateTimeParseException ignored) { showToast("Time format: HH:mm"); return; }
 
             Task.Category cat = Task.Category.PERSONAL;
-            if (categoryBox.getValue() != null)
-                try { cat = Task.Category.valueOf(categoryBox.getValue().toUpperCase()); }
+            if (catBox.getValue() != null)
+                try { cat = Task.Category.valueOf(catBox.getValue().toUpperCase()); }
                 catch (Exception ignored) {}
 
             Task.Priority pri = Task.Priority.MEDIUM;
-            if (priorityBox.getValue() != null)
-                try { pri = Task.Priority.valueOf(priorityBox.getValue().toUpperCase()); }
+            if (priBox.getValue() != null)
+                try { pri = Task.Priority.valueOf(priBox.getValue().toUpperCase()); }
                 catch (Exception ignored) {}
 
             LocalDate finalDate = date != null ? date : LocalDate.now();
@@ -401,7 +351,7 @@ public class HomeController {
         card.getChildren().addAll(header,
                 labeled("Task Name", nameField),
                 labeled("Description", descField),
-                row1, row2, addManual);
+                row1, row2, submit);
         return shell;
     }
 
@@ -414,9 +364,8 @@ public class HomeController {
         card.setMaxWidth(480);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        Button[] closeRef = new Button[1];
-        HBox header = modalHeader("✨ Add Smart Task", closeRef);
-        Button closeBtn = closeRef[0];
+        HBox header = modalHeader("✨  Add Smart Task");
+        Button closeBtn = (Button) header.getChildren().get(1);
 
         TextField inputField = field("e.g. Call boss next tuesday #work #high");
 
@@ -428,9 +377,7 @@ public class HomeController {
         hint.setMaxWidth(Double.MAX_VALUE);
 
         Button submit = new Button("Submit");
-        String base = Styles.primaryButton();
-        String hover = base + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;";
-        Styles.applyHoverEffect(submit, base, hover);
+        submit.setStyle(Styles.primaryButton());
         submit.setMaxWidth(Double.MAX_VALUE);
 
         StackPane shell = wrapOverlay(card);
@@ -451,12 +398,10 @@ public class HomeController {
             else if (lower.contains("#social"))   cat = Task.Category.SOCIAL;
             else if (lower.contains("#fitness"))  cat = Task.Category.FITNESS;
 
-            // Priority
             Task.Priority pri = Task.Priority.MEDIUM;
             if      (lower.contains("#high")) pri = Task.Priority.HIGH;
             else if (lower.contains("#low"))  pri = Task.Priority.LOW;
 
-            // Date
             LocalDate date = null;
             if      (lower.contains("tomorrow")) date = LocalDate.now().plusDays(1);
             else if (lower.contains("today"))    date = LocalDate.now();
@@ -471,7 +416,6 @@ public class HomeController {
                 }
             }
 
-            // Time
             LocalTime time = null;
             Matcher m = Pattern.compile("(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm)?",
                     Pattern.CASE_INSENSITIVE).matcher(raw);
@@ -490,7 +434,8 @@ public class HomeController {
             LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
 
             Task newTask = new Task(taskName, startDT, startDT.plusHours(1),
-                    "", cat.name().toLowerCase(), 0);
+                    "", cat.name().toLowerCase(),
+                    TaskStore.getInstance().getLoggedInUserId());
             newTask.setCategory(cat);
             newTask.setPriority(pri);
             newTask.setDate(finalDate);
@@ -514,7 +459,7 @@ public class HomeController {
     }
 
     // ══════════════════════════════════════════════════════════
-    //  TASK DETAIL MODAL / ACTIONS
+    //  TASK DETAIL MODAL
     // ══════════════════════════════════════════════════════════
     private StackPane buildDetailModal() {
         VBox card = new VBox(12);
@@ -522,12 +467,11 @@ public class HomeController {
         card.setMaxWidth(460);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        Button[] closeRef = new Button[1];
-        HBox header = modalHeader("", closeRef);
+        HBox header = modalHeader("");
         detailNameLbl = (Label) header.getChildren().get(0);
         detailNameLbl.setStyle(Styles.modalTitle());
         detailNameLbl.setWrapText(true);
-        Button closeBtn = closeRef[0];
+        Button closeBtn = (Button) header.getChildren().get(1);
 
         detailTimeLbl = new Label("—");
         detailTimeLbl.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; "
@@ -547,34 +491,22 @@ public class HomeController {
         detailDescLbl.setStyle(Styles.taskMeta() + " -fx-font-size: 13px;");
         detailDescLbl.setWrapText(true);
 
-        // ── Mark as Done button ───────────────────────────────
         detailDoneBtn = new Button("Mark as Done");
-        String doneBase  = Styles.primaryButton();
-        String doneHover = doneBase + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;";
-        Styles.applyHoverEffect(detailDoneBtn, doneBase, doneHover);
+        detailDoneBtn.setStyle(Styles.primaryButton());
+        detailDoneBtn.setMaxWidth(Double.MAX_VALUE);
 
-        // ── Delete button ─────────────────────────────────────
         Button deleteBtn = new Button("🗑️  Delete");
-        String deleteBase  = Styles.dangerButton();
-        String deleteHover = deleteBase + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;";
-        Styles.applyHoverEffect(deleteBtn, deleteBase, deleteHover);
+        deleteBtn.setStyle(Styles.dangerButton());
+        deleteBtn.setMaxWidth(Double.MAX_VALUE);
 
-        // ── Edit button ───────────────────────────────────────
-        Button editBtn = new Button("✏️ Edit");
-        String editBase  = Styles.secondaryButton();
-        String editHover = editBase + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;";
-        Styles.applyHoverEffect(editBtn, editBase, editHover);
-
-        // when user clicks button, closes previous popup and edits existing tasks
-        // to avoid creating multiple tasks when editing
-        editBtn.setOnAction(e -> {
-            closeOverlay(detailOverlay);
-            openEditModal(selectedTask);
-        });
+        Button editBtn = new Button("✏️  Edit");
+        editBtn.setStyle(Styles.secondaryButton());
+        editBtn.setMaxWidth(Double.MAX_VALUE);
 
         HBox btnRow = new HBox(12, detailDoneBtn, deleteBtn, editBtn);
         HBox.setHgrow(detailDoneBtn, Priority.ALWAYS);
         HBox.setHgrow(deleteBtn, Priority.ALWAYS);
+        HBox.setHgrow(editBtn, Priority.ALWAYS);
 
         StackPane shell = wrapOverlay(card);
         closeBtn.setOnAction(e -> closeOverlay(shell));
@@ -601,23 +533,14 @@ public class HomeController {
             }
         });
 
+        editBtn.setOnAction(e -> {
+            closeOverlay(shell);
+            openEditModal(selectedTask);
+        });
+
         card.getChildren().addAll(header, detailTimeLbl, detailDateLbl,
                 detailBadges, detailDescLbl, btnRow);
         return shell;
-    }
-
-    // controller method for editing fields in a created task
-    private void openEditModal(Task task) {
-        editingTask = task;
-
-        openOverlay(manualOverlay);
-
-        nameField.setText(task.getName());
-        descField.setText(task.getDescription());
-        dateField.setText(task.getDate() != null ? task.getDate().toString() : "");
-        timeField.setText(task.getTimeString());
-        categoryBox.setValue(task.getCategoryLabel());
-        priorityBox.setValue(task.getPriorityLabel());
     }
 
     private void openDetail(Task task) {
@@ -677,7 +600,7 @@ public class HomeController {
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
         HBox header = modalHeader("✏️  Edit Task");
-        Button closeBtn = (Button) ((HBox) header).getChildren().get(1);
+        Button closeBtn = (Button) header.getChildren().get(1);
 
         TextField nameField  = field("Task name");
         TextArea  descField  = area("Task description...");
@@ -701,7 +624,6 @@ public class HomeController {
         StackPane shell = wrapOverlay(card);
         closeBtn.setOnAction(e -> closeOverlay(shell));
 
-        // Store reference so openEdit() can pre-fill fields
         card.setUserData(new Object[]{nameField, descField, dateField, timeField, catBox, priBox});
 
         submit.setOnAction(e -> {
@@ -732,7 +654,6 @@ public class HomeController {
             LocalTime finalTime = time != null ? time : LocalTime.now();
             LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
 
-            // Update selected task fields
             selectedTask.setTitle(taskName);
             selectedTask.setDescription(descField.getText().trim());
             selectedTask.setStartDate(startDT);
@@ -757,58 +678,47 @@ public class HomeController {
         return shell;
     }
 
-    private void openEdit(Task task) {
+    private void openEditModal(Task task) {
         selectedTask = task;
 
-        // Retrieve the pre-stored field references from the card's userData
         VBox card = (VBox) editOverlay.getChildren().get(0);
         Object[] fields = (Object[]) card.getUserData();
-        TextField nameField  = (TextField)       fields[0];
-        TextArea  descField  = (TextArea)         fields[1];
-        TextField dateField  = (TextField)        fields[2];
-        TextField timeField  = (TextField)        fields[3];
-        ComboBox<String> catBox = (ComboBox<String>) fields[4];
-        ComboBox<String> priBox = (ComboBox<String>) fields[5];
+        TextField editNameField     = (TextField)        fields[0];
+        TextArea  editDescField     = (TextArea)         fields[1];
+        TextField editDateField     = (TextField)        fields[2];
+        TextField editTimeField     = (TextField)        fields[3];
+        ComboBox<String> editCatBox = (ComboBox<String>) fields[4];
+        ComboBox<String> editPriBox = (ComboBox<String>) fields[5];
 
-        // Pre-fill with existing task data
-        nameField.setText(task.getTitle() != null ? task.getTitle() : "");
-        descField.setText(task.getDescription() != null ? task.getDescription() : "");
+        editNameField.setText(task.getTitle() != null ? task.getTitle() : "");
+        editDescField.setText(task.getDescription() != null ? task.getDescription() : "");
 
-        // Date — prefer LocalDate, fall back to startDate
-        if (task.getDate() != null) {
-            dateField.setText(task.getDate().toString());
-        } else if (task.getStartDate() != null) {
-            dateField.setText(task.getStartDate().toLocalDate().toString());
-        } else {
-            dateField.clear();
-        }
+        if (task.getDate() != null)
+            editDateField.setText(task.getDate().toString());
+        else if (task.getStartDate() != null)
+            editDateField.setText(task.getStartDate().toLocalDate().toString());
+        else
+            editDateField.clear();
 
-        // Time — prefer LocalTime, fall back to startDate
-        if (task.getTime() != null) {
-            timeField.setText(task.getTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-        } else if (task.getStartDate() != null) {
-            timeField.setText(task.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm")));
-        } else {
-            timeField.clear();
-        }
+        if (task.getTime() != null)
+            editTimeField.setText(task.getTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        else if (task.getStartDate() != null)
+            editTimeField.setText(task.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm")));
+        else
+            editTimeField.clear();
 
-        // Category
-        if (task.getCategory() != null) {
-            catBox.setValue(task.getCategoryLabel());
-        } else if (task.getTags() != null && !task.getTags().isEmpty()) {
-            String tag = task.getTags().substring(0, 1).toUpperCase()
-                    + task.getTags().substring(1).toLowerCase();
-            catBox.setValue(tag);
-        } else {
-            catBox.setValue(null);
-        }
+        if (task.getCategory() != null)
+            editCatBox.setValue(task.getCategoryLabel());
+        else if (task.getTags() != null && !task.getTags().isEmpty())
+            editCatBox.setValue(task.getTags().substring(0, 1).toUpperCase()
+                    + task.getTags().substring(1).toLowerCase());
+        else
+            editCatBox.setValue(null);
 
-        // Priority
-        if (task.getPriority() != null) {
-            priBox.setValue(task.getPriorityLabel());
-        } else {
-            priBox.setValue(null);
-        }
+        if (task.getPriority() != null)
+            editPriBox.setValue(task.getPriorityLabel());
+        else
+            editPriBox.setValue(null);
 
         openOverlay(editOverlay);
     }
@@ -822,13 +732,12 @@ public class HomeController {
         card.setMaxWidth(420);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        Button[] closeRef = new Button[1];
-        HBox header = modalHeader("⚙️  Help & Settings", closeRef);
-        Button closeBtn = closeRef[0];
+        HBox header = modalHeader("⚙️  Help & Settings");
+        Button closeBtn = (Button) header.getChildren().get(1);
 
         Label accLabel = new Label("ACCOUNT");
         accLabel.setStyle(Styles.formLabel());
-        Label userRow = new Label("Username:   " + TaskStore.getInstance().getLoggedInUser());
+        Label userRow = new Label("Logged in as:   " + TaskStore.getInstance().getLoggedInUser());
         userRow.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
                 + "-fx-text-fill: " + Styles.TEXT + ";");
 
@@ -869,14 +778,9 @@ public class HomeController {
         Button close = new Button("✕");
         close.setStyle(Styles.closeButton());
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        HBox header = new HBox(title, spacer, close);
+        HBox header = new HBox(title, close);
         header.setAlignment(Pos.CENTER_LEFT);
-
-        outCloseBtn[0] = close;
-
+        VBox.setMargin(header, new Insets(0, 0, 6, 0));
         return header;
     }
 
@@ -909,7 +813,6 @@ public class HomeController {
         return cb;
     }
 
-    /** Wraps a label + field together in a VBox with a form label above */
     private VBox labeled(String labelText, javafx.scene.Node field) {
         Label lbl = new Label(labelText.toUpperCase());
         lbl.setStyle(Styles.formLabel());
@@ -917,19 +820,6 @@ public class HomeController {
         box.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(box, Priority.ALWAYS);
         return box;
-    }
-
-    // helper function to apply hover effect to other buttons in all pages (sign up, login + home)
-    private void applyHover(Button btn, String hoverStyle) {
-
-        String base = btn.getStyle();
-        baseStyles.put(btn, base);
-
-        btn.setOnMouseEntered(e -> {
-            if (!btn.getStyle().contains("active")) {
-                btn.setStyle(baseStyles.get(btn) + hoverStyle);
-            }
-        });
     }
 
     // ── Toast notification ────────────────────────────────────
