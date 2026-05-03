@@ -4,9 +4,40 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="transfered GUI to new GUI and fixed all following issues">
-      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java" afterDir="false" />
+    <list default="true" id="a319edaa-bd71-452d-bd1b-614adf9b47af" name="Changes" comment="updating db and SignUpController">
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/MockContactDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/model/MockTaskDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskTopiaTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cab302db.db" beforeDir="false" afterPath="$PROJECT_DIR$/Cab302db.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/java/com/tasktopia/controller/SignupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/src/main/resources/fxml/SignUp.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/AddTaskTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/DeleteTaskTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/LoginTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/LogoutTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/MarkCompleteTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/MultipleTasksCompleteTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/RemoveAllTasksTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/SampleTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/SignUpTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskCompletionStateTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskEdgeCaseTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskEditTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskFieldValidationAfterEditTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskLabelFormattingTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskListSearchEdgeCaseTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskStoreFilterAfterEditTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskStoreFilteringTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskStoreSortingTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskTimeStringTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/src/test/java/com/tasktopia/TaskValidationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/HomeController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/SignUpController.class" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/com/tasktopia/controller/SignUpController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskTopia/target/classes/fxml/SignUp.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,9 +121,12 @@
   "keyToString": {
     "Application.HelloApplication.executor": "Run",
     "Application.MainApp.executor": "Run",
+    "JUnit.AddTaskTest.executor": "Run",
+    "JUnit.TaskTopiaTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
@@ -238,7 +272,23 @@
       <option name="project" value="LOCAL" />
       <updated>1777791912433</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="transfered GUI to new GUI and fixed all following issues">
+      <option name="closed" value="true" />
+      <created>1777791949100</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1777791949100</updated>
+    </task>
+    <task id="LOCAL-00010" summary="updating db and SignUpController">
+      <option name="closed" value="true" />
+      <created>1777792071681</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1777792071681</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -273,7 +323,8 @@
     <MESSAGE value="created db and some functionaility around it, creating table, edit table and delete table. some functionality needs to still be included and intergration into existing display to be done" />
     <MESSAGE value="add more details about the login and sign up" />
     <MESSAGE value="transfered GUI to new GUI and fixed all following issues" />
-    <option name="LAST_COMMIT_MESSAGE" value="transfered GUI to new GUI and fixed all following issues" />
+    <MESSAGE value="updating db and SignUpController" />
+    <option name="LAST_COMMIT_MESSAGE" value="updating db and SignUpController" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
 </project>

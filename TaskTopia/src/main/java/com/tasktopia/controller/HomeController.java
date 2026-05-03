@@ -732,7 +732,7 @@ public class HomeController {
         card.setMaxWidth(420);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        HBox header = modalHeader("⚙️  Help & Settings");
+        HBox header = modalHeader("⚙️ Help & Settings");
         Button closeBtn = (Button) header.getChildren().get(1);
 
         Label accLabel = new Label("ACCOUNT");
@@ -743,9 +743,9 @@ public class HomeController {
 
         Label helpLabel = new Label("HELP");
         helpLabel.setStyle(Styles.formLabel());
-        Label h1 = new Label("📖   How to add tasks");
-        Label h2 = new Label("🤖   Using Smart Tasks — type naturally with #tags");
-        Label h3 = new Label("📞   Contact Support");
+        Label h1 = new Label("📖  How to add tasks");
+        Label h2 = new Label("🤖  Using Smart Tasks — type naturally with #tags");
+        Label h3 = new Label("📞  Contact Support");
         for (Label l : new Label[]{h1, h2, h3})
             l.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
                     + "-fx-text-fill: " + Styles.TEXT_MUTED + ";");
