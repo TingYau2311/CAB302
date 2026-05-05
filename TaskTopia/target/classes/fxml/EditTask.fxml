@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.tasktopia.controller.EditTaskController"
+      spacing="20" padding="20">
+
+    <Label text="Edit Task"
+           style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+    <GridPane hgap="15" vgap="15">
+
+        <!-- Task Name -->
+        <Label text="Task Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="nameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <!-- Description -->
+        <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextArea fx:id="descriptionField" prefRowCount="3"
+                  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- Date -->
+        <Label text="Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <DatePicker fx:id="datePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <!-- Time -->
+        <Label text="Time:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="timeField" promptText="HH:MM"
+                   GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <!-- Priority -->
+        <Label text="Priority:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="priorityBox" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+    </GridPane>
+
+    <HBox spacing="15">
+        <Button fx:id="saveButton" text="Save"
+                style="-fx-background-color: #4a6cf7; -fx-text-fill: white; -fx-padding: 8 20;"/>
+
+        <Button fx:id="deleteButton" text="Delete"
+                style="-fx-background-color: #ff6b6b; -fx-text-fill: white; -fx-padding: 8 20;"/>
+
+        <Button fx:id="cancelButton" text="Cancel"/>
+    </HBox>
+
+</VBox>
