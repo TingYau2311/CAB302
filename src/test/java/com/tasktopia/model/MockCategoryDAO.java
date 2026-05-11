@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * In-memory stand-in for SqliteCategoryDAO
- */
+
 public class MockCategoryDAO {
 
     private final List<int[]> rows = new ArrayList<>();

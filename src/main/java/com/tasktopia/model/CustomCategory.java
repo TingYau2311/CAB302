@@ -1,8 +1,6 @@
 package com.tasktopia.model;
 
-/**
- * Represents a user-defined category with a display name and a colour (hex string).
- */
+
 public class CustomCategory {
 
     private final String name;

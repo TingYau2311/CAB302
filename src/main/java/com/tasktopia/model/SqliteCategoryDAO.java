@@ -6,9 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Handles persistence of user-defined categories in the SQLite database.
- */
 public class SqliteCategoryDAO {
 
     private final Connection connection;
@@ -17,10 +14,6 @@ public class SqliteCategoryDAO {
         this.connection = SqliteConnection.getInstance();
     }
 
-    /**
-     * Persists a new custom category for the given user.
-     * Silently skips if an identical name already exists for that user.
-     */
     public void saveCategory(int userId, CustomCategory category) {
         try {
             // Guard against duplicates at the DB level
@@ -42,9 +35,7 @@ public class SqliteCategoryDAO {
         }
     }
 
-    /**
-     * Loads all custom categories that belong to the given user, in creation order.
-     */
+
     public List<CustomCategory> getCategoriesByUser(int userId) {
         List<CustomCategory> result = new ArrayList<>();
         try {
@@ -61,9 +52,7 @@ public class SqliteCategoryDAO {
         return result;
     }
 
-    /**
-     * Deletes a specific category for a user (reserved for future use).
-     */
+
     public void deleteCategory(int userId, String categoryName) {
         try {
             PreparedStatement statement = connection.prepareStatement(

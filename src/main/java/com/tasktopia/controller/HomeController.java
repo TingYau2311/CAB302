@@ -763,7 +763,7 @@ public class HomeController {
         card.setMaxWidth(460);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        HBox header = modalHeader("🏷️ Add Category");
+        HBox header = modalHeader("+ Add Category");
         Button closeBtn = (Button) header.getChildren().get(1);
 
         // ── Category name field ──────────────────────────────
@@ -897,10 +897,7 @@ public class HomeController {
         return shell;
     }
 
-    /**
-     * Dynamically creates and inserts a nav button for a custom category
-     * into the topbarNav HBox (before the end, after built-in buttons).
-     */
+
     private void addNavButton(CustomCategory cat) {
         // Decide text colour: use white for dark backgrounds, black for light ones
         javafx.scene.paint.Color fill = javafx.scene.paint.Color.web(cat.getColour());
