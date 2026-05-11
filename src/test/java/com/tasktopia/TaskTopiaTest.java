@@ -328,20 +328,29 @@ public class TaskTopiaTest {
     }
 
     /**
-     * Test 17 — Duplicate category names should not be added.
-     * Fails because CategoryManager class does not exist yet.
+     * Test 17 — Adding the same category name twice should only store one entry.
      */
     @Test
-    public void testNoDuplicateCategories() {
-        // Fails — CategoryManager does not exist
+    public void testDuplicateCategoryIsRejected() {
+        MockCategoryDAO categoryDAO = new MockCategoryDAO();
         CategoryManager categoryManager = new CategoryManager();
-        categoryManager.addCategory("Hobbies");
-        categoryManager.addCategory("Hobbies");
 
-        assertEquals(1, categoryManager.getCategories().stream()
-                        .filter(c -> c.equalsIgnoreCase("Hobbies"))
-                        .count(),
-                "Duplicate category should not be added");
+        CustomCategory first  = new CustomCategory("Hobbies", "#FF6B6B");
+        CustomCategory second = new CustomCategory("Hobbies", "#6BCB77"); // same name, different colour
+
+        categoryManager.addCategory(first);
+        categoryDAO.saveCategory(1, first);
+
+        categoryManager.addCategory(second);
+        categoryDAO.saveCategory(1, second);
+
+        // CategoryManager should still have only one entry
+        assertEquals(1, categoryManager.getCategories().size(),
+                "CategoryManager should reject the duplicate name");
+
+        // DAO should also have only one stored row for this user
+        assertEquals(1, categoryDAO.getCategoriesByUser(1).size(),
+                "DAO should not persist a duplicate category");
     }
 
     /**
@@ -361,6 +370,32 @@ public class TaskTopiaTest {
         List<Task> results = taskList.searchTasks("");
         assertEquals(2, results.size(),
                 "Empty search should return all tasks");
+    }
+
+    /**
+     * Test 19 — Categories are isolated per user: one user's categories
+     * must not appear when loading another user's categories.
+     */
+    @Test
+    public void testCategoriesAreIsolatedPerUser() {
+        MockCategoryDAO categoryDAO = new MockCategoryDAO();
+
+        // User 1 creates two categories
+        categoryDAO.saveCategory(1, new CustomCategory("Travel",  "#4D9DE0"));
+        categoryDAO.saveCategory(1, new CustomCategory("Fitness", "#6BCB77"));
+
+        // User 2 creates one category with the same name as one of User 1's
+        categoryDAO.saveCategory(2, new CustomCategory("Travel",  "#FF6B6B"));
+
+        List<CustomCategory> user1Cats = categoryDAO.getCategoriesByUser(1);
+        List<CustomCategory> user2Cats = categoryDAO.getCategoriesByUser(2);
+
+        assertEquals(2, user1Cats.size(),
+                "User 1 should have exactly 2 categories");
+        assertEquals(1, user2Cats.size(),
+                "User 2 should have exactly 1 category");
+        assertEquals("#FF6B6B", user2Cats.get(0).getColour(),
+                "User 2's Travel category should keep its own colour, not User 1's");
     }
 
     // ══════════════════════════════════════════════════════════
