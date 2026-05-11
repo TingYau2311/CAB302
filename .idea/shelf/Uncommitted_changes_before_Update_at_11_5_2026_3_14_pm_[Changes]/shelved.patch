@@ -1,0 +1,2740 @@
+Index: TaskTopia/target/classes/fxml/SignUp.fxml
+===================================================================
+diff --git a/TaskTopia/target/classes/fxml/SignUp.fxml b/TaskTopia/target/classes/fxml/SignUp.fxml
+deleted file mode 100644
+--- a/TaskTopia/target/classes/fxml/SignUp.fxml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,97 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.layout.*?>
+-<?import javafx.scene.text.Text?>
+-<?import javafx.scene.text.TextFlow?>
+-
+-<StackPane xmlns="http://javafx.com/javafx/17"
+-           xmlns:fx="http://javafx.com/fxml/1"
+-           fx:controller="com.tasktopia.controller.SignUpController"
+-           style="-fx-background-color: white;">
+-
+-    <VBox alignment="CENTER" spacing="16">
+-
+-        <VBox alignment="CENTER"
+-              maxWidth="380"
+-              spacing="14"
+-              style="-fx-background-color: white;
+-                     -fx-background-radius: 28;
+-                     -fx-padding: 48 44 44 44;
+-                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 30, 0, 0, 8);">
+-
+-            <!-- TITLE -->
+-            <TextFlow textAlignment="CENTER">
+-                <Text text="Create "
+-                      style="-fx-font-size: 40px; -fx-font-weight: bold;
+-                             -fx-font-family: 'Segoe UI'; -fx-fill: #995954;" />
+-                <Text text="Account"
+-                      style="-fx-font-size: 40px; -fx-font-weight: bold;
+-                             -fx-font-family: 'Segoe UI'; -fx-fill: #714255;" />
+-            </TextFlow>
+-
+-            <!-- Username -->
+-            <TextField fx:id="usernameField"
+-                       prefWidth="292"
+-                       promptText="Username"
+-                       style="-fx-background-color: #f4f6fb;
+-                              -fx-border-color: #e4e9f4;
+-                              -fx-border-radius: 12;
+-                              -fx-background-radius: 12;
+-                              -fx-border-width: 1.5;
+-                              -fx-padding: 12 16;
+-                              -fx-font-family: 'Segoe UI';
+-                              -fx-font-size: 13px;
+-                              -fx-text-fill: #1e2a4a;
+-                              -fx-prompt-text-fill: #8898aa;" />
+-
+-            <!-- Password -->
+-            <PasswordField fx:id="passwordField"
+-                           prefWidth="292"
+-                           promptText="Password"
+-                           style="-fx-background-color: #f4f6fb;
+-                                  -fx-border-color: #e4e9f4;
+-                                  -fx-border-radius: 12;
+-                                  -fx-background-radius: 12;
+-                                  -fx-border-width: 1.5;
+-                                  -fx-padding: 12 16;
+-                                  -fx-font-family: 'Segoe UI';
+-                                  -fx-font-size: 13px;
+-                                  -fx-text-fill: #1e2a4a;
+-                                  -fx-prompt-text-fill: #8898aa;" />
+-
+-            <!-- Confirm Password -->
+-            <PasswordField fx:id="confirmPasswordField"
+-                           prefWidth="292"
+-                           promptText="Confirm Password"
+-                           style="-fx-background-color: #f4f6fb;
+-                                  -fx-border-color: #e4e9f4;
+-                                  -fx-border-radius: 12;
+-                                  -fx-background-radius: 12;
+-                                  -fx-border-width: 1.5;
+-                                  -fx-padding: 12 16;
+-                                  -fx-font-family: 'Segoe UI';
+-                                  -fx-font-size: 13px;
+-                                  -fx-text-fill: #1e2a4a;
+-                                  -fx-prompt-text-fill: #8898aa;" />
+-
+-            <!-- Sign Up Button -->
+-            <Button text="Sign Up"
+-                    onAction="#onSignUp"
+-                    prefWidth="292"
+-                    style="-fx-background-color: linear-gradient(to right, #995954, #714255);
+-                           -fx-text-fill: white;
+-                           -fx-font-weight: bold;
+-                           -fx-background-radius: 12;
+-                           -fx-padding: 14 0;" />
+-
+-            <!-- Back -->
+-            <Button text="← Back to Login"
+-                    onAction="#onBackToLogin"
+-                    style="-fx-background-color: transparent;
+-                           -fx-text-fill: #714255;
+-                           -fx-cursor: hand;" />
+-
+-        </VBox>
+-    </VBox>
+-</StackPane>
+\ No newline at end of file
+Index: TaskTopia/README.md
+===================================================================
+diff --git a/TaskTopia/README.md b/TaskTopia/README.md
+deleted file mode 100644
+--- a/TaskTopia/README.md	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,41 +0,0 @@
+-# Brainstormers – Tasktopia
+-## Personal To-Do List Application with Categories
+-
+-### Project Overview
+-A Java-based task management application that helps all types of users organise and prioritise their daily tasks using a customisable categorising system. The application features a simple console interface with persistent storage to meet all users' needs. The application incorporates Natural Language Processing (NLP) to allow users to input tasks using everyday language, improving usability and efficiency. 
+-
+-### Core Purpose
+-The core purpose of the application is to provide users with something intuitive and engaging that allows them to easily manage their personal and professional tasks. By combining urgency-based categorisation with natural language input, the system allows users to quickly capture unstructured “brain dumps” and automatically transform them into organised, prioritised tasks. Altogether, these features reduce the effort required to manually structure tasks and enable the system to automatically interpret, categorise, and prioritise them for improved productivity.
+-
+-### Target Users
+-Our target users include:
+-- **Students** – specifically university students managing multiple assignments and deadlines
+-- **Professionals** – tracking multiple work tasks
+-- **Everyone** – anyone wanting to better organise their personal to-dos in a fun and engaging way
+-
+-### Key Features (High-Level)
+-- Create, edit, and delete tasks
+-- Organise tasks into custom categories
+-- Mark tasks as complete/incomplete
+-- View tasks by category or due date
+-- Save/load tasks from file
+-- Use Natural Language Processing (NLP) to break down input into organised tasks
+-
+-### Technology Stack
+-- **Language:** Java
+-- **Version Control:** Git/GitHub
+-- **AI Integration:** NLP processing via REST API (e.g. OpenAI, Google Gemini, etc.)
+-- **Tools:** IntelliJ for development, Discord for team communication
+-
+-### Team Members
+-- Gabriella Devasagayam 
+-- Angela Lin
+-- Harry Handy
+-- Ethan Ignacio  
+-- Ting Yau Ti 
+-- Sean Onon 
+-
+-
+-
+-
+-
+Index: TaskTopia/src/test/java/com/tasktopia/model/TaskList.java
+===================================================================
+diff --git a/TaskTopia/src/test/java/com/tasktopia/model/TaskList.java b/TaskTopia/src/test/java/com/tasktopia/model/TaskList.java
+deleted file mode 100644
+--- a/TaskTopia/src/test/java/com/tasktopia/model/TaskList.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,26 +0,0 @@
+-package com.tasktopia.model;
+-
+-import java.util.ArrayList;
+-import java.util.List;
+-
+-public class TaskList {
+-    private ITaskDAO taskDAO;
+-    public TaskList(ITaskDAO taskDAO){
+-        this.taskDAO = taskDAO;
+-    }
+-
+-
+-    public List<Task> searchTasks(String query) {
+-        ArrayList<Task> results = new ArrayList<>();
+-        for (Task task : taskDAO.getAllTasks()) {
+-            if (task.getString().contains(query)) {
+-                results.add(task);
+-            }
+-        }
+-        return results;
+-    }
+-
+-    public void addTask(Task task) {
+-        taskDAO.addTask(task);
+-    }
+-}
+Index: .idea/modules.xml
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/cab302 a2.iml" filepath="$PROJECT_DIR$/.idea/cab302 a2.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: TaskTopia/TaskTopia.iml
+===================================================================
+diff --git a/TaskTopia/TaskTopia.iml b/TaskTopia/TaskTopia.iml
+deleted file mode 100644
+--- a/TaskTopia/TaskTopia.iml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,9 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module version="4">
+-  <component name="AdditionalModuleElements">
+-    <content url="file://$MODULE_DIR$" dumb="true">
+-      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+-    </content>
+-  </component>
+-</module>
+\ No newline at end of file
+Index: TaskTopia/src/main/java/com/tasktopia/util/Styles.java
+===================================================================
+diff --git a/TaskTopia/src/main/java/com/tasktopia/util/Styles.java b/TaskTopia/src/main/java/com/tasktopia/util/Styles.java
+deleted file mode 100644
+--- a/TaskTopia/src/main/java/com/tasktopia/util/Styles.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,203 +0,0 @@
+-package com.tasktopia.util;
+-
+-import com.tasktopia.model.Task;
+-
+-public final class Styles {
+-
+-    // Colours
+-    public static final String BG          = "#f4f6fb";
+-    public static final String SIDEBAR_BG  = "#1e2a4a";
+-    public static final String SIDEBAR_ACC = "#2e3f6e";
+-    public static final String PRIMARY     = "#4a6cf7";
+-    public static final String ACCENT_RED  = "#ff6b6b";
+-    public static final String ACCENT_YEL  = "#ffd93d";
+-    public static final String TEXT        = "#1e2a4a";
+-    public static final String TEXT_MUTED  = "#8898aa";
+-    public static final String BORDER      = "#e4e9f4";
+-    public static final String HIGH        = "#ff6b6b";
+-    public static final String MEDIUM_CLR  = "#e6ac00";
+-    public static final String LOW         = "#6bcb77";
+-
+-    private Styles() {}
+-
+-    public static String navItem(boolean active) {
+-        String bg = active ? PRIMARY : "transparent";
+-        String fg = active ? "white"  : "#a8b8d8";
+-        return "-fx-background-color: " + bg + "; "
+-                + "-fx-text-fill: " + fg + "; "
+-                + "-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
+-                + "-fx-padding: 10 14; -fx-background-radius: 10; "
+-                + "-fx-cursor: hand; -fx-alignment: CENTER_LEFT;";
+-    }
+-
+-    public static String navItemHover() {
+-        return "-fx-background-color: " + SIDEBAR_ACC + "; "
+-                + "-fx-text-fill: white; "
+-                + "-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
+-                + "-fx-padding: 10 14; -fx-background-radius: 10; "
+-                + "-fx-cursor: hand; -fx-alignment: CENTER_LEFT;";
+-    }
+-
+-    public static String card(Task.Priority priority) {
+-        String accent = priority == Task.Priority.HIGH   ? HIGH
+-                : priority == Task.Priority.MEDIUM ? MEDIUM_CLR
+-                : LOW;
+-        return "-fx-background-color: white; -fx-background-radius: 16; "
+-                + "-fx-border-color: transparent transparent transparent " + accent + "; "
+-                + "-fx-border-width: 0 0 0 4; -fx-border-radius: 16; "
+-                + "-fx-padding: 18 22; "
+-                + "-fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 16, 0, 0, 4); "
+-                + "-fx-cursor: hand;";
+-    }
+-
+-    public static String taskName(boolean done) {
+-        return "-fx-font-size: 15px; -fx-font-weight: bold; "
+-                + "-fx-font-family: 'Segoe UI'; "
+-                + "-fx-text-fill: " + (done ? TEXT_MUTED : TEXT) + "; "
+-                + (done ? "-fx-strikethrough: true;" : "");
+-    }
+-
+-    public static String taskMeta() {
+-        return "-fx-font-size: 11px; -fx-font-family: 'Segoe UI'; "
+-                + "-fx-text-fill: " + TEXT_MUTED + ";";
+-    }
+-
+-    public static String badge(String type) {
+-        return switch (type) {
+-            case "high"     -> "-fx-background-color: rgba(255,107,107,0.12); "
+-                    + "-fx-text-fill: #ff6b6b; -fx-background-radius: 20; "
+-                    + "-fx-padding: 3 10; -fx-font-size: 11px; -fx-font-weight: bold; "
+-                    + "-fx-font-family: 'Segoe UI';";
+-            case "medium"   -> "-fx-background-color: rgba(255,217,61,0.2); "
+-                    + "-fx-text-fill: #b8960c; -fx-background-radius: 20; "
+-                    + "-fx-padding: 3 10; -fx-font-size: 11px; -fx-font-weight: bold; "
+-                    + "-fx-font-family: 'Segoe UI';";
+-            case "low"      -> "-fx-background-color: rgba(107,203,119,0.15); "
+-                    + "-fx-text-fill: #2e7d32; -fx-background-radius: 20; "
+-                    + "-fx-padding: 3 10; -fx-font-size: 11px; -fx-font-weight: bold; "
+-                    + "-fx-font-family: 'Segoe UI';";
+-            case "category" -> "-fx-background-color: rgba(74,108,247,0.10); "
+-                    + "-fx-text-fill: #4a6cf7; -fx-background-radius: 20; "
+-                    + "-fx-padding: 3 10; -fx-font-size: 11px; -fx-font-weight: bold; "
+-                    + "-fx-font-family: 'Segoe UI';";
+-            default         -> "-fx-background-color: " + BORDER + "; "
+-                    + "-fx-background-radius: 20; -fx-padding: 3 10;";
+-        };
+-    }
+-
+-    public static String checkCircle(boolean done) {
+-        return done
+-                ? "-fx-background-color: " + PRIMARY + "; -fx-background-radius: 50; "
+-                + "-fx-min-width: 24; -fx-min-height: 24; -fx-max-width: 24; -fx-max-height: 24; "
+-                + "-fx-text-fill: white; -fx-font-size: 11px; -fx-cursor: hand;"
+-                : "-fx-background-color: transparent; "
+-                + "-fx-border-color: " + BORDER + "; -fx-border-radius: 50; "
+-                + "-fx-border-width: 2.5; "
+-                + "-fx-min-width: 24; -fx-min-height: 24; -fx-max-width: 24; -fx-max-height: 24; "
+-                + "-fx-cursor: hand;";
+-    }
+-
+-    public static String primaryButton() {
+-        return "-fx-background-color: linear-gradient(to right, #4a6cf7, #6b8fff); "
+-                + "-fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; "
+-                + "-fx-font-size: 13px; -fx-padding: 13 22; -fx-background-radius: 12; "
+-                + "-fx-cursor: hand; "
+-                + "-fx-effect: dropshadow(gaussian, rgba(74,108,247,0.35), 14, 0, 0, 5);";
+-    }
+-
+-    public static String secondaryButton() {
+-        return "-fx-background-color: white; "
+-                + "-fx-text-fill: " + TEXT + "; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; "
+-                + "-fx-font-size: 13px; -fx-padding: 13 22; -fx-background-radius: 12; "
+-                + "-fx-cursor: hand; "
+-                + "-fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);";
+-    }
+-
+-    public static String dangerButton() {
+-        return "-fx-background-color: rgba(255,107,107,0.10); "
+-                + "-fx-text-fill: " + ACCENT_RED + "; -fx-font-family: 'Segoe UI'; "
+-                + "-fx-font-weight: bold; -fx-font-size: 13px; "
+-                + "-fx-padding: 13 22; -fx-background-radius: 12; -fx-cursor: hand;";
+-    }
+-
+-    public static String modalCard() {
+-        return "-fx-background-color: white; -fx-background-radius: 24; "
+-                + "-fx-padding: 36 36 32 36; "
+-                + "-fx-effect: dropshadow(gaussian, rgba(30,42,74,0.25), 40, 0, 0, 10);";
+-    }
+-
+-    public static String modalTitle() {
+-        return "-fx-font-size: 20px; -fx-font-weight: bold; "
+-                + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + TEXT + ";";
+-    }
+-
+-    public static String formLabel() {
+-        return "-fx-font-size: 10px; -fx-font-weight: bold; "
+-                + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + TEXT_MUTED + ";";
+-    }
+-
+-    public static String formInput() {
+-        return "-fx-background-color: " + BG + "; "
+-                + "-fx-border-color: " + BORDER + "; -fx-border-radius: 10; "
+-                + "-fx-background-radius: 10; -fx-border-width: 1.5; "
+-                + "-fx-padding: 10 14; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
+-                + "-fx-text-fill: " + TEXT + ";";
+-    }
+-
+-    public static String formInputFocused() {
+-        return "-fx-background-color: " + BG + "; "
+-                + "-fx-border-color: " + PRIMARY + "; -fx-border-radius: 10; "
+-                + "-fx-background-radius: 10; -fx-border-width: 1.5; "
+-                + "-fx-padding: 10 14; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
+-                + "-fx-text-fill: " + TEXT + ";";
+-    }
+-
+-    public static String overlayBg() {
+-        return "-fx-background-color: rgba(30,42,74,0.55);";
+-    }
+-
+-    public static String closeButton() {
+-        return "-fx-background-color: " + BG + "; -fx-background-radius: 50; "
+-                + "-fx-text-fill: " + TEXT_MUTED + "; -fx-font-size: 13px; "
+-                + "-fx-min-width: 30; -fx-min-height: 30; -fx-max-width: 30; -fx-max-height: 30; "
+-                + "-fx-cursor: hand;";
+-    }
+-
+-    public static String emptyState() {
+-        return "-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; "
+-                + "-fx-text-fill: " + TEXT_MUTED + ";";
+-    }
+-
+-    public static String toastStyle() {
+-        return "-fx-background-color: " + TEXT + "; -fx-background-radius: 12; "
+-                + "-fx-padding: 13 20; -fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
+-                + "-fx-text-fill: white; "
+-                + "-fx-effect: dropshadow(gaussian, rgba(30,42,74,0.25), 20, 0, 0, 6);";
+-    }
+-
+-    public static String aiHint() {
+-        return "-fx-background-color: rgba(74,108,247,0.06); -fx-background-radius: 8; "
+-                + "-fx-padding: 10 12; -fx-font-family: 'Segoe UI'; -fx-font-size: 11px; "
+-                + "-fx-text-fill: " + TEXT_MUTED + "; -fx-wrap-text: true;";
+-    }
+-
+-    public static String mainSubtitle() {
+-        return "-fx-font-size: 12px; -fx-font-family: 'Segoe UI'; "
+-                + "-fx-text-fill: " + TEXT_MUTED + ";";
+-    }
+-
+-    public static String dateChip() {
+-        return "-fx-background-color: white; -fx-background-radius: 20; "
+-                + "-fx-padding: 7 16; -fx-font-family: 'Segoe UI'; "
+-                + "-fx-font-size: 12px; -fx-text-fill: " + TEXT_MUTED + "; "
+-                + "-fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);";
+-    }
+-
+-    // box around tasks
+-    public static String taskListCard() {
+-        return "-fx-background-color: white; "
+-                + "-fx-background-radius: 18; "
+-                + "-fx-padding: 20; "
+-                + "-fx-effect: dropshadow(gaussian, rgba(30,42,74,0.12), 20, 0, 0, 6);";
+-    }
+-}
+\ No newline at end of file
+Index: TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java
+===================================================================
+diff --git a/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java b/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java
+deleted file mode 100644
+--- a/TaskTopia/src/main/java/com/tasktopia/controller/LoginController.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,67 +0,0 @@
+-package com.tasktopia.controller;
+-
+-import com.tasktopia.MainApp;
+-import com.tasktopia.model.TaskStore;
+-import javafx.fxml.FXML;
+-import javafx.scene.control.Label;
+-import javafx.scene.control.PasswordField;
+-import javafx.scene.control.TextField;
+-import javafx.scene.input.KeyCode;
+-
+-public class LoginController {
+-
+-    @FXML private TextField usernameField;
+-    @FXML private PasswordField passwordField;
+-    @FXML private Label errorLabel;
+-
+-    @FXML
+-    public void initialize() {
+-
+-        // Hide error label initially
+-        errorLabel.setVisible(false);
+-
+-        // Pressing Enter triggers login
+-        usernameField.setOnKeyPressed(e -> {
+-            if (e.getCode() == KeyCode.ENTER) handleLogin();
+-        });
+-        passwordField.setOnKeyPressed(e -> {
+-            if (e.getCode() == KeyCode.ENTER) handleLogin();
+-        });
+-    }
+-
+-    @FXML
+-    private void handleLogin() {
+-        String user = usernameField.getText().trim();
+-        String pass = passwordField.getText().trim();
+-
+-        if (user.isEmpty() || pass.isEmpty()) {
+-            showError("Please enter both username and password.");
+-            return;
+-        }
+-
+-        // Prototype: accept any non-empty credentials
+-        TaskStore.getInstance().setLoggedInUser(user);
+-
+-        try {
+-            MainApp.showHome();   // This MUST load /fxml/home.fxml
+-        } catch (Exception ex) {
+-            ex.printStackTrace();
+-            showError("Failed to load home screen.");
+-        }
+-    }
+-
+-    @FXML
+-    private void onGoToSignUp() {
+-        System.out.println("CLICKED");
+-        try {
+-            MainApp.showSignUp();
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-        }
+-    }
+-
+-    private void showError(String msg) {
+-        errorLabel.setText(msg);
+-        errorLabel.setVisible(true);
+-    }
+-}
+Index: TaskTopia/src/main/java/com/tasktopia/MainApp.java
+===================================================================
+diff --git a/TaskTopia/src/main/java/com/tasktopia/MainApp.java b/TaskTopia/src/main/java/com/tasktopia/MainApp.java
+deleted file mode 100644
+--- a/TaskTopia/src/main/java/com/tasktopia/MainApp.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,49 +0,0 @@
+-package com.tasktopia;
+-
+-import javafx.application.Application;
+-import javafx.fxml.FXMLLoader;
+-import javafx.scene.Scene;
+-import javafx.stage.Stage;
+-
+-public class MainApp extends Application {
+-
+-    public static Stage primaryStage;
+-
+-    @Override
+-    public void start(Stage stage) throws Exception {
+-        primaryStage = stage;
+-        stage.setTitle("TaskTopia");
+-        stage.setMinWidth(899);
+-        stage.setMinHeight(599);
+-        showLogin();
+-        stage.show();
+-    }
+-
+-    public static void showLogin() throws Exception {
+-        FXMLLoader loader = new FXMLLoader(
+-                MainApp.class.getResource("/fxml/Login.fxml")
+-        );
+-        Scene scene = new Scene(loader.load(), 1099, 700);
+-        primaryStage.setScene(scene);
+-    }
+-
+-    public static void showSignUp() throws Exception {
+-        FXMLLoader loader = new FXMLLoader(
+-                MainApp.class.getResource("/fxml/SignUp.fxml")
+-        );
+-        Scene scene = new Scene(loader.load(), 1099, 700);
+-        primaryStage.setScene(scene);
+-    }
+-
+-    public static void showHome() throws Exception {
+-        FXMLLoader loader = new FXMLLoader(
+-                MainApp.class.getResource("/fxml/Home.fxml")
+-        );
+-        Scene scene = new Scene(loader.load(), 1099, 700);
+-        primaryStage.setScene(scene);
+-    }
+-
+-    public static void main(String[] args) {
+-        launch(args);
+-    }
+-}
+Index: TaskTopia/src/main/java/com/tasktopia/model/TaskStore.java
+===================================================================
+diff --git a/TaskTopia/src/main/java/com/tasktopia/model/TaskStore.java b/TaskTopia/src/main/java/com/tasktopia/model/TaskStore.java
+deleted file mode 100644
+--- a/TaskTopia/src/main/java/com/tasktopia/model/TaskStore.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,45 +0,0 @@
+-package com.tasktopia.model;
+-
+-import javafx.collections.FXCollections;
+-import javafx.collections.ObservableList;
+-
+-import java.time.LocalDate;
+-import java.time.LocalTime;
+-
+-public class TaskStore {
+-
+-    private static TaskStore instance;
+-    private final ObservableList<Task> tasks = FXCollections.observableArrayList();
+-    private String loggedInUser = "";
+-
+-    private TaskStore() {
+-        // Demo tasks so the app loads with data
+-        tasks.add(new Task(
+-                "Buy Milk",
+-                "Full cream, 2L from Woolworths",
+-                LocalDate.now(),
+-                LocalTime.of(15, 4),
+-                Task.Category.GROCERY,
+-                Task.Priority.MEDIUM));
+-
+-        tasks.add(new Task(
+-                "Team Meeting",
+-                "Discuss final design with team.",
+-                LocalDate.now(),
+-                LocalTime.of(7, 35),
+-                Task.Category.WORK,
+-                Task.Priority.HIGH));
+-    }
+-
+-    public static TaskStore getInstance() {
+-        if (instance == null) instance = new TaskStore();
+-        return instance;
+-    }
+-
+-    public ObservableList<Task> getTasks() { return tasks; }
+-    public void addTask(Task t)            { tasks.add(t); }
+-    public void removeTask(Task t)         { tasks.remove(t); }
+-
+-    public String getLoggedInUser()           { return loggedInUser; }
+-    public void   setLoggedInUser(String user){ loggedInUser = user; }
+-}
+Index: TaskTopia/src/main/resources/fxml/Home.fxml
+===================================================================
+diff --git a/TaskTopia/src/main/resources/fxml/Home.fxml b/TaskTopia/src/main/resources/fxml/Home.fxml
+deleted file mode 100644
+--- a/TaskTopia/src/main/resources/fxml/Home.fxml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,224 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<?import javafx.geometry.Insets?>
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.layout.*?>
+-
+-<StackPane
+-        xmlns="http://javafx.com/javafx/17"
+-        xmlns:fx="http://javafx.com/fxml/1"
+-        fx:controller="com.tasktopia.controller.HomeController"
+-        fx:id="rootStack"
+-        style="-fx-background-color: #f4f6fb;"
+-        prefWidth="1100" prefHeight="700">
+-
+-    <VBox>
+-
+-        <!-- ── TOP SECTION ── -->
+-        <VBox style="-fx-background-color: #f4f6fb;">
+-
+-            <!-- TITLE ROW -->
+-            <HBox alignment="CENTER_LEFT"
+-                  style="-fx-padding: 20 24 10 24;">
+-
+-                <Label text="Task"
+-                       style="-fx-font-size: 45px; -fx-font-weight: bold;
+-                              -fx-font-family: 'Segoe UI'; -fx-text-fill: #995954;" />
+-                <Label text="Topia"
+-                       style="-fx-font-size: 45px; -fx-font-weight: bold;
+-                              -fx-font-family: 'Segoe UI'; -fx-text-fill: #714255;" />
+-
+-
+-                <Region HBox.hgrow="ALWAYS"/>
+-
+-                <!-- Right-side actions -->
+-                <HBox spacing="10">
+-                    <Button text="⚙️ Settings"
+-                            onAction="#onSettings"
+-                            style="-fx-background-color: transparent;
+-                                   -fx-text-fill: #a8b8d8;" />
+-
+-                    <Button text="🚪 Log Out"
+-                            onAction="#onLogout"
+-                            style="-fx-background-color: rgba(255,107,107,0.15);
+-                                   -fx-text-fill: #ff6b6b;
+-                                   -fx-background-radius: 10;" />
+-                </HBox>
+-            </HBox>
+-
+-            <!-- CATEGORY BAR -->
+-            <HBox alignment="CENTER_LEFT"
+-                  spacing="10"
+-                  style="-fx-padding: 10 20 16 20;">
+-
+-                <!-- Scrollable categories -->
+-                <ScrollPane HBox.hgrow="ALWAYS"
+-                            hbarPolicy="AS_NEEDED"
+-                            vbarPolicy="NEVER"
+-                            fitToHeight="true"
+-                            fitToWidth="false"
+-                            prefHeight="60"
+-                            style="-fx-background-color: transparent;
+-                       -fx-background: transparent;">
+-
+-                    <!-- IMPORTANT: ALL buttons must be inside this HBox -->
+-                    <HBox fx:id="sidebarNav"
+-                          spacing="8"
+-                          alignment="CENTER_LEFT"
+-                          style="-fx-padding: 5 0 5 0;">
+-
+-                        <Button fx:id="navAll" text="🏠 All"
+-                                onAction="#onAllTasks"
+-                                style="-fx-background-color: #714255;
+-                           -fx-text-fill: black;
+-                           -fx-background-radius: 10;
+-                           -fx-padding: 8 16;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navWork" text="💼 Work"
+-                                onAction="#onWork"
+-                                style="-fx-background-color: #A3CFF5;
+-                           -fx-text-fill: black;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navGrocery" text="🛒 Grocery"
+-                                onAction="#onGrocery"
+-                                style="-fx-background-color: #7BA75F;
+-                           -fx-text-fill: black;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navPersonal" text="👤 Personal"
+-                                onAction="#onPersonal"
+-                                style="-fx-background-color: #CFD95B;
+-                           -fx-text-fill: black;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navSchool" text="📚 School"
+-                                onAction="#onSchool"
+-                                style="-fx-background-color: #ECCBBC;
+-                           -fx-text-fill: #333;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navMedical" text="🏥 Medical"
+-                                onAction="#onMedical"
+-                                style="-fx-background-color: #340D0C;
+-                           -fx-text-fill: white;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navSocial" text="🎉 Social"
+-                                onAction="#onSocial"
+-                                style="-fx-background-color: #9E3B2E;
+-                           -fx-text-fill: black;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navFitness" text="🏋️ Fitness"
+-                                onAction="#onFitness"
+-                                style="-fx-background-color: #2B394B;
+-                           -fx-text-fill: white;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-                    </HBox>
+-                </ScrollPane>
+-
+-                <!-- Add category button -->
+-                <Button text="＋ Add"
+-                        onAction="#onNewCategory"
+-                        prefHeight="40"
+-                        style="-fx-background-color: #6D6551;
+-                               -fx-text-fill: white;
+-                               -fx-font-size: 13px;
+-                               -fx-font-weight: bold;
+-                               -fx-background-radius: 10;
+-                               -fx-padding: 0 14;" />
+-            </HBox>
+-
+-            <!-- Divider -->
+-            <Region style="-fx-background-color: rgba(255,255,255,0.1);
+-                           -fx-pref-height: 1;"/>
+-        </VBox>
+-
+-        <!-- ── MAIN CONTENT ── -->
+-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+-                    style="-fx-background: #f4f6fb; -fx-background-color: #f4f6fb;
+-                           -fx-border-color: transparent;">
+-
+-            <VBox style="-fx-background-color: #f4f6fb; -fx-padding: 40 40 60 40;"
+-                  spacing="0">
+-
+-                <!-- Header -->
+-                <HBox alignment="CENTER_LEFT">
+-                    <VBox HBox.hgrow="ALWAYS">
+-                        <Label fx:id="pageTitle" text="Today's Tasks"
+-                               style="-fx-font-size: 26px; -fx-font-weight: bold;
+-                                      -fx-font-family: 'Segoe UI'; -fx-text-fill: #1e2a4a;"/>
+-
+-                        <Label fx:id="pageSubtitle" text="All your tasks for today"
+-                               style="-fx-font-size: 12px; -fx-font-family: 'Segoe UI';
+-                                      -fx-text-fill: #8898aa;"/>
+-                    </VBox>
+-
+-                    <Label fx:id="headerDate"
+-                           style="-fx-background-color: white; -fx-background-radius: 20;
+-                                  -fx-padding: 7 16; -fx-font-family: 'Segoe UI';
+-                                  -fx-font-size: 12px; -fx-text-fill: #8898aa;
+-                                  -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);"/>
+-                    <HBox.margin><Insets bottom="28"/></HBox.margin>
+-                </HBox>
+-
+-                <!-- Tasks (inside purple box) -->
+-                <VBox style="-fx-background-color: transparent;">
+-
+-                    <VBox fx:id="tasksCard"
+-                          spacing="14"
+-                          style="-fx-padding: 20;
+-                                 -fx-background-color: #714255;
+-                                 -fx-background-radius: 18;
+-                                 -fx-effect: dropshadow(gaussian, rgba(30,42,74,0.12), 20, 0, 0, 6);"/>
+-
+-                </VBox>
+-
+-                <!-- Buttons -->
+-                <HBox spacing="16" style="-fx-padding: 28 0 0 0;">
+-                    <Button text="✨  Add Smart Task"
+-                            onAction="#onAddAI"
+-                            style="-fx-background-color: linear-gradient(to right, #4a6cf7, #7b5cf7);
+-                                   -fx-text-fill: white; -fx-font-family: 'Segoe UI';
+-                                   -fx-font-weight: bold; -fx-font-size: 13px;
+-                                   -fx-padding: 13 22; -fx-background-radius: 12; -fx-cursor: hand;
+-                                   -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.35), 14, 0, 0, 5);"/>
+-
+-                    <Button text="＋  Add Task Manually"
+-                            onAction="#onAddManual"
+-                            style="-fx-background-color: white; -fx-text-fill: #1e2a4a;
+-                                   -fx-font-family: 'Segoe UI'; -fx-font-weight: bold;
+-                                   -fx-font-size: 13px; -fx-padding: 13 22;
+-                                   -fx-background-radius: 12; -fx-cursor: hand;
+-                                   -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);"/>
+-                </HBox>
+-
+-            </VBox>
+-        </ScrollPane>
+-
+-    </VBox>
+-</StackPane>
+\ No newline at end of file
+Index: TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java
+===================================================================
+diff --git a/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java b/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java
+deleted file mode 100644
+--- a/TaskTopia/src/main/java/com/tasktopia/controller/HomeController.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,618 +0,0 @@
+-package com.tasktopia.controller;
+-
+-import com.tasktopia.MainApp;
+-import com.tasktopia.model.Task;
+-import com.tasktopia.model.TaskStore;
+-import com.tasktopia.util.Styles;
+-import javafx.animation.*;
+-import javafx.fxml.FXML;
+-import javafx.geometry.Insets;
+-import javafx.geometry.Pos;
+-import javafx.scene.control.*;
+-import javafx.scene.layout.*;
+-import javafx.util.Duration;
+-
+-import java.time.LocalDate;
+-import java.time.LocalTime;
+-import java.time.format.DateTimeFormatter;
+-import java.time.format.DateTimeParseException;
+-import java.util.List;
+-import java.util.regex.Matcher;
+-import java.util.regex.Pattern;
+-
+-public class HomeController {
+-
+-    // ── FXML ─────────────────────────────────────────────────
+-    @FXML private HBox      topbarNav;
+-    @FXML private Label     pageTitle;
+-    @FXML private Label     pageSubtitle;
+-    @FXML private Label     headerDate;
+-    @FXML private VBox      tasksCard;
+-    @FXML private StackPane rootStack;
+-
+-    // ── State ─────────────────────────────────────────────────
+-    private String currentCategory = "all";
+-    private Task   selectedTask    = null;
+-
+-    // Overlays
+-    private StackPane manualOverlay;
+-    private StackPane aiOverlay;
+-    private StackPane detailOverlay;
+-    private StackPane settingsOverlay;
+-
+-    // Detail modal labels (need updating when task selected)
+-    private Label  detailNameLbl;
+-    private Label  detailTimeLbl;
+-    private Label  detailDateLbl;
+-    private Label  detailDescLbl;
+-    private HBox   detailBadges;
+-    private Button detailDoneBtn;
+-
+-    // ── Initialise ────────────────────────────────────────────
+-    @FXML
+-    public void initialize() {
+-        headerDate.setText(LocalDate.now().format(
+-                DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
+-        buildOverlays();
+-        renderTasks();
+-    }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  SIDEBAR ACTIONS
+-    // ══════════════════════════════════════════════════════════
+-    @FXML private void onAllTasks()    { selectCategory("all",      "Today's Tasks",  "All your tasks for today"); }
+-    @FXML private void onWork()        { selectCategory("work",     "Work Tasks",     "Tasks in the Work category"); }
+-    @FXML private void onGrocery()     { selectCategory("grocery",  "Grocery Tasks",  "Tasks in the Grocery category"); }
+-    @FXML private void onPersonal()    { selectCategory("personal", "Personal Tasks", "Tasks in the Personal category"); }
+-    @FXML private void onSchool()      { selectCategory("school",   "School Tasks",   "Tasks in the School category"); }
+-    @FXML private void onMedical()     { selectCategory("medical",  "Medical Tasks",  "Tasks in the Medical category"); }
+-    @FXML private void onSocial()      { selectCategory("social",   "Social Tasks",   "Tasks in the Social category"); }
+-    @FXML private void onFitness()     { selectCategory("fitness",  "Fitness Tasks",  "Tasks in the Fitness category"); }
+-    @FXML private void onNewCategory() { showToast("Feature coming soon!"); }
+-    @FXML private void onSettings()    { openOverlay(settingsOverlay); }
+-
+-    @FXML
+-    private void onLogout() {
+-        try { MainApp.showLogin(); }
+-        catch (Exception e) { e.printStackTrace(); }
+-    }
+-
+-    @FXML private void onAddAI()     { openOverlay(aiOverlay); }
+-    @FXML private void onAddManual() { openOverlay(manualOverlay); }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  CATEGORY SELECTION
+-    // ══════════════════════════════════════════════════════════
+-    private void selectCategory(String key, String title, String subtitle) {
+-        currentCategory = key;
+-        pageTitle.setText(title);
+-        pageSubtitle.setText(subtitle);
+-        refreshNavHighlights(key);
+-        renderTasks();
+-    }
+-
+-    private void refreshNavHighlights(String activeKey) {
+-        for (var node : topbarNav.getChildren()) {
+-            if (node instanceof Button btn && btn.getId() != null) {
+-                boolean active = btn.getId().equals("nav-" + activeKey);
+-                btn.setStyle(Styles.navItem(active));
+-                if (!active) {
+-                    btn.setOnMouseEntered(e -> btn.setStyle(Styles.navItemHover()));
+-                    btn.setOnMouseExited(e  -> btn.setStyle(Styles.navItem(false)));
+-                }
+-            }
+-        }
+-    }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  RENDER TASK LIST
+-    // ══════════════════════════════════════════════════════════
+-    private void renderTasks() {
+-        tasksCard.getChildren().clear();
+-
+-        List<Task> filtered = TaskStore.getInstance().getTasks().stream()
+-                .filter(t -> currentCategory.equals("all") ||
+-                        t.getCategory().name().equalsIgnoreCase(currentCategory))
+-                .toList();
+-
+-        if (filtered.isEmpty()) {
+-            Label empty = new Label("📋  No tasks here yet. Add one below!");
+-            empty.setStyle(Styles.emptyState());
+-            VBox.setMargin(empty, new Insets(60, 0, 0, 0));
+-            tasksCard.getChildren().add(empty);
+-            return;
+-        }
+-
+-        for (Task task : filtered) {
+-            tasksCard.getChildren().add(buildTaskCard(task));
+-        }
+-    }
+-
+-    // ── Build a single task card ──────────────────────────────
+-    private HBox buildTaskCard(Task task) {
+-        HBox card = new HBox(16);
+-        card.setAlignment(Pos.CENTER_LEFT);
+-        card.setStyle(Styles.card(task.getPriority())); // style for tasks
+-        HBox.setHgrow(card, Priority.ALWAYS);
+-
+-        // Checkbox circle
+-        Button check = new Button(task.isDone() ? "✓" : "");
+-        check.setStyle(Styles.checkCircle(task.isDone()));
+-        check.setOnAction(e -> {
+-            task.setDone(!task.isDone());
+-            renderTasks();
+-            showToast(task.isDone() ? "✅ Task completed!" : "Task marked incomplete");
+-        });
+-
+-        // Info
+-        VBox info = new VBox(5);
+-        HBox.setHgrow(info, Priority.ALWAYS);
+-
+-        Label name = new Label(task.getName());
+-        name.setStyle(Styles.taskName(task.isDone()));
+-
+-        HBox meta = new HBox(8);
+-        meta.setAlignment(Pos.CENTER_LEFT);
+-
+-        Label catBadge = new Label(task.getCategoryLabel());
+-        catBadge.setStyle(Styles.badge("category"));
+-
+-        Label priBadge = new Label("Priority: " + task.getPriorityLabel());
+-        priBadge.setStyle(Styles.badge(task.getPriority().name().toLowerCase()));
+-
+-        meta.getChildren().addAll(catBadge, priBadge);
+-
+-        if (task.getDate() != null) {
+-            Label dateLbl = new Label("📅  " + task.getDate().format(
+-                    DateTimeFormatter.ofPattern("EEE, d MMM yyyy")));
+-            dateLbl.setStyle(Styles.taskMeta());
+-            meta.getChildren().add(dateLbl);
+-        }
+-
+-        info.getChildren().addAll(name, meta);
+-
+-        // Time
+-        Label timeLbl = new Label(task.getTimeString());
+-        timeLbl.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; "
+-                + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + Styles.TEXT_MUTED + ";");
+-
+-        card.getChildren().addAll(check, info, timeLbl);
+-
+-        // Hover
+-        card.setOnMouseEntered(e -> card.setStyle(
+-                Styles.card(task.getPriority()).replace(
+-                        "rgba(74,108,247,0.10), 16", "rgba(74,108,247,0.18), 24")));
+-        card.setOnMouseExited(e  -> card.setStyle(Styles.card(task.getPriority())));
+-        card.setOnMouseClicked(e -> openDetail(task));
+-
+-        return card;
+-    }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  BUILD OVERLAYS
+-    // ══════════════════════════════════════════════════════════
+-    private void buildOverlays() {
+-        manualOverlay   = buildManualModal();
+-        aiOverlay       = buildAiModal();
+-        detailOverlay   = buildDetailModal();
+-        settingsOverlay = buildSettingsModal();
+-    }
+-
+-    private void openOverlay(StackPane overlay) {
+-        if (!rootStack.getChildren().contains(overlay))
+-            rootStack.getChildren().add(overlay);
+-        overlay.setVisible(true);
+-
+-        // Pop-in animation on the inner card
+-        var inner = overlay.getChildren().get(0);
+-        inner.setScaleX(0.88); inner.setScaleY(0.88);
+-        inner.setOpacity(0);
+-        ScaleTransition st = new ScaleTransition(Duration.millis(200), inner);
+-        st.setToX(1); st.setToY(1);
+-        FadeTransition ft = new FadeTransition(Duration.millis(200), inner);
+-        ft.setToValue(1);
+-        new ParallelTransition(st, ft).play();
+-    }
+-
+-    private void closeOverlay(StackPane overlay) {
+-        overlay.setVisible(false);
+-    }
+-
+-    /** Wraps a card VBox in a dimmed full-screen overlay */
+-    private StackPane wrapOverlay(VBox card) {
+-        StackPane shell = new StackPane(card);
+-        shell.setStyle(Styles.overlayBg());
+-        shell.setVisible(false);
+-        shell.setOnMouseClicked(e -> { if (e.getTarget() == shell) closeOverlay(shell); });
+-        return shell;
+-    }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  MANUAL ADD MODAL
+-    // ══════════════════════════════════════════════════════════
+-    private StackPane buildManualModal() {
+-        VBox card = new VBox(14);
+-        card.setStyle(Styles.modalCard());
+-        card.setMaxWidth(480);
+-        card.setMaxHeight(Region.USE_PREF_SIZE);
+-
+-        // Header
+-        HBox header = modalHeader("Add Task");
+-        Button closeBtn = (Button) ((HBox) header).getChildren().get(1);
+-
+-        // Fields
+-        TextField nameField  = field("Task name");
+-        TextArea  descField  = area("Task description...");
+-        TextField dateField  = field("Date  (yyyy-MM-dd)");
+-        TextField timeField  = field("Time  (HH:mm)");
+-        ComboBox<String> catBox = combo("Select Category",
+-                "Work","Grocery","Personal","School","Medical","Social","Fitness");
+-        ComboBox<String> priBox = combo("Select Priority","High","Medium","Low");
+-
+-        HBox row1 = new HBox(14, labeled("Date", dateField), labeled("Time", timeField));
+-        HBox row2 = new HBox(14, labeled("Category", catBox), labeled("Priority", priBox));
+-        HBox.setHgrow(((VBox)row1.getChildren().get(0)), Priority.ALWAYS);
+-        HBox.setHgrow(((VBox)row1.getChildren().get(1)), Priority.ALWAYS);
+-        HBox.setHgrow(((VBox)row2.getChildren().get(0)), Priority.ALWAYS);
+-        HBox.setHgrow(((VBox)row2.getChildren().get(1)), Priority.ALWAYS);
+-
+-        Button submit = new Button("Submit");
+-        submit.setStyle(Styles.primaryButton());
+-        submit.setMaxWidth(Double.MAX_VALUE);
+-
+-        StackPane shell = wrapOverlay(card);
+-        closeBtn.setOnAction(e -> closeOverlay(shell));
+-
+-        submit.setOnAction(e -> {
+-            String name = nameField.getText().trim();
+-            if (name.isEmpty()) { showToast("Please enter a task name"); return; }
+-
+-            LocalDate date = null;
+-            LocalTime time = null;
+-            try { if (!dateField.getText().isBlank())
+-                date = LocalDate.parse(dateField.getText().trim()); }
+-            catch (DateTimeParseException ignored) { showToast("Date format: yyyy-MM-dd"); return; }
+-            try { if (!timeField.getText().isBlank())
+-                time = LocalTime.parse(timeField.getText().trim()); }
+-            catch (DateTimeParseException ignored) { showToast("Time format: HH:mm"); return; }
+-
+-            Task.Category cat = Task.Category.PERSONAL;
+-            if (catBox.getValue() != null)
+-                try { cat = Task.Category.valueOf(catBox.getValue().toUpperCase()); }
+-                catch (Exception ignored) {}
+-
+-            Task.Priority pri = Task.Priority.MEDIUM;
+-            if (priBox.getValue() != null)
+-                try { pri = Task.Priority.valueOf(priBox.getValue().toUpperCase()); }
+-                catch (Exception ignored) {}
+-
+-            TaskStore.getInstance().addTask(
+-                    new Task(name, descField.getText().trim(), date, time, cat, pri));
+-            closeOverlay(shell);
+-            renderTasks();
+-            showToast("✅ Task added!");
+-            nameField.clear(); descField.clear();
+-            dateField.clear(); timeField.clear();
+-            catBox.setValue(null); priBox.setValue(null);
+-        });
+-
+-        card.getChildren().addAll(header,
+-                labeled("Task Name", nameField),
+-                labeled("Description", descField),
+-                row1, row2, submit);
+-        return shell;
+-    }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  AI SMART TASK MODAL
+-    // ══════════════════════════════════════════════════════════
+-    private StackPane buildAiModal() {
+-        VBox card = new VBox(14);
+-        card.setStyle(Styles.modalCard());
+-        card.setMaxWidth(480);
+-        card.setMaxHeight(Region.USE_PREF_SIZE);
+-
+-        HBox header = modalHeader("✨  Add Smart Task");
+-        Button closeBtn = (Button) header.getChildren().get(1);
+-
+-        TextField inputField = field("e.g. Call boss next tuesday #work #high");
+-
+-        Label hint = new Label(
+-                "Use #category and #priority tags with a natural date.\n" +
+-                        "Example:  \"Buy milk tomorrow at 3pm #grocery #medium\"");
+-        hint.setStyle(Styles.aiHint());
+-        hint.setWrapText(true);
+-        hint.setMaxWidth(Double.MAX_VALUE);
+-
+-        Button submit = new Button("Submit");
+-        submit.setStyle(Styles.primaryButton());
+-        submit.setMaxWidth(Double.MAX_VALUE);
+-
+-        StackPane shell = wrapOverlay(card);
+-        closeBtn.setOnAction(e -> closeOverlay(shell));
+-
+-        Runnable doSubmit = () -> {
+-            String raw = inputField.getText().trim();
+-            if (raw.isEmpty()) { showToast("Please describe your task"); return; }
+-
+-            // Strip tags to get name
+-            String name = raw.replaceAll("#\\w+", "").trim();
+-
+-            // Category
+-            Task.Category cat = Task.Category.PERSONAL;
+-            String lower = raw.toLowerCase();
+-            if      (lower.contains("#work"))    cat = Task.Category.WORK;
+-            else if (lower.contains("#grocery")) cat = Task.Category.GROCERY;
+-            else if (lower.contains("#school"))  cat = Task.Category.SCHOOL;
+-            else if (lower.contains("#medical")) cat = Task.Category.MEDICAL;
+-            else if (lower.contains("#social"))  cat = Task.Category.SOCIAL;
+-            else if (lower.contains("#fitness")) cat = Task.Category.FITNESS;
+-
+-            // Priority
+-            Task.Priority pri = Task.Priority.MEDIUM;
+-            if      (lower.contains("#high")) pri = Task.Priority.HIGH;
+-            else if (lower.contains("#low"))  pri = Task.Priority.LOW;
+-
+-            // Date
+-            LocalDate date = null;
+-            if      (lower.contains("tomorrow")) date = LocalDate.now().plusDays(1);
+-            else if (lower.contains("today"))    date = LocalDate.now();
+-            else {
+-                String[] days = {"sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
+-                for (int i = 0; i < days.length; i++) {
+-                    if (lower.contains(days[i])) {
+-                        int diff = (i - LocalDate.now().getDayOfWeek().getValue() % 7 + 7) % 7;
+-                        date = LocalDate.now().plusDays(diff == 0 ? 7 : diff);
+-                        break;
+-                    }
+-                }
+-            }
+-
+-            // Time
+-            LocalTime time = null;
+-            Matcher m = Pattern.compile("(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm)?",
+-                    Pattern.CASE_INSENSITIVE).matcher(raw);
+-            if (m.find()) {
+-                try {
+-                    int h   = Integer.parseInt(m.group(1));
+-                    int min = m.group(2) != null ? Integer.parseInt(m.group(2)) : 0;
+-                    if ("pm".equalsIgnoreCase(m.group(3)) && h < 12) h += 12;
+-                    if ("am".equalsIgnoreCase(m.group(3)) && h == 12) h = 0;
+-                    time = LocalTime.of(h, min);
+-                } catch (Exception ignored) {}
+-            }
+-
+-            TaskStore.getInstance().addTask(new Task(name, "", date, time, cat, pri));
+-            closeOverlay(shell);
+-            inputField.clear();
+-            renderTasks();
+-            showToast("✨ Smart task added!");
+-        };
+-
+-        submit.setOnAction(e -> doSubmit.run());
+-        inputField.setOnAction(e -> doSubmit.run());
+-
+-        card.getChildren().addAll(header,
+-                labeled("What do you need to get done?", inputField),
+-                hint, submit);
+-        return shell;
+-    }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  TASK DETAIL MODAL
+-    // ══════════════════════════════════════════════════════════
+-    private StackPane buildDetailModal() {
+-        VBox card = new VBox(12);
+-        card.setStyle(Styles.modalCard());
+-        card.setMaxWidth(460);
+-        card.setMaxHeight(Region.USE_PREF_SIZE);
+-
+-        HBox header = modalHeader("");
+-        detailNameLbl = (Label) header.getChildren().get(0);
+-        detailNameLbl.setStyle(Styles.modalTitle());
+-        detailNameLbl.setWrapText(true);
+-        Button closeBtn = (Button) header.getChildren().get(1);
+-
+-        detailTimeLbl = new Label("—");
+-        detailTimeLbl.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; "
+-                + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + Styles.TEXT + ";");
+-        detailTimeLbl.setMaxWidth(Double.MAX_VALUE);
+-        detailTimeLbl.setAlignment(Pos.CENTER);
+-
+-        detailDateLbl = new Label("—");
+-        detailDateLbl.setStyle(Styles.mainSubtitle());
+-        detailDateLbl.setMaxWidth(Double.MAX_VALUE);
+-        detailDateLbl.setAlignment(Pos.CENTER);
+-
+-        detailBadges = new HBox(10);
+-        detailBadges.setAlignment(Pos.CENTER);
+-
+-        detailDescLbl = new Label();
+-        detailDescLbl.setStyle(Styles.taskMeta() + " -fx-font-size: 13px;");
+-        detailDescLbl.setWrapText(true);
+-
+-        detailDoneBtn = new Button("Mark as Done");
+-        detailDoneBtn.setStyle(Styles.primaryButton());
+-        detailDoneBtn.setMaxWidth(Double.MAX_VALUE);
+-
+-        Button deleteBtn = new Button("🗑️  Delete");
+-        deleteBtn.setStyle(Styles.dangerButton());
+-        deleteBtn.setMaxWidth(Double.MAX_VALUE);
+-
+-        HBox btnRow = new HBox(12, detailDoneBtn, deleteBtn);
+-        HBox.setHgrow(detailDoneBtn, Priority.ALWAYS);
+-        HBox.setHgrow(deleteBtn, Priority.ALWAYS);
+-
+-        StackPane shell = wrapOverlay(card);
+-        closeBtn.setOnAction(e -> closeOverlay(shell));
+-
+-        detailDoneBtn.setOnAction(e -> {
+-            if (selectedTask != null) {
+-                selectedTask.setDone(!selectedTask.isDone());
+-                renderTasks();
+-                closeOverlay(shell);
+-                showToast(selectedTask.isDone() ? "✅ Task completed!" : "Task marked incomplete");
+-            }
+-        });
+-
+-        deleteBtn.setOnAction(e -> {
+-            if (selectedTask != null) {
+-                TaskStore.getInstance().removeTask(selectedTask);
+-                selectedTask = null;
+-                renderTasks();
+-                closeOverlay(shell);
+-                showToast("🗑️  Task deleted");
+-            }
+-        });
+-
+-        card.getChildren().addAll(header, detailTimeLbl, detailDateLbl,
+-                detailBadges, detailDescLbl, btnRow);
+-        return shell;
+-    }
+-
+-    private void openDetail(Task task) {
+-        selectedTask = task;
+-        detailNameLbl.setText(task.getName());
+-        detailTimeLbl.setText(task.getTimeString().isEmpty() ? "—" : task.getTimeString());
+-        detailDateLbl.setText(task.getDate() != null
+-                ? task.getDate().format(DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")) : "—");
+-        detailDescLbl.setText(task.getDescription().isEmpty()
+-                ? "No description provided." : task.getDescription());
+-
+-        detailBadges.getChildren().clear();
+-        Label cat = new Label(task.getCategoryLabel());
+-        cat.setStyle(Styles.badge("category"));
+-        Label pri = new Label("Priority: " + task.getPriorityLabel());
+-        pri.setStyle(Styles.badge(task.getPriority().name().toLowerCase()));
+-        detailBadges.getChildren().addAll(cat, pri);
+-        if (task.isDone()) {
+-            Label done = new Label("✓ Completed");
+-            done.setStyle(Styles.badge("low"));
+-            detailBadges.getChildren().add(done);
+-        }
+-
+-        detailDoneBtn.setText(task.isDone() ? "Mark as Incomplete" : "Mark as Done");
+-        openOverlay(detailOverlay);
+-    }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  SETTINGS MODAL
+-    // ══════════════════════════════════════════════════════════
+-    private StackPane buildSettingsModal() {
+-        VBox card = new VBox(14);
+-        card.setStyle(Styles.modalCard());
+-        card.setMaxWidth(420);
+-        card.setMaxHeight(Region.USE_PREF_SIZE);
+-
+-        HBox header = modalHeader("⚙️  Help & Settings");
+-        Button closeBtn = (Button) header.getChildren().get(1);
+-
+-        Label accLabel = new Label("ACCOUNT");
+-        accLabel.setStyle(Styles.formLabel());
+-        Label userRow = new Label("Username:   " + TaskStore.getInstance().getLoggedInUser());
+-        userRow.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
+-                + "-fx-text-fill: " + Styles.TEXT + ";");
+-
+-        Label helpLabel = new Label("HELP");
+-        helpLabel.setStyle(Styles.formLabel());
+-        Label h1 = new Label("📖   How to add tasks");
+-        Label h2 = new Label("🤖   Using Smart Tasks — type naturally with #tags");
+-        Label h3 = new Label("📞   Contact Support");
+-        for (Label l : new Label[]{h1, h2, h3})
+-            l.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
+-                    + "-fx-text-fill: " + Styles.TEXT_MUTED + ";");
+-
+-        Label aboutLabel = new Label("ABOUT");
+-        aboutLabel.setStyle(Styles.formLabel());
+-        Label version = new Label("Version 1.0.0  –  CAB302 Assignment");
+-        version.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; "
+-                + "-fx-text-fill: " + Styles.TEXT_MUTED + ";");
+-
+-        Separator sep1 = new Separator();
+-        Separator sep2 = new Separator();
+-
+-        StackPane shell = wrapOverlay(card);
+-        closeBtn.setOnAction(e -> closeOverlay(shell));
+-
+-        card.getChildren().addAll(header, accLabel, userRow, sep1,
+-                helpLabel, h1, h2, h3, sep2, aboutLabel, version);
+-        return shell;
+-    }
+-
+-    // ══════════════════════════════════════════════════════════
+-    //  SHARED HELPERS
+-    // ══════════════════════════════════════════════════════════
+-
+-    /** Creates a modal header with a title label + close button */
+-    private HBox modalHeader(String titleText) {
+-        Label title = new Label(titleText);
+-        title.setStyle(Styles.modalTitle());
+-        HBox.setHgrow(title, Priority.ALWAYS);
+-
+-        Button close = new Button("✕");
+-        close.setStyle(Styles.closeButton());
+-
+-        HBox header = new HBox(title, close);
+-        header.setAlignment(Pos.CENTER_LEFT);
+-        VBox.setMargin(header, new Insets(0, 0, 6, 0));
+-        return header;
+-    }
+-
+-    private TextField field(String prompt) {
+-        TextField f = new TextField();
+-        f.setPromptText(prompt);
+-        f.setStyle(Styles.formInput());
+-        f.setMaxWidth(Double.MAX_VALUE);
+-        f.focusedProperty().addListener((obs, o, n) ->
+-                f.setStyle(n ? Styles.formInputFocused() : Styles.formInput()));
+-        return f;
+-    }
+-
+-    private TextArea area(String prompt) {
+-        TextArea a = new TextArea();
+-        a.setPromptText(prompt);
+-        a.setStyle(Styles.formInput());
+-        a.setPrefRowCount(3);
+-        a.setWrapText(true);
+-        a.setMaxWidth(Double.MAX_VALUE);
+-        return a;
+-    }
+-
+-    private ComboBox<String> combo(String prompt, String... items) {
+-        ComboBox<String> cb = new ComboBox<>();
+-        cb.getItems().addAll(items);
+-        cb.setPromptText(prompt);
+-        cb.setMaxWidth(Double.MAX_VALUE);
+-        cb.setStyle(Styles.formInput());
+-        return cb;
+-    }
+-
+-    /** Wraps a label + field together in a VBox with a form label above */
+-    private VBox labeled(String labelText, javafx.scene.Node field) {
+-        Label lbl = new Label(labelText.toUpperCase());
+-        lbl.setStyle(Styles.formLabel());
+-        VBox box = new VBox(5, lbl, field);
+-        box.setMaxWidth(Double.MAX_VALUE);
+-        HBox.setHgrow(box, Priority.ALWAYS);
+-        return box;
+-    }
+-
+-    // ── Toast notification ────────────────────────────────────
+-    private void showToast(String message) {
+-        Label toast = new Label(message);
+-        toast.setStyle(Styles.toastStyle());
+-        StackPane.setAlignment(toast, Pos.BOTTOM_RIGHT);
+-        StackPane.setMargin(toast, new Insets(0, 32, 32, 0));
+-        rootStack.getChildren().add(toast);
+-
+-        FadeTransition fadeIn  = new FadeTransition(Duration.millis(250), toast);
+-        fadeIn.setFromValue(0); fadeIn.setToValue(1);
+-
+-        FadeTransition fadeOut = new FadeTransition(Duration.millis(400), toast);
+-        fadeOut.setFromValue(1); fadeOut.setToValue(0);
+-        fadeOut.setDelay(Duration.seconds(2.4));
+-        fadeOut.setOnFinished(e -> rootStack.getChildren().remove(toast));
+-
+-        new SequentialTransition(fadeIn, fadeOut).play();
+-    }
+-}
+\ No newline at end of file
+Index: TaskTopia/src/main/java/com/tasktopia/model/Task.java
+===================================================================
+diff --git a/TaskTopia/src/main/java/com/tasktopia/model/Task.java b/TaskTopia/src/main/java/com/tasktopia/model/Task.java
+deleted file mode 100644
+--- a/TaskTopia/src/main/java/com/tasktopia/model/Task.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,85 +0,0 @@
+-package com.tasktopia.model;
+-
+-import java.time.LocalDate;
+-import java.time.LocalTime;
+-import java.util.Collection;
+-
+-public class Task {
+-
+-    public void setId(int autoIncrementedId) {
+-    }
+-
+-    public int size() {
+-        return 0;
+-    }
+-
+-    public Task get(int i) {
+-        return null;
+-    }
+-
+-    public void set(int i, Task task) {
+-    }
+-
+-    public Collection<Object> getString() {
+-        return java.util.List.of();
+-    }
+-
+-    public enum Priority { HIGH, MEDIUM, LOW }
+-    public enum Category { WORK, GROCERY, PERSONAL, SCHOOL, MEDICAL, SOCIAL, FITNESS }
+-
+-    private static int nextId = 1;
+-
+-    private final int id;
+-    private String name;
+-    private String description;
+-    private LocalDate date;
+-    private LocalTime time;
+-    private Category category;
+-    private Priority priority;
+-    private boolean done;
+-
+-    public Task(String name, String description, LocalDate date, LocalTime time,
+-                Category category, Priority priority) {
+-        this.id          = nextId++;
+-        this.name        = name;
+-        this.description = description;
+-        this.date        = date;
+-        this.time        = time;
+-        this.category    = category;
+-        this.priority    = priority;
+-        this.done        = false;
+-    }
+-
+-    public int       getId()          { return id; }
+-    public String    getName()        { return name; }
+-    public String    getDescription() { return description; }
+-    public LocalDate getDate()        { return date; }
+-    public LocalTime getTime()        { return time; }
+-    public Category  getCategory()    { return category; }
+-    public Priority  getPriority()    { return priority; }
+-    public boolean   isDone()         { return done; }
+-
+-    public void setName(String name)               { this.name = name; }
+-    public void setDescription(String description) { this.description = description; }
+-    public void setDate(LocalDate date)            { this.date = date; }
+-    public void setTime(LocalTime time)            { this.time = time; }
+-    public void setCategory(Category category)     { this.category = category; }
+-    public void setPriority(Priority priority)     { this.priority = priority; }
+-    public void setDone(boolean done)              { this.done = done; }
+-
+-    public String getTimeString() {
+-        return time != null ? time.toString() : "";
+-    }
+-
+-    public String getCategoryLabel() {
+-        if (category == null) return "";
+-        String s = category.name();
+-        return s.charAt(0) + s.substring(1).toLowerCase();
+-    }
+-
+-    public String getPriorityLabel() {
+-        if (priority == null) return "";
+-        String s = priority.name();
+-        return s.charAt(0) + s.substring(1).toLowerCase();
+-    }
+-}
+Index: TaskTopia/src/main/resources/fxml/SignUp.fxml
+===================================================================
+diff --git a/TaskTopia/src/main/resources/fxml/SignUp.fxml b/TaskTopia/src/main/resources/fxml/SignUp.fxml
+deleted file mode 100644
+--- a/TaskTopia/src/main/resources/fxml/SignUp.fxml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,97 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.layout.*?>
+-<?import javafx.scene.text.Text?>
+-<?import javafx.scene.text.TextFlow?>
+-
+-<StackPane xmlns="http://javafx.com/javafx/17"
+-           xmlns:fx="http://javafx.com/fxml/1"
+-           fx:controller="com.tasktopia.controller.SignUpController"
+-           style="-fx-background-color: white;">
+-
+-    <VBox alignment="CENTER" spacing="16">
+-
+-        <VBox alignment="CENTER"
+-              maxWidth="380"
+-              spacing="14"
+-              style="-fx-background-color: white;
+-                     -fx-background-radius: 28;
+-                     -fx-padding: 48 44 44 44;
+-                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 30, 0, 0, 8);">
+-
+-            <!-- TITLE -->
+-            <TextFlow textAlignment="CENTER">
+-                <Text text="Create "
+-                      style="-fx-font-size: 40px; -fx-font-weight: bold;
+-                             -fx-font-family: 'Segoe UI'; -fx-fill: #995954;" />
+-                <Text text="Account"
+-                      style="-fx-font-size: 40px; -fx-font-weight: bold;
+-                             -fx-font-family: 'Segoe UI'; -fx-fill: #714255;" />
+-            </TextFlow>
+-
+-            <!-- Username -->
+-            <TextField fx:id="usernameField"
+-                       prefWidth="292"
+-                       promptText="Username"
+-                       style="-fx-background-color: #f4f6fb;
+-                              -fx-border-color: #e4e9f4;
+-                              -fx-border-radius: 12;
+-                              -fx-background-radius: 12;
+-                              -fx-border-width: 1.5;
+-                              -fx-padding: 12 16;
+-                              -fx-font-family: 'Segoe UI';
+-                              -fx-font-size: 13px;
+-                              -fx-text-fill: #1e2a4a;
+-                              -fx-prompt-text-fill: #8898aa;" />
+-
+-            <!-- Password -->
+-            <PasswordField fx:id="passwordField"
+-                           prefWidth="292"
+-                           promptText="Password"
+-                           style="-fx-background-color: #f4f6fb;
+-                                  -fx-border-color: #e4e9f4;
+-                                  -fx-border-radius: 12;
+-                                  -fx-background-radius: 12;
+-                                  -fx-border-width: 1.5;
+-                                  -fx-padding: 12 16;
+-                                  -fx-font-family: 'Segoe UI';
+-                                  -fx-font-size: 13px;
+-                                  -fx-text-fill: #1e2a4a;
+-                                  -fx-prompt-text-fill: #8898aa;" />
+-
+-            <!-- Confirm Password -->
+-            <PasswordField fx:id="confirmPasswordField"
+-                           prefWidth="292"
+-                           promptText="Confirm Password"
+-                           style="-fx-background-color: #f4f6fb;
+-                                  -fx-border-color: #e4e9f4;
+-                                  -fx-border-radius: 12;
+-                                  -fx-background-radius: 12;
+-                                  -fx-border-width: 1.5;
+-                                  -fx-padding: 12 16;
+-                                  -fx-font-family: 'Segoe UI';
+-                                  -fx-font-size: 13px;
+-                                  -fx-text-fill: #1e2a4a;
+-                                  -fx-prompt-text-fill: #8898aa;" />
+-
+-            <!-- Sign Up Button -->
+-            <Button text="Sign Up"
+-                    onAction="#onSignUp"
+-                    prefWidth="292"
+-                    style="-fx-background-color: linear-gradient(to right, #995954, #714255);
+-                           -fx-text-fill: white;
+-                           -fx-font-weight: bold;
+-                           -fx-background-radius: 12;
+-                           -fx-padding: 14 0;" />
+-
+-            <!-- Back -->
+-            <Button text="← Back to Login"
+-                    onAction="#onBackToLogin"
+-                    style="-fx-background-color: transparent;
+-                           -fx-text-fill: #714255;
+-                           -fx-cursor: hand;" />
+-
+-        </VBox>
+-    </VBox>
+-</StackPane>
+\ No newline at end of file
+Index: TaskTopia/src/test/java/com/tasktopia/model/ITaskDAO.java
+===================================================================
+diff --git a/TaskTopia/src/test/java/com/tasktopia/model/ITaskDAO.java b/TaskTopia/src/test/java/com/tasktopia/model/ITaskDAO.java
+deleted file mode 100644
+--- a/TaskTopia/src/test/java/com/tasktopia/model/ITaskDAO.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,9 +0,0 @@
+-package com.tasktopia.model;
+-
+-import java.util.List;
+-
+-public interface ITaskDAO {
+-    List<Task> getAllTasks();
+-
+-    void addTask(Task task);
+-}
+Index: TaskTopia/.github/worklfows/tests.yml
+===================================================================
+diff --git a/TaskTopia/.github/worklfows/tests.yml b/TaskTopia/.github/worklfows/tests.yml
+deleted file mode 100644
+--- a/TaskTopia/.github/worklfows/tests.yml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,32 +0,0 @@
+-name: Run Tests
+-
+-on:
+-  push:
+-    branches: [ main ]
+-  pull_request:
+-    branches: [ main ]
+-
+-jobs:
+-  build:
+-    runs-on: ubuntu-latest
+-
+-    steps:
+-      - name: Checkout code
+-        uses: actions/checkout@v4
+-
+-      - name: Set up JDK 21
+-        uses: actions/setup-java@v4
+-        with:
+-          distribution: temurin
+-          java-version: 21
+-
+-      - name: Cache Maven packages
+-        uses: actions/cache@v4
+-        with:
+-          path: ~/.m2
+-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+-          restore-keys: |
+-            ${{ runner.os }}-m2
+-
+-      - name: Run tests
+-        run: mvn -B test
+Index: TaskTopia/target/classes/fxml/Home.fxml
+===================================================================
+diff --git a/TaskTopia/target/classes/fxml/Home.fxml b/TaskTopia/target/classes/fxml/Home.fxml
+deleted file mode 100644
+--- a/TaskTopia/target/classes/fxml/Home.fxml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,224 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<?import javafx.geometry.Insets?>
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.layout.*?>
+-
+-<StackPane
+-        xmlns="http://javafx.com/javafx/17"
+-        xmlns:fx="http://javafx.com/fxml/1"
+-        fx:controller="com.tasktopia.controller.HomeController"
+-        fx:id="rootStack"
+-        style="-fx-background-color: #f4f6fb;"
+-        prefWidth="1100" prefHeight="700">
+-
+-    <VBox>
+-
+-        <!-- ── TOP SECTION ── -->
+-        <VBox style="-fx-background-color: #f4f6fb;">
+-
+-            <!-- TITLE ROW -->
+-            <HBox alignment="CENTER_LEFT"
+-                  style="-fx-padding: 20 24 10 24;">
+-
+-                <Label text="Task"
+-                       style="-fx-font-size: 45px; -fx-font-weight: bold;
+-                              -fx-font-family: 'Segoe UI'; -fx-text-fill: #995954;" />
+-                <Label text="Topia"
+-                       style="-fx-font-size: 45px; -fx-font-weight: bold;
+-                              -fx-font-family: 'Segoe UI'; -fx-text-fill: #714255;" />
+-
+-
+-                <Region HBox.hgrow="ALWAYS"/>
+-
+-                <!-- Right-side actions -->
+-                <HBox spacing="10">
+-                    <Button text="⚙️ Settings"
+-                            onAction="#onSettings"
+-                            style="-fx-background-color: transparent;
+-                                   -fx-text-fill: #a8b8d8;" />
+-
+-                    <Button text="🚪 Log Out"
+-                            onAction="#onLogout"
+-                            style="-fx-background-color: rgba(255,107,107,0.15);
+-                                   -fx-text-fill: #ff6b6b;
+-                                   -fx-background-radius: 10;" />
+-                </HBox>
+-            </HBox>
+-
+-            <!-- CATEGORY BAR -->
+-            <HBox alignment="CENTER_LEFT"
+-                  spacing="10"
+-                  style="-fx-padding: 10 20 16 20;">
+-
+-                <!-- Scrollable categories -->
+-                <ScrollPane HBox.hgrow="ALWAYS"
+-                            hbarPolicy="AS_NEEDED"
+-                            vbarPolicy="NEVER"
+-                            fitToHeight="true"
+-                            fitToWidth="false"
+-                            prefHeight="60"
+-                            style="-fx-background-color: transparent;
+-                       -fx-background: transparent;">
+-
+-                    <!-- IMPORTANT: ALL buttons must be inside this HBox -->
+-                    <HBox fx:id="sidebarNav"
+-                          spacing="8"
+-                          alignment="CENTER_LEFT"
+-                          style="-fx-padding: 5 0 5 0;">
+-
+-                        <Button fx:id="navAll" text="🏠 All"
+-                                onAction="#onAllTasks"
+-                                style="-fx-background-color: #714255;
+-                           -fx-text-fill: black;
+-                           -fx-background-radius: 10;
+-                           -fx-padding: 8 16;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navWork" text="💼 Work"
+-                                onAction="#onWork"
+-                                style="-fx-background-color: #A3CFF5;
+-                           -fx-text-fill: black;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navGrocery" text="🛒 Grocery"
+-                                onAction="#onGrocery"
+-                                style="-fx-background-color: #7BA75F;
+-                           -fx-text-fill: black;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navPersonal" text="👤 Personal"
+-                                onAction="#onPersonal"
+-                                style="-fx-background-color: #CFD95B;
+-                           -fx-text-fill: black;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navSchool" text="📚 School"
+-                                onAction="#onSchool"
+-                                style="-fx-background-color: #ECCBBC;
+-                           -fx-text-fill: #333;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navMedical" text="🏥 Medical"
+-                                onAction="#onMedical"
+-                                style="-fx-background-color: #340D0C;
+-                           -fx-text-fill: white;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navSocial" text="🎉 Social"
+-                                onAction="#onSocial"
+-                                style="-fx-background-color: #9E3B2E;
+-                           -fx-text-fill: black;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-
+-                        <Button fx:id="navFitness" text="🏋️ Fitness"
+-                                onAction="#onFitness"
+-                                style="-fx-background-color: #2B394B;
+-                           -fx-text-fill: white;
+-                           -fx-padding: 8 16;
+-                           -fx-background-radius: 10;
+-                           -fx-font-size: 20px;
+-                           -fx-font-weight: bold;" />
+-                    </HBox>
+-                </ScrollPane>
+-
+-                <!-- Add category button -->
+-                <Button text="＋ Add"
+-                        onAction="#onNewCategory"
+-                        prefHeight="40"
+-                        style="-fx-background-color: #6D6551;
+-                               -fx-text-fill: white;
+-                               -fx-font-size: 13px;
+-                               -fx-font-weight: bold;
+-                               -fx-background-radius: 10;
+-                               -fx-padding: 0 14;" />
+-            </HBox>
+-
+-            <!-- Divider -->
+-            <Region style="-fx-background-color: rgba(255,255,255,0.1);
+-                           -fx-pref-height: 1;"/>
+-        </VBox>
+-
+-        <!-- ── MAIN CONTENT ── -->
+-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+-                    style="-fx-background: #f4f6fb; -fx-background-color: #f4f6fb;
+-                           -fx-border-color: transparent;">
+-
+-            <VBox style="-fx-background-color: #f4f6fb; -fx-padding: 40 40 60 40;"
+-                  spacing="0">
+-
+-                <!-- Header -->
+-                <HBox alignment="CENTER_LEFT">
+-                    <VBox HBox.hgrow="ALWAYS">
+-                        <Label fx:id="pageTitle" text="Today's Tasks"
+-                               style="-fx-font-size: 26px; -fx-font-weight: bold;
+-                                      -fx-font-family: 'Segoe UI'; -fx-text-fill: #1e2a4a;"/>
+-
+-                        <Label fx:id="pageSubtitle" text="All your tasks for today"
+-                               style="-fx-font-size: 12px; -fx-font-family: 'Segoe UI';
+-                                      -fx-text-fill: #8898aa;"/>
+-                    </VBox>
+-
+-                    <Label fx:id="headerDate"
+-                           style="-fx-background-color: white; -fx-background-radius: 20;
+-                                  -fx-padding: 7 16; -fx-font-family: 'Segoe UI';
+-                                  -fx-font-size: 12px; -fx-text-fill: #8898aa;
+-                                  -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);"/>
+-                    <HBox.margin><Insets bottom="28"/></HBox.margin>
+-                </HBox>
+-
+-                <!-- Tasks (inside purple box) -->
+-                <VBox style="-fx-background-color: transparent;">
+-
+-                    <VBox fx:id="tasksCard"
+-                          spacing="14"
+-                          style="-fx-padding: 20;
+-                                 -fx-background-color: #714255;
+-                                 -fx-background-radius: 18;
+-                                 -fx-effect: dropshadow(gaussian, rgba(30,42,74,0.12), 20, 0, 0, 6);"/>
+-
+-                </VBox>
+-
+-                <!-- Buttons -->
+-                <HBox spacing="16" style="-fx-padding: 28 0 0 0;">
+-                    <Button text="✨  Add Smart Task"
+-                            onAction="#onAddAI"
+-                            style="-fx-background-color: linear-gradient(to right, #4a6cf7, #7b5cf7);
+-                                   -fx-text-fill: white; -fx-font-family: 'Segoe UI';
+-                                   -fx-font-weight: bold; -fx-font-size: 13px;
+-                                   -fx-padding: 13 22; -fx-background-radius: 12; -fx-cursor: hand;
+-                                   -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.35), 14, 0, 0, 5);"/>
+-
+-                    <Button text="＋  Add Task Manually"
+-                            onAction="#onAddManual"
+-                            style="-fx-background-color: white; -fx-text-fill: #1e2a4a;
+-                                   -fx-font-family: 'Segoe UI'; -fx-font-weight: bold;
+-                                   -fx-font-size: 13px; -fx-padding: 13 22;
+-                                   -fx-background-radius: 12; -fx-cursor: hand;
+-                                   -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.10), 10, 0, 0, 3);"/>
+-                </HBox>
+-
+-            </VBox>
+-        </ScrollPane>
+-
+-    </VBox>
+-</StackPane>
+\ No newline at end of file
+Index: TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java
+===================================================================
+diff --git a/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java b/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java
+deleted file mode 100644
+--- a/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,63 +0,0 @@
+-package com.tasktopia.controller;
+-
+-import javafx.fxml.FXML;
+-import javafx.scene.control.*;
+-import com.tasktopia.MainApp;
+-
+-public class SignUpController {
+-
+-    @FXML private TextField usernameField;
+-    @FXML private PasswordField passwordField;
+-    @FXML private PasswordField confirmPasswordField;
+-
+-    @FXML
+-    private void onSignUp() {
+-        String user = usernameField.getText().trim();
+-        String pass = passwordField.getText();
+-        String confirm = confirmPasswordField.getText();
+-
+-        if (user.isEmpty() || pass.isEmpty()) {
+-            showAlert("Please fill all fields");
+-            return;
+-        }
+-
+-        if (!pass.equals(confirm)) {
+-            showAlert("Passwords do not match");
+-            return;
+-        }
+-
+-        // TEMPORARY STORAGE replace later with DB !!!
+-        System.out.println("User registered: " + user);
+-
+-        showAlert("Account created! Please login.");
+-
+-        try {
+-            MainApp.showLogin();
+-        } catch (Exception e) {
+-            showAlert("Could not return to login screen.");
+-        }
+-    }
+-
+-    @FXML
+-    private void onBackToLogin() {
+-        try {
+-            MainApp.showLogin();
+-        } catch (Exception e) {
+-            showError("Failed to load login screen.");
+-        }
+-    }
+-
+-    private void showError(String message) {
+-        Alert alert = new Alert(Alert.AlertType.ERROR);
+-        alert.setTitle("Error");
+-        alert.setHeaderText(null);
+-        alert.setContentText(message);
+-        alert.showAndWait();
+-    }
+-
+-    private void showAlert(String msg) {
+-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+-        alert.setContentText(msg);
+-        alert.showAndWait();
+-    }
+-}
+\ No newline at end of file
+Index: TaskTopia/target/classes/fxml/Login.fxml
+===================================================================
+diff --git a/TaskTopia/target/classes/fxml/Login.fxml b/TaskTopia/target/classes/fxml/Login.fxml
+deleted file mode 100644
+--- a/TaskTopia/target/classes/fxml/Login.fxml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,120 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<?import javafx.geometry.*?>
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.layout.*?>
+-<?import javafx.scene.text.*?>
+-
+-<StackPane prefHeight="700" prefWidth="1100" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tasktopia.controller.LoginController">
+-
+-    <!-- split colour background -->
+-    <HBox>
+-        <!-- LEFT SIDE (white) -->
+-        <VBox prefWidth="550" style="-fx-background-color: white;" />
+-
+-        <!-- RIGHT SIDE (pink/purple) -->
+-        <VBox prefWidth="550" style="-fx-background-color: #714255;" />
+-    </HBox>
+-
+-
+-
+-    <!-- for foreground content to stay on top -->
+-    <HBox>
+-
+-        <!-- Logo -->
+-        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+-            <TextFlow textAlignment="CENTER">
+-                <Text text="Task"
+-                      style="-fx-font-size: 64px; -fx-font-weight: bold;
+-                             -fx-font-family: 'Segoe UI'; -fx-fill: #995954;"/>
+-                <Text text="Topia"
+-                      style="-fx-font-size: 64px; -fx-font-weight: bold;
+-                             -fx-font-family: 'Segoe UI'; -fx-fill: #714255;"/>
+-            </TextFlow>
+-
+-            <Text text="YOUR TASKS, ORGANISED"
+-                  style="-fx-font-size: 10px; -fx-font-family: 'Segoe UI';
+-                         -fx-fill: rgba(0,0,0,0.5);
+-                         -fx-letter-spacing: 2px;"/>
+-        </VBox>
+-
+-        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+-
+-            <VBox alignment="CENTER"
+-                  maxWidth="380"
+-                  maxHeight="300"
+-                  spacing="14"
+-                  style="-fx-background-color: white;
+-                 -fx-background-radius: 28;
+-                 -fx-padding: 48 44 44 44;
+-                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 30, 0, 0, 8);">
+-
+-                <!-- Username -->
+-                <TextField fx:id="usernameField"
+-                           prefWidth="292"
+-                           promptText="Username"
+-                           style="-fx-background-color: #f4f6fb;
+-                          -fx-border-color: #e4e9f4;
+-                          -fx-border-radius: 12;
+-                          -fx-background-radius: 12;
+-                          -fx-border-width: 1.5;
+-                          -fx-padding: 12 16;
+-                          -fx-font-family: 'Segoe UI';
+-                          -fx-font-size: 13px;
+-                          -fx-text-fill: #1e2a4a;
+-                          -fx-prompt-text-fill: #8898aa;" />
+-
+-                <!-- Password -->
+-                <PasswordField fx:id="passwordField"
+-                               prefWidth="292"
+-                               promptText="Password"
+-                               style="-fx-background-color: #f4f6fb;
+-                              -fx-border-color: #e4e9f4;
+-                              -fx-border-radius: 12;
+-                              -fx-background-radius: 12;
+-                              -fx-border-width: 1.5;
+-                              -fx-padding: 12 16;
+-                              -fx-font-family: 'Segoe UI';
+-                              -fx-font-size: 13px;
+-                              -fx-text-fill: #1e2a4a;
+-                              -fx-prompt-text-fill: #8898aa;" />
+-
+-                <!-- Error -->
+-                <Label fx:id="errorLabel"
+-                       text=""
+-                       visible="false"
+-                       wrapText="true"
+-                       style="-fx-text-fill: #ff6b6b;
+-                      -fx-font-family: 'Segoe UI';
+-                      -fx-font-size: 12px;" />
+-
+-                <!-- Sign In Button -->
+-                <Button text="Sign in"
+-                        onAction="#handleLogin"
+-                        prefWidth="292"
+-                        style="-fx-background-color: linear-gradient(to right, #995954, #714255);
+-                       -fx-text-fill: white;
+-                       -fx-font-family: 'Segoe UI';
+-                       -fx-font-weight: bold;
+-                       -fx-font-size: 14px;
+-                       -fx-padding: 14 0;
+-                       -fx-background-radius: 12;
+-                       -fx-cursor: hand;
+-                       -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.4), 16, 0, 0, 6);">
+-
+-                    <VBox.margin>
+-                        <Insets top="6"/>
+-                    </VBox.margin>
+-                </Button>
+-
+-                <!-- Create Account Button -->
+-                <Label text="Create Account"
+-                       onMouseClicked="#onGoToSignUp"
+-                       style="-fx-text-fill: #714255;
+-                              -fx-underline: true;
+-                              -fx-cursor: hand;
+-                              -fx-font-size: 13px;" />
+-            </VBox>
+-        </VBox>
+-    </HBox>
+-</StackPane>
+Index: TaskTopia/src/main/resources/fxml/Login.fxml
+===================================================================
+diff --git a/TaskTopia/src/main/resources/fxml/Login.fxml b/TaskTopia/src/main/resources/fxml/Login.fxml
+deleted file mode 100644
+--- a/TaskTopia/src/main/resources/fxml/Login.fxml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,120 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<?import javafx.geometry.*?>
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.layout.*?>
+-<?import javafx.scene.text.*?>
+-
+-<StackPane prefHeight="700" prefWidth="1100" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tasktopia.controller.LoginController">
+-
+-    <!-- split colour background -->
+-    <HBox>
+-        <!-- LEFT SIDE (white) -->
+-        <VBox prefWidth="550" style="-fx-background-color: white;" />
+-
+-        <!-- RIGHT SIDE (pink/purple) -->
+-        <VBox prefWidth="550" style="-fx-background-color: #714255;" />
+-    </HBox>
+-
+-
+-
+-    <!-- for foreground content to stay on top -->
+-    <HBox>
+-
+-        <!-- Logo -->
+-        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+-            <TextFlow textAlignment="CENTER">
+-                <Text text="Task"
+-                      style="-fx-font-size: 64px; -fx-font-weight: bold;
+-                             -fx-font-family: 'Segoe UI'; -fx-fill: #995954;"/>
+-                <Text text="Topia"
+-                      style="-fx-font-size: 64px; -fx-font-weight: bold;
+-                             -fx-font-family: 'Segoe UI'; -fx-fill: #714255;"/>
+-            </TextFlow>
+-
+-            <Text text="YOUR TASKS, ORGANISED"
+-                  style="-fx-font-size: 10px; -fx-font-family: 'Segoe UI';
+-                         -fx-fill: rgba(0,0,0,0.5);
+-                         -fx-letter-spacing: 2px;"/>
+-        </VBox>
+-
+-        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+-
+-            <VBox alignment="CENTER"
+-                  maxWidth="380"
+-                  maxHeight="300"
+-                  spacing="14"
+-                  style="-fx-background-color: white;
+-                 -fx-background-radius: 28;
+-                 -fx-padding: 48 44 44 44;
+-                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 30, 0, 0, 8);">
+-
+-                <!-- Username -->
+-                <TextField fx:id="usernameField"
+-                           prefWidth="292"
+-                           promptText="Username"
+-                           style="-fx-background-color: #f4f6fb;
+-                          -fx-border-color: #e4e9f4;
+-                          -fx-border-radius: 12;
+-                          -fx-background-radius: 12;
+-                          -fx-border-width: 1.5;
+-                          -fx-padding: 12 16;
+-                          -fx-font-family: 'Segoe UI';
+-                          -fx-font-size: 13px;
+-                          -fx-text-fill: #1e2a4a;
+-                          -fx-prompt-text-fill: #8898aa;" />
+-
+-                <!-- Password -->
+-                <PasswordField fx:id="passwordField"
+-                               prefWidth="292"
+-                               promptText="Password"
+-                               style="-fx-background-color: #f4f6fb;
+-                              -fx-border-color: #e4e9f4;
+-                              -fx-border-radius: 12;
+-                              -fx-background-radius: 12;
+-                              -fx-border-width: 1.5;
+-                              -fx-padding: 12 16;
+-                              -fx-font-family: 'Segoe UI';
+-                              -fx-font-size: 13px;
+-                              -fx-text-fill: #1e2a4a;
+-                              -fx-prompt-text-fill: #8898aa;" />
+-
+-                <!-- Error -->
+-                <Label fx:id="errorLabel"
+-                       text=""
+-                       visible="false"
+-                       wrapText="true"
+-                       style="-fx-text-fill: #ff6b6b;
+-                      -fx-font-family: 'Segoe UI';
+-                      -fx-font-size: 12px;" />
+-
+-                <!-- Sign In Button -->
+-                <Button text="Sign in"
+-                        onAction="#handleLogin"
+-                        prefWidth="292"
+-                        style="-fx-background-color: linear-gradient(to right, #995954, #714255);
+-                       -fx-text-fill: white;
+-                       -fx-font-family: 'Segoe UI';
+-                       -fx-font-weight: bold;
+-                       -fx-font-size: 14px;
+-                       -fx-padding: 14 0;
+-                       -fx-background-radius: 12;
+-                       -fx-cursor: hand;
+-                       -fx-effect: dropshadow(gaussian, rgba(74,108,247,0.4), 16, 0, 0, 6);">
+-
+-                    <VBox.margin>
+-                        <Insets top="6"/>
+-                    </VBox.margin>
+-                </Button>
+-
+-                <!-- Create Account Button -->
+-                <Label text="Create Account"
+-                       onMouseClicked="#onGoToSignUp"
+-                       style="-fx-text-fill: #714255;
+-                              -fx-underline: true;
+-                              -fx-cursor: hand;
+-                              -fx-font-size: 13px;" />
+-            </VBox>
+-        </VBox>
+-    </HBox>
+-</StackPane>
+Index: TaskTopia/Requirements.md
+===================================================================
+diff --git a/TaskTopia/Requirements.md b/TaskTopia/Requirements.md
+deleted file mode 100644
+--- a/TaskTopia/Requirements.md	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,90 +0,0 @@
+-# Tasktopia - Requirements Document
+-## Personal To-Do List Application with Categories
+-**Team Brainstormers**
+-
+----
+-
+-## 1. Functional Requirements
+-*What the system must do*
+-
+-### 1.1 Task Management
+-| ID | Requirement | Priority | Notes |
+-|----|-------------|----------|-------|
+-| F1.1 | Users shall add new tasks | High | Core functionality |
+-| F1.2 | Users shall delete tasks | High | |
+-| F1.3 | Users shall check off completed tasks | High | Satisfaction tracking |
+-| F1.4 | Users shall edit existing tasks | High | |
+-| F1.5 | Users shall view tasks in a to-do list style format | High | Clean, readable display |
+-
+-### 1.2 Categories
+-| ID | Requirement | Priority | Notes |
+-|----|-------------|----------|-------|
+-| F2.1 | Users shall create custom categories (e.g., Work, Personal, Shopping) | High | |
+-| F2.2 | Users shall assign tasks to categories | High | |
+-| F2.3 | Users shall filter tasks by category | High | |
+-| F2.4 | Users shall edit and delete categories | Medium | Consider task reassignment when deleting |
+-
+-### 1.3 Due Dates & Urgency
+-| ID | Requirement | Priority | Notes |
+-|----|-------------|----------|-------|
+-| F3.1 | Users shall add due dates to tasks | Medium | |
+-| F3.2 | Users shall view tasks sorted by due date | Medium | |
+-| F3.3 | System shall highlight overdue tasks with colour coding | Medium | Different colours for: a few days overdue, one week overdue, very overdue |
+-| F3.4 | System shall provide notifications alerting users one week before a task is due | Medium | Console notification or pop-up |
+-| F3.5 | Users shall filter tasks by keywords | Medium | Search functionality |
+-
+-### 1.4 Data Persistence
+-| ID | Requirement | Priority | Notes |
+-|----|-------------|----------|-------|
+-| F4.1 | System shall save tasks to a file when the program exits | High | Prevent data loss |
+-| F4.2 | System shall load tasks from file when program starts | High | |
+-| F4.3 | System shall auto-save after each task change | High | |
+-
+-### 1.5 User Assistance
+-| ID | Requirement | Priority | Notes |
+-|----|-------------|----------|-------|
+-| F5.1 | System shall provide a help button/command for users needing assistance | Medium | Display instructions and tips |
+-
+-### 1.6 Intelligent Task Input
+-| ID | Requirement | Priority | Notes |
+-|----|-------------|----------|-------|
+-| F6.1 | Users shall input tasks using natural language (unstructured text or "brain dumps") | High | e.g "finish  assignment tomorrow and email tutor" |
+-| F6.2 | System shall extract individual tasks from a single input | High | Split multiple tasks automatically |
+-| F6.3 | System shall identify and assign due dates from user input | High | e.g "tommorow" -> the next date based on user's locale |
+-| F6.4 | System shall automatically catoragise tasks based on content | High | e.g "study" -> Education category| 
+-| F6.5 | System shall allow users to review and confirm parsed tasks before saving | High | Prevents categorisation and language interpretation errors.
+-
+-## 2. Non-Functional Requirements
+-*How well the system performs*
+-
+-| ID | Requirement | Category | Target |
+-|----|-------------|----------|--------|
+-| NF1 | Application shall start within 3 seconds | Performance | Measurable |
+-| NF2 | Interface shall be intuitive for first-time users | Usability | Clear menu prompts |
+-| NF3 | Task data shall not be lost on unexpected shutdown | Reliability | Frequent saves |
+-| NF4 | Code shall follow Java naming conventions | Maintainability | |
+-| NF5 | Application shall handle up to 100 tasks without slowdown | Scalability | |
+-| NF6 | Users shall be able to reorganise tasks based on urgency | Usability | Drag-and-drop or priority sorting |
+-| NF7 | Interface shall be user-friendly with clear navigation | Usability | |
+-| NF8 | Application shall be accessible (larger text option for vision impairments) | Accessibility | Future enhancement |
+-| NF9 | Users shall be able to customise interface appearance (colours, fonts) | Usability | Nice-to-have |
+-
+----
+-
+-## 3. Future Enhancements (Scope Creep - Discuss with Team)
+-*Features to consider if time permits*
+-
+-| ID | Feature | Notes |
+-|----|---------|-------|
+-| E1 | Team collaboration feature | Multiple users sharing tasks |
+-| E2 | Linked calendar integration | Connect with external calendars |
+-| E3 | Audio descriptions for hearing impairments | Accessibility enhancement |
+-| E4 | Advanced interface customisation | Full theme support |
+-| E4 | System shall suggest priorities based on urgency or keywords | Optional smart prioritisation |
+-
+----
+-
+-## 4. User Stories
+-*To be completed during team brainstorming session before week 7 checkpoint*
+-
+-*Example format:*
+Index: TaskTopia/src/main/java/module-info.java
+===================================================================
+diff --git a/TaskTopia/src/main/java/module-info.java b/TaskTopia/src/main/java/module-info.java
+deleted file mode 100644
+--- a/TaskTopia/src/main/java/module-info.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,14 +0,0 @@
+-module com.tasktopia {
+-    requires javafx.controls;
+-    requires javafx.fxml;
+-
+-    opens com.tasktopia to javafx.fxml;
+-    opens com.tasktopia.controller to javafx.fxml;
+-    opens com.tasktopia.model to javafx.fxml;
+-    opens fxml to javafx.fxml;
+-
+-    exports com.tasktopia;
+-    exports com.tasktopia.controller;
+-    exports com.tasktopia.model;
+-    exports com.tasktopia.util;
+-}
+Index: TaskTopia/pom.xml
+===================================================================
+diff --git a/TaskTopia/pom.xml b/TaskTopia/pom.xml
+deleted file mode 100644
+--- a/TaskTopia/pom.xml	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,83 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project xmlns="http://maven.apache.org/POM/4.0.0"
+-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-
+-    <modelVersion>4.0.0</modelVersion>
+-    <groupId>com.example</groupId>
+-    <artifactId>TaskTopia</artifactId>
+-    <version>1.0-SNAPSHOT</version>
+-
+-    <properties>
+-        <maven.compiler.source>21</maven.compiler.source>
+-        <maven.compiler.target>21</maven.compiler.target>
+-        <javafx.version>21.0.2</javafx.version>
+-        <junit.version>5.10.2</junit.version>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-
+-    <dependencies>
+-
+-        <!-- JavaFX -->
+-        <dependency>
+-            <groupId>org.openjfx</groupId>
+-            <artifactId>javafx-controls</artifactId>
+-            <version>${javafx.version}</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.openjfx</groupId>
+-            <artifactId>javafx-fxml</artifactId>
+-            <version>${javafx.version}</version>
+-        </dependency>
+-
+-        <!-- ⭐ JUnit 5 (Aggregator: API + Engine + Params) -->
+-        <dependency>
+-            <groupId>org.junit.jupiter</groupId>
+-            <artifactId>junit-jupiter</artifactId>
+-            <version>${junit.version}</version>
+-            <scope>test</scope>
+-        </dependency>
+-        <dependency>
+-            <groupId>org.jetbrains</groupId>
+-            <artifactId>annotations</artifactId>
+-            <version>RELEASE</version>
+-            <scope>compile</scope>
+-        </dependency>
+-
+-    </dependencies>
+-
+-    <build>
+-        <plugins>
+-
+-            <!-- JavaFX plugin -->
+-            <plugin>
+-                <groupId>org.openjfx</groupId>
+-                <artifactId>javafx-maven-plugin</artifactId>
+-                <version>0.0.8</version>
+-                <configuration>
+-                    <mainClass>com.tasktopia/com.tasktopia.MainApp</mainClass>
+-                </configuration>
+-            </plugin>
+-
+-            <!-- Compiler plugin -->
+-            <plugin>
+-                <groupId>org.apache.maven.plugins</groupId>
+-                <artifactId>maven-compiler-plugin</artifactId>
+-                <version>3.11.0</version>
+-                <configuration>
+-                    <release>21</release>
+-                </configuration>
+-            </plugin>
+-
+-            <!-- ⭐ Surefire plugin (required for JUnit 5) -->
+-            <plugin>
+-                <groupId>org.apache.maven.plugins</groupId>
+-                <artifactId>maven-surefire-plugin</artifactId>
+-                <version>3.2.5</version>
+-            </plugin>
+-
+-        </plugins>
+-    </build>
+-
+-</project>
+Index: TaskTopia/src/test/java/com/tasktopia/TaskTest.java
+===================================================================
+diff --git a/TaskTopia/src/test/java/com/tasktopia/TaskTest.java b/TaskTopia/src/test/java/com/tasktopia/TaskTest.java
+deleted file mode 100644
+--- a/TaskTopia/src/test/java/com/tasktopia/TaskTest.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,192 +0,0 @@
+-package com.tasktopia;
+-
+-import com.tasktopia.model.MockTaskDAO;
+-import com.tasktopia.model.Task;
+-import com.tasktopia.model.Task.Category;
+-import com.tasktopia.model.Task.Priority;
+-import com.tasktopia.model.TaskList;
+-import com.tasktopia.model.TaskStore;
+-
+-import org.junit.jupiter.api.*;
+-
+-import java.time.LocalDate;
+-import java.time.LocalTime;
+-import java.util.List;
+-
+-import static org.junit.jupiter.api.Assertions.*;
+-
+-class LoginTest {
+-
+-    @BeforeEach
+-    void reset() {
+-        TaskStore.getInstance().setLoggedInUser("");
+-    }
+-
+-    @Test
+-    @DisplayName("Login with valid credentials sets the logged-in user")
+-    void login_validCredentials_setsLoggedInUser() {
+-        String username = "alice";
+-        String password = "password123";
+-
+-        boolean isValid = !username.trim().isEmpty() && !password.trim().isEmpty();
+-        if (isValid) {
+-            TaskStore.getInstance().setLoggedInUser(username);
+-        }
+-
+-        assertEquals("alice", TaskStore.getInstance().getLoggedInUser());
+-    }
+-}
+-
+-
+-class SignUpTest {
+-
+-    private String validateSignUp(String username, String password, String confirm) {
+-        if (username.isEmpty() || password.isEmpty()) return "Please fill all fields";
+-        if (!password.equals(confirm)) return "Passwords do not match";
+-        return null;
+-    }
+-
+-    @Test
+-    @DisplayName("Sign up with valid details succeeds")
+-    void signUp_validDetails_succeeds() {
+-        String error = validateSignUp("alice", "secret123", "secret123");
+-        assertNull(error);
+-    }
+-}
+-
+-
+-class AddTaskTest {
+-
+-    @BeforeEach
+-    void clearStore() {
+-        TaskStore.getInstance().getTasks().clear();
+-    }
+-
+-    @Test
+-    @DisplayName("Adding a task stores it in the task list")
+-    void addTask_taskIsStoredInList() {
+-        Task t = new Task("Team Meeting", "Discuss sprint goals",
+-                LocalDate.now(), LocalTime.of(9, 0),
+-                Category.WORK, Priority.HIGH);
+-
+-        TaskStore.getInstance().addTask(t);
+-
+-        assertTrue(TaskStore.getInstance().getTasks().contains(t));
+-    }
+-}
+-
+-class SearchTest {
+-
+-    //Test code
+-    private TaskList taskList;
+-    private Task[] tasks = {
+-            new Task("Team Meeting", "Discuss sprint goals",
+-                    LocalDate.now(), LocalTime.of(9, 0),
+-                    Category.WORK, Priority.HIGH),
+-            new Task("Buy Groceries", "",
+-                    LocalDate.now(), null, Category.GROCERY, Priority.LOW)
+-    };
+-
+-    @BeforeEach
+-    void setup() {
+-        taskList = new TaskList(new MockTaskDAO());
+-    }
+-    //void clearStore() { TaskStore.getInstance().getTasks().clear(); }
+-
+-    @Test
+-   //
+-     //
+-    // void testSearchInMultipleContact() {
+-    //    for (Task task: tasks) {
+-    //        taskList.addTask(task);
+-    //    }
+-    //    List<Task> tasks = taskList.searchTasks("Buy Groceries");
+-    //    assertEquals(1, tasks.size());
+-    //    for (Task task : tasks) {
+-    //        assertEquals(task.getString().equals("Buy Groceries"));
+-    //    }
+-    //}
+-
+-
+-    //private void assertEquals(int, int) {
+-    //}
+-
+-    @DisplayName("Searching for Task in list")
+-    void addTask_taskIsStoredInList() {
+-        Task t = new Task("Team Meeting", "Discuss sprint goals",
+-                LocalDate.now(), LocalTime.of(9, 0),
+-                Category.WORK, Priority.HIGH);
+-
+-        TaskStore.getInstance().addTask(t);
+-
+-        Task l = new Task("Buy Groceries", "",
+-                LocalDate.now(), null, Category.GROCERY, Priority.LOW);
+-
+-        TaskStore.getInstance().addTask(l);
+-
+-
+-        assertTrue(TaskStore.getInstance().getTasks().contains(l));
+-
+-
+-    }
+-
+-
+-}
+-
+-class LogoutTest {
+-
+-    @BeforeEach
+-    void loginUser() {
+-        TaskStore.getInstance().setLoggedInUser("alice");
+-    }
+-
+-    @Test
+-    @DisplayName("Logout clears the logged-in user")
+-    void logout_clearsLoggedInUser() {
+-        TaskStore.getInstance().setLoggedInUser("");
+-
+-        assertEquals("", TaskStore.getInstance().getLoggedInUser());
+-    }
+-}
+-
+-
+-class DeleteTaskTest {
+-
+-    private Task task;
+-
+-    @BeforeEach
+-    void setupStore() {
+-        TaskStore.getInstance().getTasks().clear();
+-        task = new Task("Submit Report", "Final report",
+-                LocalDate.now(), null, Category.WORK, Priority.HIGH);
+-        TaskStore.getInstance().addTask(task);
+-    }
+-
+-    @Test
+-    @DisplayName("Deleting a task removes it from the store")
+-    void deleteTask_removesTaskFromStore() {
+-        TaskStore.getInstance().removeTask(task);
+-
+-        assertFalse(TaskStore.getInstance().getTasks().contains(task));
+-    }
+-}
+-
+-
+-class MarkCompleteTest {
+-
+-    private Task task;
+-
+-    @BeforeEach
+-    void setupTask() {
+-        task = new Task("Buy Groceries", "",
+-                LocalDate.now(), null, Category.GROCERY, Priority.LOW);
+-    }
+-
+-    @Test
+-    @DisplayName("Marking a task as done sets its status to complete")
+-    void markComplete_setDoneTrue_taskIsComplete() {
+-        task.setDone(true);
+-
+-        assertTrue(task.isDone());
+-    }
+-}
+Index: TaskTopia/src/test/java/com/tasktopia/model/MockTaskDAO.java
+===================================================================
+diff --git a/TaskTopia/src/test/java/com/tasktopia/model/MockTaskDAO.java b/TaskTopia/src/test/java/com/tasktopia/model/MockTaskDAO.java
+deleted file mode 100644
+--- a/TaskTopia/src/test/java/com/tasktopia/model/MockTaskDAO.java	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
++++ /dev/null	(revision 44b9f58ba0480a92c226412f8a6550ef3c6f6637)
+@@ -1,47 +0,0 @@
+-package com.tasktopia.model;
+-
+-import java.util.ArrayList;
+-import java.util.List;
+-
+-public class MockTaskDAO implements ITaskDAO {
+-
+-    public final ArrayList<Task> tasks =  new ArrayList<>();
+-    private int autoIncrementedId = 0;
+-
+-    @Override
+-    public void addTask(Task task) {
+-        task.setId(autoIncrementedId);
+-        autoIncrementedId++;
+-        tasks.add(task);
+-    }
+-
+-
+-    public void updateTask(Task task) {
+-        for (int i = 0; i < task.size(); i++) {
+-            if (task.get(i).getId() == task.getId()) {
+-                task.set(i, task);
+-                break;
+-            }
+-        }
+-    }
+-
+-
+-    public void removeTask(Task task){
+-        tasks.remove(task);
+-    }
+-
+-
+-    public Task getTask(int id) {
+-        for (Task task : tasks) {
+-            if (task.getId() == id) {
+-                return task;
+-            }
+-        }
+-        return null;
+-    }
+-
+-    @Override
+-    public List<Task> getAllTasks() {
+-        return new ArrayList<>(tasks);
+-    }
+-}

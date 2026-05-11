@@ -1,0 +1,158 @@
+Index: TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.tasktopia.controller;\r\n\r\nimport javafx.fxml.FXML;\r\nimport javafx.scene.control.*;\r\nimport com.tasktopia.MainApp;\r\n\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\n\r\npublic class SignUpController {\r\n\r\n    @FXML private TextField usernameField;\r\n    @FXML private PasswordField passwordField;\r\n    @FXML private PasswordField confirmPasswordField;\r\n\r\n    // defining sign up/create account for hover effect\r\n    @FXML private Button signUpBtn;\r\n\r\n    // initializing for hover effect\r\n    @FXML\r\n    public void initialize() {\r\n        applyHover(signUpBtn);\r\n    }\r\n\r\n    @FXML\r\n    private void onSignUp() {\r\n        String user = usernameField.getText().trim();\r\n        String pass = passwordField.getText();\r\n        String confirm = confirmPasswordField.getText();\r\n\r\n        if (user.isEmpty() || pass.isEmpty()) {\r\n            showAlert(\"Please fill all fields\");\r\n            return;\r\n        }\r\n\r\n        if (!pass.equals(confirm)) {\r\n            showAlert(\"Passwords do not match\");\r\n            return;\r\n        }\r\n\r\n        // TEMPORARY STORAGE replace later with DB !!!\r\n        System.out.println(\"User registered: \" + user);\r\n\r\n        showAlert(\"Account created! Please login.\");\r\n\r\n        try {\r\n            MainApp.showLogin();\r\n        } catch (Exception e) {\r\n            showAlert(\"Could not return to login screen.\");\r\n        }\r\n    }\r\n\r\n    @FXML\r\n    private void onBackToLogin() {\r\n        try {\r\n            MainApp.showLogin();\r\n        } catch (Exception e) {\r\n            showError(\"Failed to load login screen.\");\r\n        }\r\n    }\r\n\r\n    // displays error pop up for user\r\n    private void showError(String message) {\r\n        Alert alert = new Alert(Alert.AlertType.ERROR);\r\n        alert.setTitle(\"Error\");\r\n        alert.setHeaderText(null);\r\n        alert.setContentText(message);\r\n        alert.showAndWait();\r\n    }\r\n\r\n    //\r\n    private void showAlert(String msg) {\r\n        Alert alert = new Alert(Alert.AlertType.INFORMATION);\r\n        alert.setContentText(msg);\r\n        alert.showAndWait();\r\n    }\r\n\r\n    private final Map<Button, String> baseStyles = new HashMap<>();\r\n\r\n    private void applyHover(Button btn) {\r\n        String base = btn.getStyle();\r\n        baseStyles.put(btn, base);\r\n\r\n        btn.setOnMouseEntered(e ->\r\n                btn.setStyle(baseStyles.get(btn) + \"-fx-scale-x: 1.05; -fx-scale-y: 1.05;\")\r\n        );\r\n\r\n        btn.setOnMouseExited(e ->\r\n                btn.setStyle(baseStyles.get(btn))\r\n        );\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java b/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java
+--- a/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java	(revision a48ef49b67514089d84382a5206f631dc6ad206f)
++++ b/TaskTopia/src/main/java/com/tasktopia/controller/SignUpController.java	(date 1778476235654)
+@@ -1,93 +1,90 @@
+ package com.tasktopia.controller;
+ 
++import com.tasktopia.MainApp;
++import com.tasktopia.model.Contact;
++import com.tasktopia.model.IContactDAO;
++import com.tasktopia.model.SqliteContactDAO;
+ import javafx.fxml.FXML;
+ import javafx.scene.control.*;
+-import com.tasktopia.MainApp;
+-
+-import java.util.HashMap;
+-import java.util.Map;
++import java.util.List;
+ 
++public class SignupController {
+ 
+-public class SignUpController {
+-
+-    @FXML private TextField usernameField;
++    @FXML private TextField     firstNameField;
++    @FXML private TextField     lastNameField;
++    @FXML private TextField     emailField;
+     @FXML private PasswordField passwordField;
+     @FXML private PasswordField confirmPasswordField;
++    @FXML private Label         errorLabel;
+ 
+-    // defining sign up/create account for hover effect
+-    @FXML private Button signUpBtn;
++    private IContactDAO contactDAO;
+ 
+-    // initializing for hover effect
+     @FXML
+     public void initialize() {
+-        applyHover(signUpBtn);
++        contactDAO = new SqliteContactDAO();
++        errorLabel.setVisible(false);
++
++        confirmPasswordField.setOnKeyPressed(e -> {
++            if (e.getCode() == javafx.scene.input.KeyCode.ENTER) handleSignup();
++        });
+     }
+ 
+     @FXML
+-    private void onSignUp() {
+-        String user = usernameField.getText().trim();
+-        String pass = passwordField.getText();
+-        String confirm = confirmPasswordField.getText();
++    private void handleSignup() {
++        String firstName = firstNameField.getText().trim();
++        String lastName  = lastNameField.getText().trim();
++        String email     = emailField.getText().trim();
++        String password  = passwordField.getText().trim();
++        String confirm   = confirmPasswordField.getText().trim();
+ 
+-        if (user.isEmpty() || pass.isEmpty()) {
+-            showAlert("Please fill all fields");
++        // Validation
++        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()
++                || password.isEmpty() || confirm.isEmpty()) {
++            showError("All fields are required.");
++            return;
++        }
++
++        if (!email.contains("@") || !email.contains(".")) {
++            showError("Please enter a valid email address.");
+             return;
+         }
+ 
+-        if (!pass.equals(confirm)) {
+-            showAlert("Passwords do not match");
++        if (!password.equals(confirm)) {
++            showError("Passwords do not match.");
+             return;
+         }
+ 
+-        // TEMPORARY STORAGE replace later with DB !!!
+-        System.out.println("User registered: " + user);
++        // Check if email already exists
++        List<Contact> existing = contactDAO.getAllContacts();
++        boolean emailTaken = existing.stream()
++                .anyMatch(c -> c.getEmail().equalsIgnoreCase(email));
++        if (emailTaken) {
++            showError("An account with that email already exists.");
++            return;
++        }
+ 
+-        showAlert("Account created! Please login.");
++        // Save to database
++        Contact newContact = new Contact(firstName, lastName, email, password);
++        contactDAO.addContact(newContact);
+ 
+         try {
+             MainApp.showLogin();
+-        } catch (Exception e) {
+-            showAlert("Could not return to login screen.");
++        } catch (Exception ex) {
++            showError("Account created! Please log in.");
+         }
+     }
+ 
+     @FXML
+-    private void onBackToLogin() {
++    private void goToLogin() {
+         try {
+             MainApp.showLogin();
+-        } catch (Exception e) {
+-            showError("Failed to load login screen.");
++        } catch (Exception ex) {
++            showError("Could not navigate to login. Please restart.");
+         }
+     }
+-
+-    // displays error pop up for user
+-    private void showError(String message) {
+-        Alert alert = new Alert(Alert.AlertType.ERROR);
+-        alert.setTitle("Error");
+-        alert.setHeaderText(null);
+-        alert.setContentText(message);
+-        alert.showAndWait();
+-    }
+-
+-    //
+-    private void showAlert(String msg) {
+-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+-        alert.setContentText(msg);
+-        alert.showAndWait();
+-    }
+ 
+-    private final Map<Button, String> baseStyles = new HashMap<>();
+-
+-    private void applyHover(Button btn) {
+-        String base = btn.getStyle();
+-        baseStyles.put(btn, base);
+-
+-        btn.setOnMouseEntered(e ->
+-                btn.setStyle(baseStyles.get(btn) + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;")
+-        );
+-
+-        btn.setOnMouseExited(e ->
+-                btn.setStyle(baseStyles.get(btn))
+-        );
++    private void showError(String msg) {
++        errorLabel.setText(msg);
++        errorLabel.setVisible(true);
+     }
+ }
+\ No newline at end of file

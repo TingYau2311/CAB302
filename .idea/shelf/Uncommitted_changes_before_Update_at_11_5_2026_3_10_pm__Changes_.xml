@@ -1,0 +1,9 @@
+<changelist name="Uncommitted_changes_before_Update_at_11_5_2026_3_10_pm_[Changes]" date="1778476235317" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_5_2026_3_10_pm_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 11/5/2026 3:10 pm [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="TaskTopia/target/classes/com/tasktopia/controller/SignupController.class" />
+    <option name="AFTER_PATH" value="TaskTopia/target/classes/com/tasktopia/controller/SignupController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_5_2026_3_10_pm_[Changes]/SignupController.class" />
+  </binary>
+</changelist>
