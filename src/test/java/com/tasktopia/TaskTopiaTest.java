@@ -328,7 +328,7 @@ public class TaskTopiaTest {
     }
 
     /**
-     * Test 17 — Adding the same category name twice should only store one entry.
+     * Test 17 — Adding the same category name twice should only store one entry
      */
     @Test
     public void testDuplicateCategoryIsRejected() {
