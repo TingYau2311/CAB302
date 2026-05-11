@@ -301,17 +301,30 @@ public class TaskTopiaTest {
     }
 
     /**
-     * Test 16 — Adding a custom category should make it available.
-     * Fails because CategoryManager class does not exist yet.
+     * Test 16 — A new category is saved with the correct name and colour,
+     * and can be retrieved for the same user after a simulated re-login.
      */
     @Test
-    public void testAddCustomCategory() {
-        // Fails — CategoryManager does not exist
+    public void testAddCategoryPersistsForUser() {
+        MockCategoryDAO categoryDAO = new MockCategoryDAO();
         CategoryManager categoryManager = new CategoryManager();
-        categoryManager.addCategory("Hobbies");
 
-        assertTrue(categoryManager.getCategories().contains("Hobbies"),
-                "Custom category should be added");
+        // User creates a category and it is saved to the DAO
+        CustomCategory travel = new CustomCategory("Travel", "#4D9DE0");
+        categoryManager.addCategory(travel);
+        categoryDAO.saveCategory(1, travel);
+
+        // Simulate logout + login: fresh CategoryManager, reload from DAO
+        CategoryManager reloaded = new CategoryManager();
+        List<CustomCategory> saved = categoryDAO.getCategoriesByUser(1);
+        saved.forEach(reloaded::addCategory);
+
+        assertEquals(1, reloaded.getCategories().size(),
+                "One category should be restored after re-login");
+        assertEquals("Travel", reloaded.getCategories().get(0).getName(),
+                "Category name should be restored correctly");
+        assertEquals("#4D9DE0", reloaded.getCategories().get(0).getColour(),
+                "Category colour should be restored correctly");
     }
 
     /**
