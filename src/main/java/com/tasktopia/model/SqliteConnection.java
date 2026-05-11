@@ -34,6 +34,15 @@ public class SqliteConnection {
                     + "password VARCHAR NOT NULL"
                     + ")");
 
+            // New categories table
+            statement.execute("CREATE TABLE IF NOT EXISTS user_categories ("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + "userId INTEGER NOT NULL,"
+                    + "name VARCHAR NOT NULL,"
+                    + "colour VARCHAR NOT NULL,"
+                    + "FOREIGN KEY (userId) REFERENCES contacts(id)"
+                    + ")");
+
             // Tasks table
             statement.execute("CREATE TABLE IF NOT EXISTS tasks ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"

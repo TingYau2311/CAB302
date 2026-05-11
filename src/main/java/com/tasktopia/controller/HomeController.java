@@ -4,6 +4,7 @@ import com.tasktopia.MainApp;
 import com.tasktopia.model.CategoryManager;
 import com.tasktopia.model.CustomCategory;
 import com.tasktopia.model.ITaskDAO;
+import com.tasktopia.model.SqliteCategoryDAO;
 import com.tasktopia.model.SqliteTaskDAO;
 import com.tasktopia.model.Task;
 import com.tasktopia.model.TaskStore;
@@ -38,6 +39,7 @@ public class HomeController {
 
     // ── State ─────────────────────────────────────────────────
     private ITaskDAO taskDAO;
+    private SqliteCategoryDAO categoryDAO;
     private List<Task> allTasks;
     private String currentCategory = "all";
     private Task   selectedTask    = null;
@@ -62,14 +64,26 @@ public class HomeController {
     // ── Initialise ────────────────────────────────────────────
     @FXML
     public void initialize() {
-        taskDAO = new SqliteTaskDAO();
-        allTasks = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
+        taskDAO    = new SqliteTaskDAO();
+        categoryDAO = new SqliteCategoryDAO();
+        allTasks   = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
 
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
 
         buildOverlays();
+        loadSavedCategories();   // restore persisted custom categories
         renderTasks();
+    }
+
+    // ── Load persisted custom categories for this user ────────
+    private void loadSavedCategories() {
+        int userId = TaskStore.getInstance().getLoggedInUserId();
+        List<CustomCategory> saved = categoryDAO.getCategoriesByUser(userId);
+        for (CustomCategory cat : saved) {
+            categoryManager.addCategory(cat);
+            addNavButton(cat);
+        }
     }
 
     // ── Reload tasks from DB ──────────────────────────────────
@@ -749,13 +763,14 @@ public class HomeController {
         card.setMaxWidth(460);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        HBox header = modalHeader("+ Add Category");
+        HBox header = modalHeader("🏷️ Add Category");
         Button closeBtn = (Button) header.getChildren().get(1);
 
-        // ── Category name field
+        // ── Category name field ──────────────────────────────
         TextField nameField = field("e.g. Travel, Hobbies, Finance…");
 
-        // ── Colour palette
+        // ── Colour palette ───────────────────────────────────
+        // 16 hand-picked colours that look good as nav-bar chips
         String[] palette = {
                 "#FF6B6B", "#FF9F43", "#F7C59F", "#FFD93D",
                 "#6BCB77", "#4D9DE0", "#A3CFF5", "#845EC2",
@@ -808,7 +823,7 @@ public class HomeController {
             colourGrid.add(swatch, i % 4, i / 4);
         }
 
-        // ── Live preview chip
+        // ── Live preview chip ────────────────────────────────
         Label previewLabel = new Label("PREVIEW");
         previewLabel.setStyle(Styles.formLabel());
 
@@ -854,6 +869,7 @@ public class HomeController {
             }
 
             categoryManager.addCategory(newCat);
+            categoryDAO.saveCategory(TaskStore.getInstance().getLoggedInUserId(), newCat);
             addNavButton(newCat);
 
             closeOverlay(shell);
