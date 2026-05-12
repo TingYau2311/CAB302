@@ -33,7 +33,7 @@
 
                 <!-- Right-side actions -->
                 <HBox spacing="10">
-                    <Button text="⚙️Settings"
+                    <Button text="⚙Settings"
                             onAction="#onSettings"
                             style="-fx-background-color: transparent;
                                    -fx-text-fill: #a8b8d8;" />

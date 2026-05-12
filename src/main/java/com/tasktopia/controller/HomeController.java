@@ -230,7 +230,7 @@ public class HomeController {
         timeLbl.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; "
                 + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + Styles.TEXT_MUTED + ";");
 
-        Button editBtn = new Button("✏️");
+        Button editBtn = new Button("✏");
         editBtn.setStyle("-fx-background-color: rgba(74,108,247,0.10); "
                 + "-fx-text-fill: #4a6cf7; -fx-background-radius: 10; -fx-cursor: hand;");
         editBtn.setOnAction(e -> {
@@ -531,11 +531,11 @@ public class HomeController {
         detailDoneBtn.setStyle(Styles.primaryButton());
         detailDoneBtn.setMaxWidth(Double.MAX_VALUE);
 
-        Button deleteBtn = new Button("🗑️  Delete");
+        Button deleteBtn = new Button("🗑 Delete");
         deleteBtn.setStyle(Styles.dangerButton());
         deleteBtn.setMaxWidth(Double.MAX_VALUE);
 
-        Button editBtn = new Button("✏️  Edit");
+        Button editBtn = new Button("✏ Edit");
         editBtn.setStyle(Styles.secondaryButton());
         editBtn.setMaxWidth(Double.MAX_VALUE);
 
@@ -565,7 +565,7 @@ public class HomeController {
                 reloadTasks();
                 renderTasks();
                 closeOverlay(shell);
-                showToast("🗑️  Task deleted");
+                showToast("🗑 Task deleted");
             }
         });
 
@@ -635,7 +635,7 @@ public class HomeController {
         card.setMaxWidth(480);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        HBox header = modalHeader("✏️  Edit Task");
+        HBox header = modalHeader("✏ Edit Task");
         Button closeBtn = (Button) header.getChildren().get(1);
 
         TextField nameField  = field("Task name");
