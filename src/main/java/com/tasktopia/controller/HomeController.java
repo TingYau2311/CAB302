@@ -344,10 +344,16 @@ public class HomeController {
                 time = LocalTime.parse(timeField.getText().trim()); }
             catch (DateTimeParseException ignored) { showToast("Time format: HH:mm"); return; }
 
-            Task.Category cat = Task.Category.PERSONAL;
-            if (catBox.getValue() != null)
-                try { cat = Task.Category.valueOf(catBox.getValue().toUpperCase()); }
-                catch (Exception ignored) {}
+            Task.Category cat = null;
+            String catTag = null;
+            if (catBox.getValue() != null) {
+                try {
+                    cat = Task.Category.valueOf(catBox.getValue().toUpperCase());
+                } catch (Exception ignored) {
+                    // Custom category — store as a tag instead
+                    catTag = catBox.getValue().toLowerCase();
+                }
+            }
 
             Task.Priority pri = Task.Priority.MEDIUM;
             if (priBox.getValue() != null)
@@ -358,10 +364,12 @@ public class HomeController {
             LocalTime finalTime = time != null ? time : LocalTime.now();
             LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
 
+            String tagValue = cat != null ? cat.name().toLowerCase() : (catTag != null ? catTag : "");
             Task newTask = new Task(taskName, startDT, startDT.plusHours(1),
-                    descField.getText().trim(), cat.name().toLowerCase(),
+                    descField.getText().trim(), tagValue,
                     TaskStore.getInstance().getLoggedInUserId());
-            newTask.setCategory(cat);
+            newTask.setCategory(cat);   // null is fine — means custom category
+            newTask.setTags(tagValue);
             newTask.setPriority(pri);
             newTask.setDate(finalDate);
             newTask.setTime(finalTime);
@@ -636,6 +644,14 @@ public class HomeController {
         TextField timeField  = field("Time  (HH:mm)");
         ComboBox<String> catBox = combo("Select Category",
                 "Work","Grocery","Personal","School","Medical","Social","Fitness");
+        catBox.setOnShowing(e -> {
+            java.util.List<String> builtin = java.util.Arrays.asList(
+                    "Work","Grocery","Personal","School","Medical","Social","Fitness");
+            catBox.getItems().removeIf(item -> !builtin.contains(item));
+            categoryManager.getCategoryNames().forEach(name -> {
+                if (!catBox.getItems().contains(name)) catBox.getItems().add(name);
+            });
+        });
         ComboBox<String> priBox = combo("Select Priority","High","Medium","Low");
 
         HBox row1 = new HBox(14, labeled("Date", dateField), labeled("Time", timeField));
@@ -668,10 +684,16 @@ public class HomeController {
                 time = LocalTime.parse(timeField.getText().trim()); }
             catch (DateTimeParseException ignored) { showToast("Time format: HH:mm"); return; }
 
-            Task.Category cat = Task.Category.PERSONAL;
-            if (catBox.getValue() != null)
-                try { cat = Task.Category.valueOf(catBox.getValue().toUpperCase()); }
-                catch (Exception ignored) {}
+            Task.Category cat = null;
+            String catTag = null;
+            if (catBox.getValue() != null) {
+                try {
+                    cat = Task.Category.valueOf(catBox.getValue().toUpperCase());
+                } catch (Exception ignored) {
+                    // Custom category — store as a tag
+                    catTag = catBox.getValue().toLowerCase();
+                }
+            }
 
             Task.Priority pri = Task.Priority.MEDIUM;
             if (priBox.getValue() != null)
@@ -682,12 +704,13 @@ public class HomeController {
             LocalTime finalTime = time != null ? time : LocalTime.now();
             LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
 
+            String tagValue = cat != null ? cat.name().toLowerCase() : (catTag != null ? catTag : "");
             selectedTask.setTitle(taskName);
             selectedTask.setDescription(descField.getText().trim());
             selectedTask.setStartDate(startDT);
             selectedTask.setEndDate(startDT.plusHours(1));
-            selectedTask.setTags(cat.name().toLowerCase());
-            selectedTask.setCategory(cat);
+            selectedTask.setTags(tagValue);
+            selectedTask.setCategory(cat);   // null means custom category
             selectedTask.setPriority(pri);
             selectedTask.setDate(finalDate);
             selectedTask.setTime(finalTime);
@@ -735,6 +758,13 @@ public class HomeController {
         else
             editTimeField.clear();
 
+        java.util.List<String> builtinCats = java.util.Arrays.asList(
+                "Work","Grocery","Personal","School","Medical","Social","Fitness");
+        editCatBox.getItems().removeIf(item -> !builtinCats.contains(item));
+        categoryManager.getCategoryNames().forEach(name -> {
+            if (!editCatBox.getItems().contains(name)) editCatBox.getItems().add(name);
+        });
+
         if (task.getCategory() != null)
             editCatBox.setValue(task.getCategoryLabel());
         else if (task.getTags() != null && !task.getTags().isEmpty())
@@ -763,7 +793,7 @@ public class HomeController {
         card.setMaxWidth(460);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        HBox header = modalHeader("+ Add Category");
+        HBox header = modalHeader("🏷️ Add Category");
         Button closeBtn = (Button) header.getChildren().get(1);
 
         // ── Category name field ──────────────────────────────
@@ -897,7 +927,10 @@ public class HomeController {
         return shell;
     }
 
-
+    /**
+     * Dynamically creates and inserts a nav button for a custom category
+     * into the topbarNav HBox (before the end, after built-in buttons).
+     */
     private void addNavButton(CustomCategory cat) {
         // Decide text colour: use white for dark backgrounds, black for light ones
         javafx.scene.paint.Color fill = javafx.scene.paint.Color.web(cat.getColour());
