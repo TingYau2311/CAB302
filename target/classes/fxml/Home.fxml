@@ -146,6 +146,8 @@
                         text="＋ Add"
                         onAction="#onAddCategory"
                         prefHeight="40"
+                        minWidth="80"
+                        maxWidth="80"
                         style="-fx-background-color: #6D6551;
                                -fx-text-fill: white;
                                -fx-font-size: 13px;

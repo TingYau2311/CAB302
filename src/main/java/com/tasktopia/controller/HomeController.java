@@ -793,7 +793,7 @@ public class HomeController {
         card.setMaxWidth(460);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        HBox header = modalHeader("🏷️ Add Category");
+        HBox header = modalHeader("🏷+ Add Category");
         Button closeBtn = (Button) header.getChildren().get(1);
 
         // ── Category name field ──────────────────────────────
