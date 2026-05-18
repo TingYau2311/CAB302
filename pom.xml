@@ -58,15 +58,6 @@
                     <mainClass>com.tasktopia/com.tasktopia.MainApp</mainClass>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <release>21</release>
-                </configuration>
-            </plugin>
-
             <!-- Surefire: required for JUnit 5 + JavaFX headless testing -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -84,7 +75,14 @@
                     </argLine>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
