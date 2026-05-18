@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,9 +19,18 @@ class SignupControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SignUp.fxml"));
+        // Use context classloader so tests can see SignUp.fxml
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        FXMLLoader loader = new FXMLLoader(cl.getResource("SignUp.fxml"));
+
         Parent root = loader.load();
         controller = loader.getController();
+    }
+
+    private <T> T getPrivateField(String name, Class<T> type) throws Exception {
+        Field f = SignupController.class.getDeclaredField(name);
+        f.setAccessible(true);
+        return type.cast(f.get(controller));
     }
 
     private void invokeHandleSignup() throws Exception {
@@ -31,20 +41,22 @@ class SignupControllerTest {
 
     @Test
     void invalidEmailIsRejected() throws Exception {
-        ((TextField) controller.getClass().getDeclaredField("firstNameField")
-                .get(controller)).setText("John");
-        ((TextField) controller.getClass().getDeclaredField("lastNameField")
-                .get(controller)).setText("Smith");
-        ((TextField) controller.getClass().getDeclaredField("emailField")
-                .get(controller)).setText("invalid-email");
-        ((PasswordField) controller.getClass().getDeclaredField("passwordField")
-                .get(controller)).setText("pass123");
-        ((PasswordField) controller.getClass().getDeclaredField("confirmPasswordField")
-                .get(controller)).setText("pass123");
+        TextField firstName = getPrivateField("firstNameField", TextField.class);
+        TextField lastName = getPrivateField("lastNameField", TextField.class);
+        TextField email = getPrivateField("emailField", TextField.class);
+        PasswordField password = getPrivateField("passwordField", PasswordField.class);
+        PasswordField confirm = getPrivateField("confirmPasswordField", PasswordField.class);
+        Label error = getPrivateField("errorLabel", Label.class);
+
+        firstName.setText("Angela");
+        lastName.setText("Lin");
+        email.setText("not-an-email");
+        password.setText("password123");
+        confirm.setText("password123");
 
         invokeHandleSignup();
 
-        Label error = (Label) controller.getClass().getDeclaredField("errorLabel").get(controller);
         assertEquals("Please enter a valid email address.", error.getText());
+        assertTrue(error.isVisible());
     }
 }

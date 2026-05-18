@@ -4,6 +4,9 @@ import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskStoreTest {
@@ -13,14 +16,22 @@ class TaskStoreTest {
     @BeforeEach
     void setUp() {
         store = TaskStore.getInstance();
-        store.getTasks().clear();   // reset between tests
+        store.getTasks().clear();
         store.setLoggedInUser("");
         store.setLoggedInUserId(-1);
     }
 
     @Test
     void addTaskWorks() {
-        Task t = new Task("Test Task", "Description", null, null, 1);
+        Task t = new Task(
+                "Test Task",
+                "Description",
+                LocalDate.now(),
+                LocalTime.NOON,
+                Task.Category.WORK,
+                Task.Priority.MEDIUM
+        );
+
         store.addTask(t);
 
         ObservableList<Task> tasks = store.getTasks();
@@ -30,7 +41,15 @@ class TaskStoreTest {
 
     @Test
     void removeTaskWorks() {
-        Task t = new Task("Task A", "Desc", null, null, 1);
+        Task t = new Task(
+                "Task A",
+                "Desc",
+                LocalDate.now(),
+                LocalTime.NOON,
+                Task.Category.PERSONAL,
+                Task.Priority.LOW
+        );
+
         store.addTask(t);
         store.removeTask(t);
 

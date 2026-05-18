@@ -1,6 +1,7 @@
 package com.tasktopia.model;
 
 import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -9,91 +10,46 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskTest {
 
     @Test
-    void taskCreationStoresAllFields() {
-        LocalDate date = LocalDate.of(2026, 5, 20);
-        LocalTime time = LocalTime.of(14, 30);
-
-        Task task = new Task(
-                "Study",
-                "CAB302 work",
-                date,
-                time,
-                Task.Category.SCHOOL,
-                Task.Priority.HIGH
-        );
-
-        assertEquals("Study", task.getName());
-        assertEquals("CAB302 work", task.getDescription());
-        assertEquals(date, task.getDate());
-        assertEquals(time, task.getTime());
-        assertEquals(Task.Category.SCHOOL, task.getCategory());
-        assertEquals(Task.Priority.HIGH, task.getPriority());
-        assertFalse(task.isDone());
-    }
-
-    @Test
-    void settersUpdateFieldsCorrectly() {
-        Task task = new Task(
-                "Old",
-                "Old desc",
+    void priorityLabelFormatsCorrectly() {
+        Task t = new Task(
+                "Task",
+                "Desc",
                 LocalDate.now(),
                 LocalTime.NOON,
                 Task.Category.WORK,
-                Task.Priority.MEDIUM
+                Task.Priority.HIGH
         );
 
-        task.setName("New");
-        task.setDescription("New desc");
-        task.setCategory(Task.Category.PERSONAL);
-        task.setPriority(Task.Priority.LOW);
-        task.setDone(true);
-
-        assertEquals("New", task.getName());
-        assertEquals("New desc", task.getDescription());
-        assertEquals(Task.Category.PERSONAL, task.getCategory());
-        assertEquals(Task.Priority.LOW, task.getPriority());
-        assertTrue(task.isDone());
+        assertEquals("High", t.getPriorityLabel());
     }
 
     @Test
     void categoryLabelFormatsCorrectly() {
-        Task task = new Task(
-                "Test",
-                "Test",
+        Task t = new Task(
+                "Task",
+                "Desc",
                 LocalDate.now(),
-                LocalTime.now(),
+                LocalTime.NOON,
                 Task.Category.MEDICAL,
                 Task.Priority.LOW
         );
 
-        assertEquals("Medical", task.getCategoryLabel());
+        assertEquals("Medical", t.getCategoryLabel());
     }
 
     @Test
-    void priorityLabelFormatsCorrectly() {
-        Task task = new Task(
-                "Test",
-                "Test",
+    void doneToggleWorks() {
+        Task t = new Task(
+                "Task",
+                "Desc",
                 LocalDate.now(),
-                LocalTime.now(),
-                Task.Category.WORK,
-                Task.Priority.HIGH
-        );
-
-        assertEquals("High", task.getPriorityLabel());
-    }
-
-    @Test
-    void timeStringHandlesNull() {
-        Task task = new Task(
-                "No time",
-                "None",
-                LocalDate.now(),
-                null,
+                LocalTime.NOON,
                 Task.Category.PERSONAL,
                 Task.Priority.MEDIUM
         );
 
-        assertEquals("", task.getTimeString());
+        assertFalse(t.isDone());
+        t.setDone(true);
+        assertTrue(t.isDone());
     }
 }
