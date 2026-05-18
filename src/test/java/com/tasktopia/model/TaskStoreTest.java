@@ -1,6 +1,5 @@
 package com.tasktopia.model;
 
-import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,55 +15,65 @@ class TaskStoreTest {
     @BeforeEach
     void setUp() {
         store = TaskStore.getInstance();
-        store.getTasks().clear();
+        store.getTasks().clear(); // reset list
         store.setLoggedInUser("");
-        store.setLoggedInUserId(-1);
     }
 
-    @Test
-    void addTaskWorks() {
-        Task t = new Task(
-                "Test Task",
-                "Description",
+    private Task sample(String name) {
+        return new Task(
+                name,
+                "Desc",
                 LocalDate.now(),
                 LocalTime.NOON,
                 Task.Category.WORK,
                 Task.Priority.MEDIUM
         );
-
-        store.addTask(t);
-
-        ObservableList<Task> tasks = store.getTasks();
-        assertEquals(1, tasks.size());
-        assertEquals("Test Task", tasks.get(0).getTitle());
     }
 
     @Test
-    void removeTaskWorks() {
-        Task t = new Task(
-                "Task A",
-                "Desc",
-                LocalDate.now(),
-                LocalTime.NOON,
-                Task.Category.PERSONAL,
-                Task.Priority.LOW
-        );
-
+    void addTaskStoresTask() {
+        Task t = sample("A");
         store.addTask(t);
-        store.removeTask(t);
 
-        assertTrue(store.getTasks().isEmpty());
+        assertEquals(1, store.getTasks().size());
+        assertEquals("A", store.getTasks().get(0).getName());
     }
 
     @Test
-    void loggedInUserSetAndGet() {
+    void removeTaskRemovesCorrectItem() {
+        Task a = sample("A");
+        Task b = sample("B");
+
+        store.addTask(a);
+        store.addTask(b);
+
+        store.removeTask(a);
+
+        assertEquals(1, store.getTasks().size());
+        assertEquals("B", store.getTasks().get(0).getName());
+    }
+
+    @Test
+    void removeTaskOnMissingDoesNothing() {
+        Task a = sample("A");
+
+        store.removeTask(a);
+
+        assertEquals(0, store.getTasks().size());
+    }
+
+    @Test
+    void loggedInUserStoresCorrectly() {
         store.setLoggedInUser("angela@example.com");
         assertEquals("angela@example.com", store.getLoggedInUser());
     }
 
     @Test
-    void loggedInUserIdSetAndGet() {
-        store.setLoggedInUserId(42);
-        assertEquals(42, store.getLoggedInUserId());
+    void getInstanceReturnsSameSingleton() {
+        TaskStore s1 = TaskStore.getInstance();
+        TaskStore s2 = TaskStore.getInstance();
+
+        assertSame(s1, s2);
     }
 }
+
