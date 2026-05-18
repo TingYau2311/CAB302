@@ -26,7 +26,6 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
-
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
@@ -34,8 +33,7 @@
             <version>3.41.2.2</version>
         </dependency>
 
-
-        <!-- ⭐ JUnit 5 (Aggregator: API + Engine + Params) -->
+        <!-- JUnit 5 (Aggregator: API + Engine + Params) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -48,7 +46,6 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -70,11 +67,22 @@
                 </configuration>
             </plugin>
 
-            <!-- ⭐ Surefire plugin (required for JUnit 5) -->
+            <!-- Surefire: required for JUnit 5 + JavaFX headless testing -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+                <configuration>
+                    <argLine>
+                        --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                        --add-opens javafx.controls/javafx.scene.control=ALL-UNNAMED
+                        --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                        -Djava.awt.headless=true
+                        -Dtestfx.headless=true
+                        -Dprism.order=sw
+                        -Dprism.verbose=false
+                    </argLine>
+                </configuration>
             </plugin>
 
         </plugins>

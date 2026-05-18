@@ -1,28 +1,45 @@
 package com.tasktopia.model;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
-
+/**
+ * In-memory CategoryDAO for unit tests.
+ * Categories are stored per-user and duplicates (same name, same user) are rejected.
+ */
 public class MockCategoryDAO {
 
-    private final List<int[]> rows = new ArrayList<>();
-    private final List<CustomCategory> cats = new ArrayList<>();
+    // userId → list of that user's categories
+    private final Map<Integer, List<CustomCategory>> store = new LinkedHashMap<>();
 
+    /**
+     * Saves a category for the given user.
+     * Silently ignores the save if a category with the same name already exists for that user.
+     */
     public void saveCategory(int userId, CustomCategory category) {
-        // Duplicate guard — same logic as SqliteCategoryDAO
-        boolean exists = cats.stream()
-                .anyMatch(c -> c.getKey().equals(category.getKey()));
-        if (exists) return;
-        cats.add(category);
-        rows.add(new int[]{userId, cats.size() - 1});
+        store.putIfAbsent(userId, new ArrayList<>());
+        List<CustomCategory> userCats = store.get(userId);
+
+        boolean duplicate = userCats.stream()
+                .anyMatch(c -> c.getName().equalsIgnoreCase(category.getName()));
+
+        if (!duplicate) {
+            userCats.add(category);
+        }
     }
 
+    /** Returns all categories belonging to the given user (never null). */
     public List<CustomCategory> getCategoriesByUser(int userId) {
-        return rows.stream()
-                .filter(r -> r[0] == userId)
-                .map(r -> cats.get(r[1]))
-                .collect(Collectors.toList());
+        return store.getOrDefault(userId, new ArrayList<>());
+    }
+
+    /** Removes a category by name for the given user. */
+    public void deleteCategory(int userId, String name) {
+        List<CustomCategory> userCats = store.get(userId);
+        if (userCats != null) {
+            userCats.removeIf(c -> c.getName().equalsIgnoreCase(name));
+        }
     }
 }

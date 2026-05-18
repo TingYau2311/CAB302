@@ -17,27 +17,38 @@ public class SignupController {
     @FXML private PasswordField confirmPasswordField;
     @FXML private Label         errorLabel;
 
-    private IContactDAO contactDAO;
+    // Allow tests to inject a mock
+    IContactDAO contactDAO;
 
     @FXML
     public void initialize() {
-        contactDAO = new SqliteContactDAO();
-        errorLabel.setVisible(false);
+        // NOTE: DAO is intentionally NOT initialised here.
+        // initialize() is only called by the FX runtime; tests inject the mock
+        // via reflection after construction and never call initialize().
+        // The null-check guard in handleSignup() handles both cases.
 
-        confirmPasswordField.setOnKeyPressed(e -> {
-            if (e.getCode() == javafx.scene.input.KeyCode.ENTER) handleSignup();
-        });
+        if (errorLabel != null) errorLabel.setVisible(false);
+
+        if (confirmPasswordField != null) {
+            confirmPasswordField.setOnKeyPressed(e -> {
+                if (e.getCode() == javafx.scene.input.KeyCode.ENTER) handleSignup();
+            });
+        }
     }
 
     @FXML
     private void handleSignup() {
+        // Only create real DAO if tests haven't injected one
+        if (contactDAO == null) {
+            contactDAO = new SqliteContactDAO();
+        }
+
         String firstName = firstNameField.getText().trim();
         String lastName  = lastNameField.getText().trim();
         String email     = emailField.getText().trim();
         String password  = passwordField.getText().trim();
         String confirm   = confirmPasswordField.getText().trim();
 
-        // Validation
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()
                 || password.isEmpty() || confirm.isEmpty()) {
             showError("All fields are required.");
@@ -54,7 +65,6 @@ public class SignupController {
             return;
         }
 
-        // Check if email already exists
         List<Contact> existing = contactDAO.getAllContacts();
         boolean emailTaken = existing.stream()
                 .anyMatch(c -> c.getEmail().equalsIgnoreCase(email));
@@ -63,7 +73,6 @@ public class SignupController {
             return;
         }
 
-        // Save to database
         Contact newContact = new Contact(firstName, lastName, email, password);
         contactDAO.addContact(newContact);
 
