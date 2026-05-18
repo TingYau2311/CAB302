@@ -9,9 +9,8 @@ import java.nio.charset.StandardCharsets;
 
 public class CognitiClientMain {
 
-    // TRY ANY OF THESE AGENTS
-    //    private static final String AGENT_ID = "69f2ab2bac7d1d1e0d0b608b"; //CAB302 Question Generator Production
-    private static final String AGENT_ID = "6a046b7d369faae92bfcd391"; //Brisbane Urban Explorer
+    //AI prompt
+    private static final String AGENT_ID = "6a046b7d369faae92bfcd391";
 
     private static final String BEARER_TOKEN = Secrets.getBearerToken();
 
@@ -19,7 +18,7 @@ public class CognitiClientMain {
         CognitiConversation conversation = CognitiConversation.initialise(AGENT_ID, BEARER_TOKEN);
 
         while (true) {
-            System.out.print("Enter prompt: ");
+            System.out.print("Welcome to TaskTopia! How can I help you? "); //AI Greeting
             System.out.flush();
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(System.in, StandardCharsets.UTF_8)
@@ -27,7 +26,7 @@ public class CognitiClientMain {
 
             String prompt = reader.readLine();
             String response = conversation.sendMessage(prompt);
-            System.out.println("Response: " + response);
+            System.out.println("Response: " + response); //AI Response
         }
     }
 }
