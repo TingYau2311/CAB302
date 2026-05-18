@@ -1,39 +1,32 @@
 package com.tasktopia.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * Manages user-defined custom categories (name + colour).
- * Built-in categories (Work, Grocery, …) are handled separately via Task.Category enum.
- */
 public class CategoryManager {
 
     private final List<CustomCategory> categories = new ArrayList<>();
 
-    /** Add a new custom category. Ignores duplicates (same key). */
     public void addCategory(CustomCategory category) {
-        boolean exists = categories.stream()
-                .anyMatch(c -> c.getKey().equals(category.getKey()));
-        if (!exists) {
+        boolean duplicate = categories.stream()
+                .anyMatch(c -> c.getName().equalsIgnoreCase(category.getName()));
+        if (!duplicate) {
             categories.add(category);
         }
     }
 
-    /** Legacy string-only overload kept for backwards compatibility. */
-    public void addCategory(String categoryName) {
-        addCategory(new CustomCategory(categoryName, "#A3CFF5"));
+    public void removeCategory(String name) {
+        categories.removeIf(c -> c.getName().equalsIgnoreCase(name));
     }
 
     public List<CustomCategory> getCategories() {
-        return Collections.unmodifiableList(categories);
+        return categories;
     }
 
-    /** Returns the names of all custom categories (for combo-boxes, etc.). */
     public List<String> getCategoryNames() {
-        List<String> names = new ArrayList<>();
-        for (CustomCategory c : categories) names.add(c.getName());
-        return names;
+        return categories.stream()
+                .map(CustomCategory::getName)
+                .collect(Collectors.toList());
     }
 }

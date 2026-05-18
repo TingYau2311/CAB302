@@ -2,6 +2,7 @@ package com.tasktopia.controller;
 
 import com.tasktopia.model.Contact;
 import com.tasktopia.model.MockContactDAO;
+import com.tasktopia.model.TaskStore;
 import javafx.scene.control.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +13,9 @@ import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SignupControllerTest {
+class LoginControllerTest {
 
-    private SignupController controller;
+    private LoginController controller;
     private MockContactDAO mockDAO;
 
     // -------- JavaFX Toolkit Init --------
@@ -88,86 +89,64 @@ class SignupControllerTest {
 
     @BeforeEach
     void setUp() {
-        controller = new SignupController();
+        controller = new LoginController();
 
-        setField(controller, "firstNameField", new TextField());
-        setField(controller, "lastNameField", new TextField());
         setField(controller, "emailField", new TextField());
         setField(controller, "passwordField", new PasswordField());
-        setField(controller, "confirmPasswordField", new PasswordField());
         setField(controller, "errorLabel", new Label());
+        setField(controller, "signInBtn", new Button());
 
         mockDAO = new MockContactDAO();
         setField(controller, "contactDAO", mockDAO);
+
+        TaskStore.getInstance().setLoggedInUser(null);
+        TaskStore.getInstance().setLoggedInUserId(-1);
     }
 
     // -------- Tests --------
 
     @Test
-    void signupFailsWhenFieldsAreEmpty() {
-        callPrivate(controller, "handleSignup");
+    void loginFailsWhenFieldsEmpty() {
+        callPrivate(controller, "handleLogin");
 
         Label error = (Label) getField(controller, "errorLabel");
-        assertTrue(error.isVisible());
-        assertEquals("All fields are required.", error.getText());
+        assertEquals("Please enter both email and password.", error.getText());
     }
 
     @Test
-    void signupFailsWithInvalidEmail() {
-        ((TextField) getField(controller, "firstNameField")).setText("A");
-        ((TextField) getField(controller, "lastNameField")).setText("B");
+    void loginFailsWithInvalidEmail() {
         ((TextField) getField(controller, "emailField")).setText("invalid");
         ((PasswordField) getField(controller, "passwordField")).setText("pass");
-        ((PasswordField) getField(controller, "confirmPasswordField")).setText("pass");
 
-        callPrivate(controller, "handleSignup");
+        callPrivate(controller, "handleLogin");
 
         Label error = (Label) getField(controller, "errorLabel");
         assertEquals("Please enter a valid email address.", error.getText());
     }
 
     @Test
-    void signupFailsWhenPasswordsDoNotMatch() {
-        ((TextField) getField(controller, "firstNameField")).setText("A");
-        ((TextField) getField(controller, "lastNameField")).setText("B");
-        ((TextField) getField(controller, "emailField")).setText("a@test.com");
-        ((PasswordField) getField(controller, "passwordField")).setText("pass1");
-        ((PasswordField) getField(controller, "confirmPasswordField")).setText("pass2");
-
-        callPrivate(controller, "handleSignup");
-
-        Label error = (Label) getField(controller, "errorLabel");
-        assertEquals("Passwords do not match.", error.getText());
-    }
-
-    @Test
-    void signupFailsWhenEmailAlreadyExists() {
+    void loginFailsWithWrongCredentials() {
         mockDAO.addContact(new Contact("A", "B", "a@test.com", "pass"));
 
-        ((TextField) getField(controller, "firstNameField")).setText("A");
-        ((TextField) getField(controller, "lastNameField")).setText("B");
         ((TextField) getField(controller, "emailField")).setText("a@test.com");
-        ((PasswordField) getField(controller, "passwordField")).setText("pass");
-        ((PasswordField) getField(controller, "confirmPasswordField")).setText("pass");
+        ((PasswordField) getField(controller, "passwordField")).setText("wrong");
 
-        callPrivate(controller, "handleSignup");
+        callPrivate(controller, "handleLogin");
 
         Label error = (Label) getField(controller, "errorLabel");
-        assertEquals("An account with that email already exists.", error.getText());
+        assertEquals("Invalid email or password.", error.getText());
     }
 
     @Test
-    void signupSucceedsAndAddsContact() {
-        ((TextField) getField(controller, "firstNameField")).setText("A");
-        ((TextField) getField(controller, "lastNameField")).setText("B");
-        ((TextField) getField(controller, "emailField")).setText("new@test.com");
+    void loginSucceedsAndStoresUser() {
+        Contact c = new Contact("A", "B", "a@test.com", "pass");
+        mockDAO.addContact(c);
+
+        ((TextField) getField(controller, "emailField")).setText("a@test.com");
         ((PasswordField) getField(controller, "passwordField")).setText("pass");
-        ((PasswordField) getField(controller, "confirmPasswordField")).setText("pass");
 
-        callPrivate(controller, "handleSignup");
+        callPrivate(controller, "handleLogin");
 
-        assertEquals(1, mockDAO.getAllContacts().size());
-        Contact saved = mockDAO.getAllContacts().get(0);
-        assertEquals("new@test.com", saved.getEmail());
+        assertEquals("A B", TaskStore.getInstance().getLoggedInUser());
     }
 }
