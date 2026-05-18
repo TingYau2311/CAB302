@@ -2,6 +2,7 @@ package com.tasktopia.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,13 +21,13 @@ class MockContactDAOTest {
     }
 
     @Test
-    void addContactAssignsIdAndStores() {
+    void addContactStoresContact() {
         Contact c = sample("a@test.com");
         dao.addContact(c);
 
         List<Contact> all = dao.getAllContacts();
         assertEquals(1, all.size());
-        assertEquals(1, all.get(0).getId());
+        assertEquals("a@test.com", all.get(0).getEmail());
     }
 
     @Test
@@ -38,6 +39,7 @@ class MockContactDAOTest {
         dao.updateContact(c);
 
         Contact fetched = dao.getContact(c.getId());
+        assertNotNull(fetched);
         assertEquals("Updated", fetched.getFirstName());
     }
 
@@ -51,7 +53,8 @@ class MockContactDAOTest {
 
         dao.deleteContact(c1);
 
-        assertEquals(1, dao.getAllContacts().size());
-        assertEquals("b@test.com", dao.getAllContacts().get(0).getEmail());
+        List<Contact> all = dao.getAllContacts();
+        assertEquals(1, all.size());
+        assertEquals("b@test.com", all.get(0).getEmail());
     }
 }

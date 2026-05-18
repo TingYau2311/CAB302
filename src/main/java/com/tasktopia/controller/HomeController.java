@@ -64,15 +64,15 @@ public class HomeController {
     // ── Initialise ────────────────────────────────────────────
     @FXML
     public void initialize() {
-        taskDAO    = new SqliteTaskDAO();
+        taskDAO     = new SqliteTaskDAO();
         categoryDAO = new SqliteCategoryDAO();
-        allTasks   = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
+        allTasks    = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
 
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
 
         buildOverlays();
-        loadSavedCategories();   // restore persisted custom categories
+        loadSavedCategories();
         renderTasks();
     }
 
@@ -253,12 +253,12 @@ public class HomeController {
     //  BUILD OVERLAYS
     // ══════════════════════════════════════════════════════════
     private void buildOverlays() {
-        manualOverlay       = buildManualModal();
-        aiOverlay           = buildAiModal();
-        detailOverlay       = buildDetailModal();
-        settingsOverlay     = buildSettingsModal();
-        editOverlay         = buildEditModal();
-        addCategoryOverlay  = buildAddCategoryModal();
+        manualOverlay      = buildManualModal();
+        aiOverlay          = buildAiModal();
+        detailOverlay      = buildDetailModal();
+        settingsOverlay    = buildSettingsModal();
+        editOverlay        = buildEditModal();
+        addCategoryOverlay = buildAddCategoryModal();
     }
 
     private void openOverlay(StackPane overlay) {
@@ -300,13 +300,12 @@ public class HomeController {
         HBox header = modalHeader("Add Task");
         Button closeBtn = (Button) header.getChildren().get(1);
 
-        TextField nameField  = field("Task name");
-        TextArea  descField  = area("Task description...");
-        TextField dateField  = field("Date  (yyyy-MM-dd)");
-        TextField timeField  = field("Time  (HH:mm)");
+        TextField nameField = field("Task name");
+        TextArea  descField = area("Task description...");
+        TextField dateField = field("Date  (yyyy-MM-dd)");
+        TextField timeField = field("Time  (HH:mm)");
         ComboBox<String> catBox = combo("Select Category",
                 "Work","Grocery","Personal","School","Medical","Social","Fitness");
-        // Dynamically add any user-created categories when the dropdown opens
         catBox.setOnShowing(e -> {
             java.util.List<String> builtin = java.util.Arrays.asList(
                     "Work","Grocery","Personal","School","Medical","Social","Fitness");
@@ -350,7 +349,6 @@ public class HomeController {
                 try {
                     cat = Task.Category.valueOf(catBox.getValue().toUpperCase());
                 } catch (Exception ignored) {
-                    // Custom category — store as a tag instead
                     catTag = catBox.getValue().toLowerCase();
                 }
             }
@@ -368,7 +366,7 @@ public class HomeController {
             Task newTask = new Task(taskName, startDT, startDT.plusHours(1),
                     descField.getText().trim(), tagValue,
                     TaskStore.getInstance().getLoggedInUserId());
-            newTask.setCategory(cat);   // null is fine — means custom category
+            newTask.setCategory(cat);
             newTask.setTags(tagValue);
             newTask.setPriority(pri);
             newTask.setDate(finalDate);
@@ -427,12 +425,12 @@ public class HomeController {
             String lower = raw.toLowerCase();
 
             Task.Category cat = Task.Category.PERSONAL;
-            if      (lower.contains("#work"))     cat = Task.Category.WORK;
-            else if (lower.contains("#grocery"))  cat = Task.Category.GROCERY;
-            else if (lower.contains("#school"))   cat = Task.Category.SCHOOL;
-            else if (lower.contains("#medical"))  cat = Task.Category.MEDICAL;
-            else if (lower.contains("#social"))   cat = Task.Category.SOCIAL;
-            else if (lower.contains("#fitness"))  cat = Task.Category.FITNESS;
+            if      (lower.contains("#work"))    cat = Task.Category.WORK;
+            else if (lower.contains("#grocery")) cat = Task.Category.GROCERY;
+            else if (lower.contains("#school"))  cat = Task.Category.SCHOOL;
+            else if (lower.contains("#medical")) cat = Task.Category.MEDICAL;
+            else if (lower.contains("#social"))  cat = Task.Category.SOCIAL;
+            else if (lower.contains("#fitness")) cat = Task.Category.FITNESS;
 
             Task.Priority pri = Task.Priority.MEDIUM;
             if      (lower.contains("#high")) pri = Task.Priority.HIGH;
@@ -638,10 +636,10 @@ public class HomeController {
         HBox header = modalHeader("✏ Edit Task");
         Button closeBtn = (Button) header.getChildren().get(1);
 
-        TextField nameField  = field("Task name");
-        TextArea  descField  = area("Task description...");
-        TextField dateField  = field("Date  (yyyy-MM-dd)");
-        TextField timeField  = field("Time  (HH:mm)");
+        TextField nameField = field("Task name");
+        TextArea  descField = area("Task description...");
+        TextField dateField = field("Date  (yyyy-MM-dd)");
+        TextField timeField = field("Time  (HH:mm)");
         ComboBox<String> catBox = combo("Select Category",
                 "Work","Grocery","Personal","School","Medical","Social","Fitness");
         catBox.setOnShowing(e -> {
@@ -690,7 +688,6 @@ public class HomeController {
                 try {
                     cat = Task.Category.valueOf(catBox.getValue().toUpperCase());
                 } catch (Exception ignored) {
-                    // Custom category — store as a tag
                     catTag = catBox.getValue().toLowerCase();
                 }
             }
@@ -710,7 +707,7 @@ public class HomeController {
             selectedTask.setStartDate(startDT);
             selectedTask.setEndDate(startDT.plusHours(1));
             selectedTask.setTags(tagValue);
-            selectedTask.setCategory(cat);   // null means custom category
+            selectedTask.setCategory(cat);
             selectedTask.setPriority(pri);
             selectedTask.setDate(finalDate);
             selectedTask.setTime(finalTime);
@@ -734,12 +731,12 @@ public class HomeController {
 
         VBox card = (VBox) editOverlay.getChildren().get(0);
         Object[] fields = (Object[]) card.getUserData();
-        TextField editNameField     = (TextField)        fields[0];
-        TextArea  editDescField     = (TextArea)         fields[1];
-        TextField editDateField     = (TextField)        fields[2];
-        TextField editTimeField     = (TextField)        fields[3];
-        ComboBox<String> editCatBox = (ComboBox<String>) fields[4];
-        ComboBox<String> editPriBox = (ComboBox<String>) fields[5];
+        TextField        editNameField = (TextField)        fields[0];
+        TextArea         editDescField = (TextArea)         fields[1];
+        TextField        editDateField = (TextField)        fields[2];
+        TextField        editTimeField = (TextField)        fields[3];
+        ComboBox<String> editCatBox    = (ComboBox<String>) fields[4];
+        ComboBox<String> editPriBox    = (ComboBox<String>) fields[5];
 
         editNameField.setText(task.getTitle() != null ? task.getTitle() : "");
         editDescField.setText(task.getDescription() != null ? task.getDescription() : "");
@@ -782,9 +779,6 @@ public class HomeController {
     }
 
     // ══════════════════════════════════════════════════════════
-    //  SETTINGS MODAL
-    // ══════════════════════════════════════════════════════════
-    // ══════════════════════════════════════════════════════════
     //  ADD CATEGORY MODAL
     // ══════════════════════════════════════════════════════════
     private StackPane buildAddCategoryModal() {
@@ -796,11 +790,8 @@ public class HomeController {
         HBox header = modalHeader("🏷+ Add Category");
         Button closeBtn = (Button) header.getChildren().get(1);
 
-        // ── Category name field ──────────────────────────────
         TextField nameField = field("e.g. Travel, Hobbies, Finance…");
 
-        // ── Colour palette ───────────────────────────────────
-        // 16 hand-picked colours that look good as nav-bar chips
         String[] palette = {
                 "#FF6B6B", "#FF9F43", "#F7C59F", "#FFD93D",
                 "#6BCB77", "#4D9DE0", "#A3CFF5", "#845EC2",
@@ -808,14 +799,12 @@ public class HomeController {
                 "#FCA5A5", "#93C5FD", "#FDBA74", "#A3A3A3"
         };
 
-        // Track which colour swatch is selected
         final String[] selectedColour = { palette[0] };
         final javafx.scene.shape.Rectangle[] selectedRect = { null };
 
         Label paletteLabel = new Label("PICK A COLOUR");
         paletteLabel.setStyle(Styles.formLabel());
 
-        // Build a 4-column grid of colour swatches
         javafx.scene.layout.GridPane colourGrid = new javafx.scene.layout.GridPane();
         colourGrid.setHgap(10);
         colourGrid.setVgap(10);
@@ -828,7 +817,6 @@ public class HomeController {
             swatch.setFill(javafx.scene.paint.Color.web(hex));
             swatch.setStyle("-fx-cursor: hand;");
 
-            // Mark first swatch as pre-selected
             if (i == 0) {
                 swatch.setStroke(javafx.scene.paint.Color.web("#1e2a4a"));
                 swatch.setStrokeWidth(3);
@@ -839,11 +827,8 @@ public class HomeController {
             }
 
             swatch.setOnMouseClicked(e -> {
-                // Deselect previous
-                if (selectedRect[0] != null) {
+                if (selectedRect[0] != null)
                     selectedRect[0].setStroke(javafx.scene.paint.Color.TRANSPARENT);
-                }
-                // Select this one
                 swatch.setStroke(javafx.scene.paint.Color.web("#1e2a4a"));
                 swatch.setStrokeWidth(3);
                 selectedRect[0] = swatch;
@@ -853,7 +838,6 @@ public class HomeController {
             colourGrid.add(swatch, i % 4, i / 4);
         }
 
-        // ── Live preview chip ────────────────────────────────
         Label previewLabel = new Label("PREVIEW");
         previewLabel.setStyle(Styles.formLabel());
 
@@ -862,18 +846,13 @@ public class HomeController {
                 + "-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: black;";
         previewChip.setStyle(chipBase + "-fx-background-color: " + selectedColour[0] + ";");
 
-        // Update preview as user types
         nameField.textProperty().addListener((obs, oldVal, newVal) -> {
-            String display = newVal.isBlank() ? "Category Name" : newVal;
-            previewChip.setText(display);
+            previewChip.setText(newVal.isBlank() ? "Category Name" : newVal);
         });
 
-        // Update preview colour when swatch is clicked
-        colourGrid.setOnMouseClicked(e -> {
-            previewChip.setStyle(chipBase + "-fx-background-color: " + selectedColour[0] + ";");
-        });
+        colourGrid.setOnMouseClicked(e ->
+                previewChip.setStyle(chipBase + "-fx-background-color: " + selectedColour[0] + ";"));
 
-        // ── Submit button ─────────────────────────────────────
         Button submit = new Button("Add Category");
         submit.setStyle(Styles.primaryButton());
         submit.setMaxWidth(Double.MAX_VALUE);
@@ -883,29 +862,20 @@ public class HomeController {
 
         submit.setOnAction(e -> {
             String catName = nameField.getText().trim();
-            if (catName.isEmpty()) {
-                showToast("Please enter a category name");
-                return;
-            }
+            if (catName.isEmpty()) { showToast("Please enter a category name"); return; }
 
             CustomCategory newCat = new CustomCategory(catName, selectedColour[0]);
 
-            // Prevent exact duplicates
             boolean duplicate = categoryManager.getCategories().stream()
                     .anyMatch(c -> c.getKey().equals(newCat.getKey()));
-            if (duplicate) {
-                showToast("Category \"" + catName + "\" already exists");
-                return;
-            }
+            if (duplicate) { showToast("Category \"" + catName + "\" already exists"); return; }
 
             categoryManager.addCategory(newCat);
             categoryDAO.saveCategory(TaskStore.getInstance().getLoggedInUserId(), newCat);
             addNavButton(newCat);
-
             closeOverlay(shell);
             showToast("✅ Category \"" + catName + "\" added!");
 
-            // Reset form
             nameField.clear();
             selectedColour[0] = palette[0];
             if (selectedRect[0] != null) selectedRect[0].setStroke(javafx.scene.paint.Color.TRANSPARENT);
@@ -927,12 +897,7 @@ public class HomeController {
         return shell;
     }
 
-    /**
-     * Dynamically creates and inserts a nav button for a custom category
-     * into the topbarNav HBox (before the end, after built-in buttons).
-     */
     private void addNavButton(CustomCategory cat) {
-        // Decide text colour: use white for dark backgrounds, black for light ones
         javafx.scene.paint.Color fill = javafx.scene.paint.Color.web(cat.getColour());
         double luminance = 0.2126 * fill.getRed() + 0.7152 * fill.getGreen() + 0.0722 * fill.getBlue();
         String textFill = luminance < 0.45 ? "white" : "black";
@@ -954,6 +919,9 @@ public class HomeController {
         topbarNav.getChildren().add(btn);
     }
 
+    // ══════════════════════════════════════════════════════════
+    //  SETTINGS MODAL
+    // ══════════════════════════════════════════════════════════
     private StackPane buildSettingsModal() {
         VBox card = new VBox(14);
         card.setStyle(Styles.modalCard());
@@ -1050,7 +1018,6 @@ public class HomeController {
         return box;
     }
 
-    // ── Toast notification ────────────────────────────────────
     private void showToast(String message) {
         Label toast = new Label(message);
         toast.setStyle(Styles.toastStyle());
@@ -1058,7 +1025,7 @@ public class HomeController {
         StackPane.setMargin(toast, new Insets(0, 32, 32, 0));
         rootStack.getChildren().add(toast);
 
-        FadeTransition fadeIn  = new FadeTransition(Duration.millis(250), toast);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(250), toast);
         fadeIn.setFromValue(0); fadeIn.setToValue(1);
 
         FadeTransition fadeOut = new FadeTransition(Duration.millis(400), toast);
