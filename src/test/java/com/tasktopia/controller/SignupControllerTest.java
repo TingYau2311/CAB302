@@ -19,13 +19,19 @@ class SignupControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        // Use context classloader so tests can see SignUp.fxml
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        FXMLLoader loader = new FXMLLoader(cl.getResource("SignUp.fxml"));
+
+        System.out.println(cl.getResource("/fxml/SignUp.fxml")); // debug
+
+        FXMLLoader loader = new FXMLLoader(
+                cl.getResource("/fxml/SignUp.fxml")
+        );
 
         Parent root = loader.load();
         controller = loader.getController();
     }
+
+
 
     private <T> T getPrivateField(String name, Class<T> type) throws Exception {
         Field f = SignupController.class.getDeclaredField(name);
