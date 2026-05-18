@@ -1,7 +1,10 @@
 package com.tasktopia.controller;
 
 import com.tasktopia.MainApp;
+import com.tasktopia.model.CategoryManager;
+import com.tasktopia.model.CustomCategory;
 import com.tasktopia.model.ITaskDAO;
+import com.tasktopia.model.SqliteCategoryDAO;
 import com.tasktopia.model.SqliteTaskDAO;
 import com.tasktopia.model.Task;
 import com.tasktopia.model.TaskStore;
@@ -36,9 +39,11 @@ public class HomeController {
 
     // ── State ─────────────────────────────────────────────────
     private ITaskDAO taskDAO;
+    private SqliteCategoryDAO categoryDAO;
     private List<Task> allTasks;
     private String currentCategory = "all";
     private Task   selectedTask    = null;
+    private final CategoryManager categoryManager = new CategoryManager();
 
     // Overlays
     private StackPane manualOverlay;
@@ -46,6 +51,7 @@ public class HomeController {
     private StackPane detailOverlay;
     private StackPane settingsOverlay;
     private StackPane editOverlay;
+    private StackPane addCategoryOverlay;
 
     // Detail modal labels
     private Label  detailNameLbl;
@@ -58,14 +64,26 @@ public class HomeController {
     // ── Initialise ────────────────────────────────────────────
     @FXML
     public void initialize() {
-        taskDAO = new SqliteTaskDAO();
-        allTasks = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
+        taskDAO    = new SqliteTaskDAO();
+        categoryDAO = new SqliteCategoryDAO();
+        allTasks   = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
 
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
 
         buildOverlays();
+        loadSavedCategories();   // restore persisted custom categories
         renderTasks();
+    }
+
+    // ── Load persisted custom categories for this user ────────
+    private void loadSavedCategories() {
+        int userId = TaskStore.getInstance().getLoggedInUserId();
+        List<CustomCategory> saved = categoryDAO.getCategoriesByUser(userId);
+        for (CustomCategory cat : saved) {
+            categoryManager.addCategory(cat);
+            addNavButton(cat);
+        }
     }
 
     // ── Reload tasks from DB ──────────────────────────────────
@@ -84,7 +102,7 @@ public class HomeController {
     @FXML private void onMedical()     { selectCategory("medical",  "Medical Tasks",  "Tasks in the Medical category"); }
     @FXML private void onSocial()      { selectCategory("social",   "Social Tasks",   "Tasks in the Social category"); }
     @FXML private void onFitness()     { selectCategory("fitness",  "Fitness Tasks",  "Tasks in the Fitness category"); }
-    @FXML private void onAddCategory() { showToast("Feature coming soon!"); }
+    @FXML private void onAddCategory() { openOverlay(addCategoryOverlay); }
     @FXML private void onSettings()    { openOverlay(settingsOverlay); }
 
     @FXML
@@ -212,7 +230,7 @@ public class HomeController {
         timeLbl.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; "
                 + "-fx-font-family: 'Segoe UI'; -fx-text-fill: " + Styles.TEXT_MUTED + ";");
 
-        Button editBtn = new Button("✏️");
+        Button editBtn = new Button("✏");
         editBtn.setStyle("-fx-background-color: rgba(74,108,247,0.10); "
                 + "-fx-text-fill: #4a6cf7; -fx-background-radius: 10; -fx-cursor: hand;");
         editBtn.setOnAction(e -> {
@@ -235,11 +253,12 @@ public class HomeController {
     //  BUILD OVERLAYS
     // ══════════════════════════════════════════════════════════
     private void buildOverlays() {
-        manualOverlay   = buildManualModal();
-        aiOverlay       = buildAiModal();
-        detailOverlay   = buildDetailModal();
-        settingsOverlay = buildSettingsModal();
-        editOverlay     = buildEditModal();
+        manualOverlay       = buildManualModal();
+        aiOverlay           = buildAiModal();
+        detailOverlay       = buildDetailModal();
+        settingsOverlay     = buildSettingsModal();
+        editOverlay         = buildEditModal();
+        addCategoryOverlay  = buildAddCategoryModal();
     }
 
     private void openOverlay(StackPane overlay) {
@@ -287,6 +306,15 @@ public class HomeController {
         TextField timeField  = field("Time  (HH:mm)");
         ComboBox<String> catBox = combo("Select Category",
                 "Work","Grocery","Personal","School","Medical","Social","Fitness");
+        // Dynamically add any user-created categories when the dropdown opens
+        catBox.setOnShowing(e -> {
+            java.util.List<String> builtin = java.util.Arrays.asList(
+                    "Work","Grocery","Personal","School","Medical","Social","Fitness");
+            catBox.getItems().removeIf(item -> !builtin.contains(item));
+            categoryManager.getCategoryNames().forEach(name -> {
+                if (!catBox.getItems().contains(name)) catBox.getItems().add(name);
+            });
+        });
         ComboBox<String> priBox = combo("Select Priority","High","Medium","Low");
 
         HBox row1 = new HBox(14, labeled("Date", dateField), labeled("Time", timeField));
@@ -316,10 +344,16 @@ public class HomeController {
                 time = LocalTime.parse(timeField.getText().trim()); }
             catch (DateTimeParseException ignored) { showToast("Time format: HH:mm"); return; }
 
-            Task.Category cat = Task.Category.PERSONAL;
-            if (catBox.getValue() != null)
-                try { cat = Task.Category.valueOf(catBox.getValue().toUpperCase()); }
-                catch (Exception ignored) {}
+            Task.Category cat = null;
+            String catTag = null;
+            if (catBox.getValue() != null) {
+                try {
+                    cat = Task.Category.valueOf(catBox.getValue().toUpperCase());
+                } catch (Exception ignored) {
+                    // Custom category — store as a tag instead
+                    catTag = catBox.getValue().toLowerCase();
+                }
+            }
 
             Task.Priority pri = Task.Priority.MEDIUM;
             if (priBox.getValue() != null)
@@ -330,10 +364,12 @@ public class HomeController {
             LocalTime finalTime = time != null ? time : LocalTime.now();
             LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
 
+            String tagValue = cat != null ? cat.name().toLowerCase() : (catTag != null ? catTag : "");
             Task newTask = new Task(taskName, startDT, startDT.plusHours(1),
-                    descField.getText().trim(), cat.name().toLowerCase(),
+                    descField.getText().trim(), tagValue,
                     TaskStore.getInstance().getLoggedInUserId());
-            newTask.setCategory(cat);
+            newTask.setCategory(cat);   // null is fine — means custom category
+            newTask.setTags(tagValue);
             newTask.setPriority(pri);
             newTask.setDate(finalDate);
             newTask.setTime(finalTime);
@@ -495,11 +531,11 @@ public class HomeController {
         detailDoneBtn.setStyle(Styles.primaryButton());
         detailDoneBtn.setMaxWidth(Double.MAX_VALUE);
 
-        Button deleteBtn = new Button("🗑️  Delete");
+        Button deleteBtn = new Button("🗑 Delete");
         deleteBtn.setStyle(Styles.dangerButton());
         deleteBtn.setMaxWidth(Double.MAX_VALUE);
 
-        Button editBtn = new Button("✏️  Edit");
+        Button editBtn = new Button("✏ Edit");
         editBtn.setStyle(Styles.secondaryButton());
         editBtn.setMaxWidth(Double.MAX_VALUE);
 
@@ -529,7 +565,7 @@ public class HomeController {
                 reloadTasks();
                 renderTasks();
                 closeOverlay(shell);
-                showToast("🗑️  Task deleted");
+                showToast("🗑 Task deleted");
             }
         });
 
@@ -599,7 +635,7 @@ public class HomeController {
         card.setMaxWidth(480);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        HBox header = modalHeader("✏️  Edit Task");
+        HBox header = modalHeader("✏ Edit Task");
         Button closeBtn = (Button) header.getChildren().get(1);
 
         TextField nameField  = field("Task name");
@@ -608,6 +644,14 @@ public class HomeController {
         TextField timeField  = field("Time  (HH:mm)");
         ComboBox<String> catBox = combo("Select Category",
                 "Work","Grocery","Personal","School","Medical","Social","Fitness");
+        catBox.setOnShowing(e -> {
+            java.util.List<String> builtin = java.util.Arrays.asList(
+                    "Work","Grocery","Personal","School","Medical","Social","Fitness");
+            catBox.getItems().removeIf(item -> !builtin.contains(item));
+            categoryManager.getCategoryNames().forEach(name -> {
+                if (!catBox.getItems().contains(name)) catBox.getItems().add(name);
+            });
+        });
         ComboBox<String> priBox = combo("Select Priority","High","Medium","Low");
 
         HBox row1 = new HBox(14, labeled("Date", dateField), labeled("Time", timeField));
@@ -640,10 +684,16 @@ public class HomeController {
                 time = LocalTime.parse(timeField.getText().trim()); }
             catch (DateTimeParseException ignored) { showToast("Time format: HH:mm"); return; }
 
-            Task.Category cat = Task.Category.PERSONAL;
-            if (catBox.getValue() != null)
-                try { cat = Task.Category.valueOf(catBox.getValue().toUpperCase()); }
-                catch (Exception ignored) {}
+            Task.Category cat = null;
+            String catTag = null;
+            if (catBox.getValue() != null) {
+                try {
+                    cat = Task.Category.valueOf(catBox.getValue().toUpperCase());
+                } catch (Exception ignored) {
+                    // Custom category — store as a tag
+                    catTag = catBox.getValue().toLowerCase();
+                }
+            }
 
             Task.Priority pri = Task.Priority.MEDIUM;
             if (priBox.getValue() != null)
@@ -654,12 +704,13 @@ public class HomeController {
             LocalTime finalTime = time != null ? time : LocalTime.now();
             LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
 
+            String tagValue = cat != null ? cat.name().toLowerCase() : (catTag != null ? catTag : "");
             selectedTask.setTitle(taskName);
             selectedTask.setDescription(descField.getText().trim());
             selectedTask.setStartDate(startDT);
             selectedTask.setEndDate(startDT.plusHours(1));
-            selectedTask.setTags(cat.name().toLowerCase());
-            selectedTask.setCategory(cat);
+            selectedTask.setTags(tagValue);
+            selectedTask.setCategory(cat);   // null means custom category
             selectedTask.setPriority(pri);
             selectedTask.setDate(finalDate);
             selectedTask.setTime(finalTime);
@@ -707,6 +758,13 @@ public class HomeController {
         else
             editTimeField.clear();
 
+        java.util.List<String> builtinCats = java.util.Arrays.asList(
+                "Work","Grocery","Personal","School","Medical","Social","Fitness");
+        editCatBox.getItems().removeIf(item -> !builtinCats.contains(item));
+        categoryManager.getCategoryNames().forEach(name -> {
+            if (!editCatBox.getItems().contains(name)) editCatBox.getItems().add(name);
+        });
+
         if (task.getCategory() != null)
             editCatBox.setValue(task.getCategoryLabel());
         else if (task.getTags() != null && !task.getTags().isEmpty())
@@ -726,6 +784,176 @@ public class HomeController {
     // ══════════════════════════════════════════════════════════
     //  SETTINGS MODAL
     // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════
+    //  ADD CATEGORY MODAL
+    // ══════════════════════════════════════════════════════════
+    private StackPane buildAddCategoryModal() {
+        VBox card = new VBox(16);
+        card.setStyle(Styles.modalCard());
+        card.setMaxWidth(460);
+        card.setMaxHeight(Region.USE_PREF_SIZE);
+
+        HBox header = modalHeader("🏷+ Add Category");
+        Button closeBtn = (Button) header.getChildren().get(1);
+
+        // ── Category name field ──────────────────────────────
+        TextField nameField = field("e.g. Travel, Hobbies, Finance…");
+
+        // ── Colour palette ───────────────────────────────────
+        // 16 hand-picked colours that look good as nav-bar chips
+        String[] palette = {
+                "#FF6B6B", "#FF9F43", "#F7C59F", "#FFD93D",
+                "#6BCB77", "#4D9DE0", "#A3CFF5", "#845EC2",
+                "#D65DB1", "#FF6F91", "#C4B5FD", "#6EE7B7",
+                "#FCA5A5", "#93C5FD", "#FDBA74", "#A3A3A3"
+        };
+
+        // Track which colour swatch is selected
+        final String[] selectedColour = { palette[0] };
+        final javafx.scene.shape.Rectangle[] selectedRect = { null };
+
+        Label paletteLabel = new Label("PICK A COLOUR");
+        paletteLabel.setStyle(Styles.formLabel());
+
+        // Build a 4-column grid of colour swatches
+        javafx.scene.layout.GridPane colourGrid = new javafx.scene.layout.GridPane();
+        colourGrid.setHgap(10);
+        colourGrid.setVgap(10);
+
+        for (int i = 0; i < palette.length; i++) {
+            String hex = palette[i];
+            javafx.scene.shape.Rectangle swatch = new javafx.scene.shape.Rectangle(36, 36);
+            swatch.setArcWidth(10);
+            swatch.setArcHeight(10);
+            swatch.setFill(javafx.scene.paint.Color.web(hex));
+            swatch.setStyle("-fx-cursor: hand;");
+
+            // Mark first swatch as pre-selected
+            if (i == 0) {
+                swatch.setStroke(javafx.scene.paint.Color.web("#1e2a4a"));
+                swatch.setStrokeWidth(3);
+                selectedRect[0] = swatch;
+            } else {
+                swatch.setStroke(javafx.scene.paint.Color.TRANSPARENT);
+                swatch.setStrokeWidth(2);
+            }
+
+            swatch.setOnMouseClicked(e -> {
+                // Deselect previous
+                if (selectedRect[0] != null) {
+                    selectedRect[0].setStroke(javafx.scene.paint.Color.TRANSPARENT);
+                }
+                // Select this one
+                swatch.setStroke(javafx.scene.paint.Color.web("#1e2a4a"));
+                swatch.setStrokeWidth(3);
+                selectedRect[0] = swatch;
+                selectedColour[0] = hex;
+            });
+
+            colourGrid.add(swatch, i % 4, i / 4);
+        }
+
+        // ── Live preview chip ────────────────────────────────
+        Label previewLabel = new Label("PREVIEW");
+        previewLabel.setStyle(Styles.formLabel());
+
+        Label previewChip = new Label("Category Name");
+        String chipBase = "-fx-background-radius: 10; -fx-padding: 8 16; "
+                + "-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: black;";
+        previewChip.setStyle(chipBase + "-fx-background-color: " + selectedColour[0] + ";");
+
+        // Update preview as user types
+        nameField.textProperty().addListener((obs, oldVal, newVal) -> {
+            String display = newVal.isBlank() ? "Category Name" : newVal;
+            previewChip.setText(display);
+        });
+
+        // Update preview colour when swatch is clicked
+        colourGrid.setOnMouseClicked(e -> {
+            previewChip.setStyle(chipBase + "-fx-background-color: " + selectedColour[0] + ";");
+        });
+
+        // ── Submit button ─────────────────────────────────────
+        Button submit = new Button("Add Category");
+        submit.setStyle(Styles.primaryButton());
+        submit.setMaxWidth(Double.MAX_VALUE);
+
+        StackPane shell = wrapOverlay(card);
+        closeBtn.setOnAction(e -> closeOverlay(shell));
+
+        submit.setOnAction(e -> {
+            String catName = nameField.getText().trim();
+            if (catName.isEmpty()) {
+                showToast("Please enter a category name");
+                return;
+            }
+
+            CustomCategory newCat = new CustomCategory(catName, selectedColour[0]);
+
+            // Prevent exact duplicates
+            boolean duplicate = categoryManager.getCategories().stream()
+                    .anyMatch(c -> c.getKey().equals(newCat.getKey()));
+            if (duplicate) {
+                showToast("Category \"" + catName + "\" already exists");
+                return;
+            }
+
+            categoryManager.addCategory(newCat);
+            categoryDAO.saveCategory(TaskStore.getInstance().getLoggedInUserId(), newCat);
+            addNavButton(newCat);
+
+            closeOverlay(shell);
+            showToast("✅ Category \"" + catName + "\" added!");
+
+            // Reset form
+            nameField.clear();
+            selectedColour[0] = palette[0];
+            if (selectedRect[0] != null) selectedRect[0].setStroke(javafx.scene.paint.Color.TRANSPARENT);
+            javafx.scene.shape.Rectangle firstSwatch =
+                    (javafx.scene.shape.Rectangle) colourGrid.getChildren().get(0);
+            firstSwatch.setStroke(javafx.scene.paint.Color.web("#1e2a4a"));
+            firstSwatch.setStrokeWidth(3);
+            selectedRect[0] = firstSwatch;
+            previewChip.setText("Category Name");
+            previewChip.setStyle(chipBase + "-fx-background-color: " + palette[0] + ";");
+        });
+
+        card.getChildren().addAll(
+                header,
+                labeled("Category Name", nameField),
+                paletteLabel, colourGrid,
+                previewLabel, previewChip,
+                submit);
+        return shell;
+    }
+
+    /**
+     * Dynamically creates and inserts a nav button for a custom category
+     * into the topbarNav HBox (before the end, after built-in buttons).
+     */
+    private void addNavButton(CustomCategory cat) {
+        // Decide text colour: use white for dark backgrounds, black for light ones
+        javafx.scene.paint.Color fill = javafx.scene.paint.Color.web(cat.getColour());
+        double luminance = 0.2126 * fill.getRed() + 0.7152 * fill.getGreen() + 0.0722 * fill.getBlue();
+        String textFill = luminance < 0.45 ? "white" : "black";
+
+        String baseStyle = "-fx-background-color: " + cat.getColour() + "; "
+                + "-fx-text-fill: " + textFill + "; "
+                + "-fx-padding: 8 16; "
+                + "-fx-background-radius: 10; "
+                + "-fx-font-size: 20px; "
+                + "-fx-font-weight: bold;";
+
+        Button btn = new Button(cat.getName());
+        btn.setStyle(baseStyle);
+        btn.setOnAction(e -> selectCategory(
+                cat.getKey(),
+                cat.getName() + " Tasks",
+                "Tasks in the " + cat.getName() + " category"));
+
+        topbarNav.getChildren().add(btn);
+    }
+
     private StackPane buildSettingsModal() {
         VBox card = new VBox(14);
         card.setStyle(Styles.modalCard());
