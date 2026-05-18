@@ -10,15 +10,6 @@ import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
-
-    @BeforeEach
-    void resetId() throws Exception {
-        // Reset static nextId using reflection so tests are deterministic
-        var field = Task.class.getDeclaredField("nextId");
-        field.setAccessible(true);
-        field.setInt(null, 1);
-    }
-
     @Test
     void constructorAssignsIdAndFields() {
         Task t = new Task(
