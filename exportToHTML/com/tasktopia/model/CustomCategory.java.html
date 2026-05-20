@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>CustomCategory.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CustomCategory.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">tasktopia</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+
+<span class="s3">/**</span>
+ <span class="s3">* Represents a user-defined task category with a display name and a hex colour.</span>
+ <span class="s3">*/</span>
+<span class="s0">public class </span><span class="s1">CustomCategory </span><span class="s2">{</span>
+
+    <span class="s0">private </span><span class="s1">String name</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String colour</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">CustomCategory</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s1">String colour</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">name   </span><span class="s2">= </span><span class="s1">name</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">colour </span><span class="s2">= </span><span class="s1">colour</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">String getName</span><span class="s2">()              { </span><span class="s0">return </span><span class="s1">name</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setName</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">)     { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">name </span><span class="s2">= </span><span class="s1">name</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getColour</span><span class="s2">()            { </span><span class="s0">return </span><span class="s1">colour</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setColour</span><span class="s2">(</span><span class="s1">String colour</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">colour </span><span class="s2">= </span><span class="s1">colour</span><span class="s2">; }</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Returns a lowercase, trimmed key derived from the name.</span>
+     <span class="s3">* Used by HomeController for category routing and duplicate detection.</span>
+     <span class="s3">* e.g. &quot;Travel&quot; → &quot;travel&quot;, &quot;My Hobbies&quot; → &quot;my hobbies&quot;</span>
+     <span class="s3">*/</span>
+    <span class="s0">public </span><span class="s1">String getKey</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">name </span><span class="s2">== </span><span class="s0">null </span><span class="s2">? </span><span class="s4">&quot;&quot; </span><span class="s2">: </span><span class="s1">name</span><span class="s2">.</span><span class="s1">trim</span><span class="s2">().</span><span class="s1">toLowerCase</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">String toString</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">name </span><span class="s2">+ </span><span class="s4">&quot; (&quot; </span><span class="s2">+ </span><span class="s1">colour </span><span class="s2">+ </span><span class="s4">&quot;)&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>IContactDAO.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+IContactDAO.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">tasktopia</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s3">/**</span>
+ <span class="s3">* Interface for the Contact Data Access Object that handles</span>
+ <span class="s3">* the CRUD operations for the Contact class with the database.</span>
+ <span class="s3">*/</span>
+<span class="s0">public interface </span><span class="s1">IContactDAO </span><span class="s2">{</span>
+    <span class="s3">/**</span>
+     <span class="s3">* Adds a new contact to the database.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">contact The contact to add.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public void </span><span class="s1">addContact</span><span class="s2">(</span><span class="s1">Contact contact</span><span class="s2">);</span>
+    <span class="s3">/**</span>
+     <span class="s3">* Updates an existing contact in the database.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">contact The contact to update.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public void </span><span class="s1">updateContact</span><span class="s2">(</span><span class="s1">Contact contact</span><span class="s2">);</span>
+    <span class="s3">/**</span>
+     <span class="s3">* Deletes a contact from the database.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">contact The contact to delete.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public void </span><span class="s1">deleteContact</span><span class="s2">(</span><span class="s1">Contact contact</span><span class="s2">);</span>
+    <span class="s3">/**</span>
+     <span class="s3">* Retrieves a contact from the database.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">id The id of the contact to retrieve.</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">The contact with the given id, or null if not found.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public </span><span class="s1">Contact getContact</span><span class="s2">(</span><span class="s0">int </span><span class="s1">id</span><span class="s2">);</span>
+    <span class="s3">/**</span>
+     <span class="s3">* Retrieves all contacts from the database.</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">A list of all contacts in the database.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Contact</span><span class="s2">&gt; </span><span class="s1">getAllContacts</span><span class="s2">();</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

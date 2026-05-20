@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>CategoryManager.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CategoryManager.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">tasktopia</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">.</span><span class="s1">Collectors</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">CategoryManager </span><span class="s2">{</span>
+
+    <span class="s0">private final </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CustomCategory</span><span class="s2">&gt; </span><span class="s1">categories </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+
+    <span class="s0">public void </span><span class="s1">addCategory</span><span class="s2">(</span><span class="s1">CustomCategory category</span><span class="s2">) {</span>
+        <span class="s0">boolean </span><span class="s1">duplicate </span><span class="s2">= </span><span class="s1">categories</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">anyMatch</span><span class="s2">(</span><span class="s1">c -&gt; c</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">().</span><span class="s1">equalsIgnoreCase</span><span class="s2">(</span><span class="s1">category</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">()));</span>
+        <span class="s0">if </span><span class="s2">(!</span><span class="s1">duplicate</span><span class="s2">) {</span>
+            <span class="s1">categories</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">category</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">removeCategory</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">) {</span>
+        <span class="s1">categories</span><span class="s2">.</span><span class="s1">removeIf</span><span class="s2">(</span><span class="s1">c -&gt; c</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">().</span><span class="s1">equalsIgnoreCase</span><span class="s2">(</span><span class="s1">name</span><span class="s2">));</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CustomCategory</span><span class="s2">&gt; </span><span class="s1">getCategories</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">categories</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">getCategoryNames</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">categories</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">map</span><span class="s2">(</span><span class="s1">CustomCategory::getName</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">collect</span><span class="s2">(</span><span class="s1">Collectors</span><span class="s2">.</span><span class="s1">toList</span><span class="s2">());</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

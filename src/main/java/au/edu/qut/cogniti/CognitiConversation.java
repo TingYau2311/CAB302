@@ -6,6 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class CognitiConversation {
@@ -32,13 +34,7 @@ public class CognitiConversation {
     }
 
     private void startNew() throws IOException, InterruptedException {
-//        String jsonBody = """
-//            {
-//                "agent_id": "%s",
-//                "lti_course_id": null
-//            }
-//            """.formatted(agent);
-//
+
         String jsonBody = new CognitiRequest(agent, "").getJsonBody();
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -58,9 +54,72 @@ public class CognitiConversation {
         this.conversationID = decoded.getConversation_id();
     }
 
+    LocalDate today = LocalDate.now();
+    LocalTime now = LocalTime.now();
+
     public String sendMessage(String message) throws IOException, InterruptedException {
 
-        CognitiRequest cognitiRequest = new CognitiRequest(message, agent, conversationID);
+        String prompt = """
+        You are JSON generator for task extraction.
+        Convert the user input into a structured JSON task.
+        
+        RULES:
+        - Return ONLY valid JSON
+        - Never return null
+        - Do NOT include explanations
+        - If date is missing, use today's date in ISO format yyyy-MM-dd (always required) 
+            CURRENT SYSTEM DATE: %s
+            
+        - If time is missing, use now in HH:mm (always required).
+            CURRENT SYSTEM TIME: %s
+        
+        - DO NOT wrap output in markdown
+        - DO NOT use ``` or ```json
+        - Output raw JSON only
+        
+        CATEGORY RULES:
+        - Allowed built-in categories: WORK, GROCERY, PERSONAL, SCHOOL, MEDICAL, SOCIAL, FITNESS
+        
+        If category is NOT mentioned:
+        - infer sensible defaults
+        - never return null
+        - If user intent does NOT match built-in categories, use custom category
+        
+        CUSTOM CATEGORY FORMAT:
+        {
+            "type": "custom",
+            "value": "gym"
+        }
+        
+        BUILT-IN CATEGORY FORMAT:
+        {
+            "type": "builtin",
+            "value": "WORK"
+        }
+        
+        PRIORITY:
+        - HIGH, MEDIUM, LOW
+        - Infer from urgency words (urgent = HIGH, normal = MEDIUM, optional = LOW)
+        
+        JSON/OUTPUT FORMAT:
+        {
+          "title": "",
+          "date": "",
+          "time": "",
+          "category": {
+            "type": "builtin | custom",
+            "value": ""
+          },
+          "priority": ""
+        }
+        
+        """.formatted(today, now);
+
+        String enhancedMessage = prompt + "\n\nUser input:\n" + message;
+
+        CognitiRequest cognitiRequest =
+                new CognitiRequest(enhancedMessage, agent, conversationID);
+
         cognitiRequest.addChatHistory(chatHistory);
 
         String jsonBody = cognitiRequest.getJsonBody();
@@ -93,81 +152,10 @@ public class CognitiConversation {
                 lastResponse = lastResponse + decoded.getContent();
             }
 
-            chatHistory.add(new ChatTurn(message, lastResponse));
+            // only store raw input, not AI output
+            chatHistory.add(new ChatTurn(message, ""));
         }
 
         return lastResponse;
     }
-
-
-//    public void uploadFile(String filename)
-//            throws IOException, InterruptedException {
-//
-//        if (conversationID == null) {
-//            throw new IllegalStateException("Conversation not initialised");
-//        }
-//
-//        File file = new File(filename);
-//        if (!file.exists() || !file.isFile()) {
-//            throw new IllegalArgumentException("File does not exist: " + filename);
-//        }
-//
-//        String boundary = "----JavaBoundary" + UUID.randomUUID();
-//        String LINE_FEED = "\r\n";
-//
-//        String url = BASE_URL
-//                + "/api/v1/chat/agents/"
-//                + agent
-//                + "/conversations/"
-//                + conversationID
-//                + "/attachments/";
-//
-//        ByteArrayOutputStream body = new ByteArrayOutputStream();
-//
-//        // ---- File part
-//        body.write(("--" + boundary + LINE_FEED).getBytes(StandardCharsets.UTF_8));
-//        body.write((
-//                "Content-Disposition: form-data; name=\"file\"; filename=\""
-//                        + file.getName() + "\"" + LINE_FEED
-//        ).getBytes(StandardCharsets.UTF_8));
-//
-//        String mimeType = Files.probeContentType(file.toPath());
-//        if (mimeType == null) {
-//            mimeType = "application/octet-stream";
-//        }
-//
-//        body.write(("Content-Type: " + mimeType + LINE_FEED + LINE_FEED)
-//                .getBytes(StandardCharsets.UTF_8));
-//
-//        try (FileInputStream fis = new FileInputStream(file)) {
-//            fis.transferTo(body);
-//        }
-//
-//        body.write(LINE_FEED.getBytes(StandardCharsets.UTF_8));
-//
-//        // ---- End boundary
-//        body.write(("--" + boundary + "--" + LINE_FEED)
-//                .getBytes(StandardCharsets.UTF_8));
-//
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create(url))
-//                .header("Authorization", "Bearer " + token)
-//                .header("Content-Type", "multipart/form-data; boundary=" + boundary)
-//                .POST(HttpRequest.BodyPublishers.ofByteArray(body.toByteArray()))
-//                .build();
-//
-//        HttpClient client = HttpClient.newHttpClient();
-//        HttpResponse<String> response =
-//                client.send(request, HttpResponse.BodyHandlers.ofString());
-//
-//        if (response.statusCode() != 201) {
-//            throw new IOException(
-//                    "Attachment upload failed (HTTP "
-//                            + response.statusCode() + "): "
-//                            + response.body()
-//            );
-//        }
-//    }
-
 }
-

@@ -1,0 +1,191 @@
+<html>
+<head>
+<title>SqliteTaskDAO.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+.s5 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SqliteTaskDAO.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">tasktopia</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">Connection</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">PreparedStatement</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">ResultSet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">Statement</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDate</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDateTime</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">SqliteTaskDAO </span><span class="s0">implements </span><span class="s1">ITaskDAO </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">Connection connection</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">SqliteTaskDAO</span><span class="s2">() {</span>
+        <span class="s1">connection </span><span class="s2">= </span><span class="s1">SqliteConnection</span><span class="s2">.</span><span class="s1">getInstance</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">addTask</span><span class="s2">(</span><span class="s1">Task task</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">PreparedStatement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span>
+                    <span class="s3">&quot;INSERT INTO tasks (title, startDate, endDate, description, tags, priority, userId) VALUES (?, ?, ?, ?, ?, ?, ?)&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">1</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getTitle</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">2</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getStartDate</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">3</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getEndDate</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">4</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getDescription</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">5</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getTags</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">6</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getPriority</span><span class="s2">() != </span><span class="s0">null </span><span class="s2">? </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getPriority</span><span class="s2">().</span><span class="s1">name</span><span class="s2">() : </span><span class="s3">&quot;MEDIUM&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s4">7</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getUserId</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">executeUpdate</span><span class="s2">();</span>
+
+            <span class="s1">ResultSet generatedKeys </span><span class="s2">= </span><span class="s1">statement</span><span class="s2">.</span><span class="s1">getGeneratedKeys</span><span class="s2">();</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">generatedKeys</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()) {</span>
+                <span class="s1">task</span><span class="s2">.</span><span class="s1">setId</span><span class="s2">(</span><span class="s1">generatedKeys</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s4">1</span><span class="s2">));</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">updateTask</span><span class="s2">(</span><span class="s1">Task task</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">PreparedStatement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span>
+                    <span class="s3">&quot;UPDATE tasks SET title = ?, startDate = ?, endDate = ?, description = ?, tags = ?, priority = ?, userId = ? WHERE id = ?&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">1</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getTitle</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">2</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getStartDate</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">3</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getEndDate</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">4</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getDescription</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">5</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getTags</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s4">6</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getPriority</span><span class="s2">() != </span><span class="s0">null </span><span class="s2">? </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getPriority</span><span class="s2">().</span><span class="s1">name</span><span class="s2">() : </span><span class="s3">&quot;MEDIUM&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s4">7</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getUserId</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s4">8</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">executeUpdate</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">deleteTask</span><span class="s2">(</span><span class="s1">Task task</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">PreparedStatement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span><span class="s3">&quot;DELETE FROM tasks WHERE id = ?&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s4">1</span><span class="s2">, </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">());</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">executeUpdate</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">Task getTask</span><span class="s2">(</span><span class="s0">int </span><span class="s1">id</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">PreparedStatement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span><span class="s3">&quot;SELECT * FROM tasks WHERE id = ?&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s4">1</span><span class="s2">, </span><span class="s1">id</span><span class="s2">);</span>
+            <span class="s1">ResultSet resultSet </span><span class="s2">= </span><span class="s1">statement</span><span class="s2">.</span><span class="s1">executeQuery</span><span class="s2">();</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()) {</span>
+                <span class="s1">String Title </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;Title&quot;</span><span class="s2">);</span>
+                <span class="s1">LocalDateTime startDate </span><span class="s2">= </span><span class="s1">parseDateTime</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;startDate&quot;</span><span class="s2">));</span>
+                <span class="s1">LocalDateTime endDate </span><span class="s2">= </span><span class="s1">parseDateTime</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;endDate&quot;</span><span class="s2">));</span>
+                <span class="s1">String Description </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;Description&quot;</span><span class="s2">);</span>
+                <span class="s1">String Tags </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;Tags&quot;</span><span class="s2">);</span>
+                <span class="s1">Task</span><span class="s2">.</span><span class="s1">Priority priority </span><span class="s2">= </span><span class="s1">parsePriority</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;priority&quot;</span><span class="s2">));</span>
+                <span class="s0">int </span><span class="s1">UserID </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s3">&quot;UserId&quot;</span><span class="s2">);</span>
+
+                <span class="s1">Task task </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Task</span><span class="s2">(</span><span class="s1">Title</span><span class="s2">, </span><span class="s1">startDate</span><span class="s2">, </span><span class="s1">endDate</span><span class="s2">, </span><span class="s1">Description</span><span class="s2">, </span><span class="s1">Tags</span><span class="s2">, </span><span class="s1">UserID</span><span class="s2">);</span>
+                <span class="s1">task</span><span class="s2">.</span><span class="s1">setId</span><span class="s2">(</span><span class="s1">id</span><span class="s2">);</span>
+                <span class="s1">task</span><span class="s2">.</span><span class="s1">setPriority</span><span class="s2">(</span><span class="s1">priority</span><span class="s2">);</span>
+                <span class="s0">return </span><span class="s1">task</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+        <span class="s0">return null</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s5">// Add this helper method to SqliteTaskDAO</span>
+    <span class="s0">private </span><span class="s1">LocalDateTime parseDateTime</span><span class="s2">(</span><span class="s1">String value</span><span class="s2">) {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">value </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s0">return </span><span class="s1">LocalDateTime</span><span class="s2">.</span><span class="s1">now</span><span class="s2">();</span>
+        <span class="s5">// Handle old date-only format</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">value</span><span class="s2">.</span><span class="s1">length</span><span class="s2">() == </span><span class="s4">10</span><span class="s2">) {</span>
+            <span class="s0">return </span><span class="s1">LocalDate</span><span class="s2">.</span><span class="s1">parse</span><span class="s2">(</span><span class="s1">value</span><span class="s2">).</span><span class="s1">atStartOfDay</span><span class="s2">();</span>
+        <span class="s2">}</span>
+        <span class="s5">// Handle new datetime format</span>
+        <span class="s0">return </span><span class="s1">LocalDateTime</span><span class="s2">.</span><span class="s1">parse</span><span class="s2">(</span><span class="s1">value</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Task</span><span class="s2">&gt; </span><span class="s1">getAllTasks</span><span class="s2">() {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Task</span><span class="s2">&gt; </span><span class="s1">tasks </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">Statement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">createStatement</span><span class="s2">();</span>
+            <span class="s1">String query </span><span class="s2">= </span><span class="s3">&quot;SELECT * FROM tasks&quot;</span><span class="s2">;</span>
+            <span class="s1">ResultSet resultSet </span><span class="s2">= </span><span class="s1">statement</span><span class="s2">.</span><span class="s1">executeQuery</span><span class="s2">(</span><span class="s1">query</span><span class="s2">);</span>
+            <span class="s0">while </span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()) {</span>
+                <span class="s0">int </span><span class="s1">id </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s3">&quot;id&quot;</span><span class="s2">);</span>
+                <span class="s1">String Title </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;Title&quot;</span><span class="s2">);</span>
+                <span class="s1">LocalDateTime startDate </span><span class="s2">= </span><span class="s1">parseDateTime</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;startDate&quot;</span><span class="s2">));</span>
+                <span class="s1">LocalDateTime endDate </span><span class="s2">= </span><span class="s1">parseDateTime</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;endDate&quot;</span><span class="s2">));</span>
+                <span class="s1">String Description </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;Description&quot;</span><span class="s2">);</span>
+                <span class="s1">String Tags </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;Tags&quot;</span><span class="s2">);</span>
+                <span class="s1">Task</span><span class="s2">.</span><span class="s1">Priority priority </span><span class="s2">= </span><span class="s1">parsePriority</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;priority&quot;</span><span class="s2">));</span>
+                <span class="s0">int </span><span class="s1">UserID </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s3">&quot;UserId&quot;</span><span class="s2">);</span>
+                <span class="s1">Task task </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Task</span><span class="s2">(</span><span class="s1">Title</span><span class="s2">, </span><span class="s1">startDate</span><span class="s2">, </span><span class="s1">endDate</span><span class="s2">, </span><span class="s1">Description</span><span class="s2">, </span><span class="s1">Tags</span><span class="s2">, </span><span class="s1">UserID</span><span class="s2">);</span>
+                <span class="s1">task</span><span class="s2">.</span><span class="s1">setId</span><span class="s2">(</span><span class="s1">id</span><span class="s2">);</span>
+                <span class="s1">task</span><span class="s2">.</span><span class="s1">setPriority</span><span class="s2">(</span><span class="s1">priority</span><span class="s2">);</span>
+                <span class="s1">tasks</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">task</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">tasks</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Task</span><span class="s2">&gt; </span><span class="s1">getTasksByUser</span><span class="s2">(</span><span class="s0">int </span><span class="s1">userId</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Task</span><span class="s2">&gt; </span><span class="s1">tasks </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">PreparedStatement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span>
+                    <span class="s3">&quot;SELECT * FROM tasks WHERE userId = ?&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s4">1</span><span class="s2">, </span><span class="s1">userId</span><span class="s2">);</span>
+            <span class="s1">ResultSet resultSet </span><span class="s2">= </span><span class="s1">statement</span><span class="s2">.</span><span class="s1">executeQuery</span><span class="s2">();</span>
+            <span class="s0">while </span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()) {</span>
+                <span class="s0">int </span><span class="s1">id </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s3">&quot;id&quot;</span><span class="s2">);</span>
+                <span class="s1">String title </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;title&quot;</span><span class="s2">);</span>
+                <span class="s1">LocalDateTime startDate </span><span class="s2">= </span><span class="s1">parseDateTime</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;startDate&quot;</span><span class="s2">));</span>
+                <span class="s1">LocalDateTime endDate </span><span class="s2">= </span><span class="s1">parseDateTime</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;endDate&quot;</span><span class="s2">));</span>
+                <span class="s1">String description </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;description&quot;</span><span class="s2">);</span>
+                <span class="s1">String tags </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;tags&quot;</span><span class="s2">);</span>
+                <span class="s1">Task</span><span class="s2">.</span><span class="s1">Priority priority </span><span class="s2">= </span><span class="s1">parsePriority</span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s3">&quot;priority&quot;</span><span class="s2">));</span>
+                <span class="s0">int </span><span class="s1">taskUserId </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s3">&quot;userId&quot;</span><span class="s2">);</span>
+                <span class="s1">Task task </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Task</span><span class="s2">(</span><span class="s1">title</span><span class="s2">, </span><span class="s1">startDate</span><span class="s2">, </span><span class="s1">endDate</span><span class="s2">, </span><span class="s1">description</span><span class="s2">, </span><span class="s1">tags</span><span class="s2">, </span><span class="s1">taskUserId</span><span class="s2">);</span>
+                <span class="s1">task</span><span class="s2">.</span><span class="s1">setId</span><span class="s2">(</span><span class="s1">id</span><span class="s2">);</span>
+                <span class="s1">task</span><span class="s2">.</span><span class="s1">setPriority</span><span class="s2">(</span><span class="s1">priority</span><span class="s2">);</span>
+                <span class="s1">tasks</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">task</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">tasks</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">private </span><span class="s1">Task</span><span class="s2">.</span><span class="s1">Priority parsePriority</span><span class="s2">(</span><span class="s1">String value</span><span class="s2">) {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">value </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s0">return </span><span class="s1">Task</span><span class="s2">.</span><span class="s1">Priority</span><span class="s2">.</span><span class="s1">MEDIUM</span><span class="s2">;</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s0">return </span><span class="s1">Task</span><span class="s2">.</span><span class="s1">Priority</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">value</span><span class="s2">.</span><span class="s1">toUpperCase</span><span class="s2">());</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s0">return </span><span class="s1">Task</span><span class="s2">.</span><span class="s1">Priority</span><span class="s2">.</span><span class="s1">MEDIUM</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

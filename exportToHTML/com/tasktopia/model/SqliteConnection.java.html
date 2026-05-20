@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>SqliteConnection.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SqliteConnection.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">tasktopia</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">Connection</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">DriverManager</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">SQLException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">Statement</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">SqliteConnection </span><span class="s2">{</span>
+    <span class="s0">private static </span><span class="s1">Connection instance </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+
+    <span class="s0">private </span><span class="s1">SqliteConnection</span><span class="s2">() {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s3">// Force the SQLite driver to load</span>
+            <span class="s1">Class</span><span class="s2">.</span><span class="s1">forName</span><span class="s2">(</span><span class="s4">&quot;org.sqlite.JDBC&quot;</span><span class="s2">);</span>
+            <span class="s1">String url </span><span class="s2">= </span><span class="s4">&quot;jdbc:sqlite:Cab302db.db&quot;</span><span class="s2">;</span>
+            <span class="s1">instance </span><span class="s2">= </span><span class="s1">DriverManager</span><span class="s2">.</span><span class="s1">getConnection</span><span class="s2">(</span><span class="s1">url</span><span class="s2">);</span>
+            <span class="s1">createTables</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">ClassNotFoundException e</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">err</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;SQLite driver not found: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">SQLException sqlEx</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">err</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">sqlEx</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">createTables</span><span class="s2">() {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">Statement statement </span><span class="s2">= </span><span class="s1">instance</span><span class="s2">.</span><span class="s1">createStatement</span><span class="s2">();</span>
+
+            <span class="s3">// Contacts table</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s4">&quot;CREATE TABLE IF NOT EXISTS contacts (&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;id INTEGER PRIMARY KEY AUTOINCREMENT,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;firstName VARCHAR NOT NULL,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;lastName VARCHAR NOT NULL,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;email VARCHAR NOT NULL,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;password VARCHAR NOT NULL&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;)&quot;</span><span class="s2">);</span>
+
+            <span class="s3">// New categories table</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s4">&quot;CREATE TABLE IF NOT EXISTS user_categories (&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;id INTEGER PRIMARY KEY AUTOINCREMENT,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;userId INTEGER NOT NULL,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;name VARCHAR NOT NULL,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;colour VARCHAR NOT NULL,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;FOREIGN KEY (userId) REFERENCES contacts(id)&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;)&quot;</span><span class="s2">);</span>
+
+            <span class="s3">// Tasks table</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s4">&quot;CREATE TABLE IF NOT EXISTS tasks (&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;id INTEGER PRIMARY KEY AUTOINCREMENT,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;title VARCHAR NOT NULL,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;startDate VARCHAR,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;endDate VARCHAR,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;description VARCHAR,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;tags VARCHAR,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;priority VARCHAR,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;userId INTEGER,&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;FOREIGN KEY (userId) REFERENCES contacts(id)&quot;</span>
+                    <span class="s2">+ </span><span class="s4">&quot;)&quot;</span><span class="s2">);</span>
+
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public static </span><span class="s1">Connection getInstance</span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">instance </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s0">new </span><span class="s1">SqliteConnection</span><span class="s2">();</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">instance</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>
