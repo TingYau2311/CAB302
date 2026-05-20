@@ -143,7 +143,7 @@ public class HomeController {
                         if (t.getTags() != null &&
                                 t.getTags().toLowerCase().contains(currentCategory)) return true;
                         if (t.getCategory() != null &&
-                                t.getCategory().name().equalsIgnoreCase(currentCategory)) return true;
+                                t.getCategory().equalsIgnoreCase(currentCategory)) return true;
                         return false;
                     })
                     .collect(Collectors.toList());
