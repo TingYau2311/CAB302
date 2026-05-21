@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>TaskStore.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+TaskStore.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">tasktopia</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">collections</span><span class="s2">.</span><span class="s1">FXCollections</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">collections</span><span class="s2">.</span><span class="s1">ObservableList</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDate</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalTime</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Comparator</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">.</span><span class="s1">Collectors</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">TaskStore </span><span class="s2">{</span>
+
+    <span class="s0">private static </span><span class="s1">TaskStore instance</span><span class="s2">;</span>
+    <span class="s0">private final </span><span class="s1">ObservableList</span><span class="s2">&lt;</span><span class="s1">Task</span><span class="s2">&gt; </span><span class="s1">tasks </span><span class="s2">= </span><span class="s1">FXCollections</span><span class="s2">.</span><span class="s1">observableArrayList</span><span class="s2">();</span>
+    <span class="s0">private </span><span class="s1">String loggedInUser </span><span class="s2">= </span><span class="s3">&quot;&quot;</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">loggedInUserId </span><span class="s2">= -</span><span class="s4">1</span><span class="s2">;</span>
+
+    <span class="s0">private </span><span class="s1">TaskStore</span><span class="s2">() {</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public static </span><span class="s1">TaskStore getInstance</span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">instance </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s1">instance </span><span class="s2">= </span><span class="s0">new </span><span class="s1">TaskStore</span><span class="s2">();</span>
+        <span class="s0">return </span><span class="s1">instance</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">ObservableList</span><span class="s2">&lt;</span><span class="s1">Task</span><span class="s2">&gt; </span><span class="s1">getTasks</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">tasks</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">addTask</span><span class="s2">(</span><span class="s1">Task t</span><span class="s2">) {</span>
+        <span class="s1">tasks</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">t</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">removeTask</span><span class="s2">(</span><span class="s1">Task t</span><span class="s2">) {</span>
+        <span class="s1">tasks</span><span class="s2">.</span><span class="s1">remove</span><span class="s2">(</span><span class="s1">t</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">String getLoggedInUser</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">loggedInUser</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setLoggedInUser</span><span class="s2">(</span><span class="s1">String user</span><span class="s2">) {</span>
+        <span class="s1">loggedInUser </span><span class="s2">= </span><span class="s1">user</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public int </span><span class="s1">getLoggedInUserId</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">loggedInUserId</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setLoggedInUserId</span><span class="s2">(</span><span class="s0">int </span><span class="s1">id</span><span class="s2">) {</span>
+        <span class="s1">loggedInUserId </span><span class="s2">= </span><span class="s1">id</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

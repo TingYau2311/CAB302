@@ -81,7 +81,7 @@ public class Task {
     public LocalTime getTime()          { return time; }
     public void setTime(LocalTime time) { this.time = time; }
 
-    public Category getCategory()               { return category; }
+    public Category getCategory() { return category; }
     public void setCategory(Category category)  { this.category = category; }
 
     public Priority getPriority()               { return priority; }

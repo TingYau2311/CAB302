@@ -17,15 +17,19 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+// imports for Ai task management
+import ai.TaskExtractor;
+import au.edu.qut.cogniti.CognitiConversation;
+import au.edu.qut.cogniti.Secrets;
 
 public class HomeController {
 
@@ -44,6 +48,11 @@ public class HomeController {
     private String currentCategory = "all";
     private Task   selectedTask    = null;
     private final CategoryManager categoryManager = new CategoryManager();
+
+    // Ai states
+    private TaskExtractor taskExtractor;
+    private static final String AGENT_ID = "6a046b7d369faae92bfcd391";
+    private static final String BEARER_TOKEN = Secrets.getBearerToken();
 
     // Overlays
     private StackPane manualOverlay;
@@ -70,6 +79,15 @@ public class HomeController {
 
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
+
+        try {
+            taskExtractor = new TaskExtractor(
+                    CognitiConversation.initialise(AGENT_ID, BEARER_TOKEN)
+            );
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            showToast("AI system failed to start");
+        }
 
         buildOverlays();
         loadSavedCategories();
@@ -246,6 +264,11 @@ public class HomeController {
         card.setOnMouseExited(e  -> card.setStyle(fs));
         card.setOnMouseClicked(e -> openDetail(task));
 
+        // WORKING: debug to see how tasks are parsed with Cogniti after giving prompt
+        System.out.println("TASK: " + task.getTitle()
+                + " CATEGORY: " + task.getCategory()
+                + " TAGS: " + task.getTags());
+
         return card;
     }
 
@@ -398,14 +421,14 @@ public class HomeController {
         card.setMaxWidth(480);
         card.setMaxHeight(Region.USE_PREF_SIZE);
 
-        HBox header = modalHeader("✨  Add Smart Task");
+        HBox header = modalHeader("✨ Add Smart Task");
         Button closeBtn = (Button) header.getChildren().get(1);
 
-        TextField inputField = field("e.g. Call boss next tuesday #work #high");
+        TextField inputField = field("");
 
-        Label hint = new Label(
-                "Use #category and #priority tags with a natural date.\n" +
-                        "Example:  \"Buy milk tomorrow at 3pm #grocery #medium\"");
+        // changing hint to match AI features (no need for hashtags)
+        Label hint = new Label("Examples: \n\"Buy milk tomorrow morning as soon as possible!\"" +
+                "\n\"Call boss next friday.\"");
         hint.setStyle(Styles.aiHint());
         hint.setWrapText(true);
         hint.setMaxWidth(Double.MAX_VALUE);
@@ -419,68 +442,38 @@ public class HomeController {
 
         Runnable doSubmit = () -> {
             String raw = inputField.getText().trim();
-            if (raw.isEmpty()) { showToast("Please describe your task"); return; }
 
-            String taskName = raw.replaceAll("#\\w+", "").trim();
-            String lower = raw.toLowerCase();
+            if (raw.isEmpty()) {
+                showToast("Please describe your task");
+                return;
+            }
 
-            Task.Category cat = Task.Category.PERSONAL;
-            if      (lower.contains("#work"))    cat = Task.Category.WORK;
-            else if (lower.contains("#grocery")) cat = Task.Category.GROCERY;
-            else if (lower.contains("#school"))  cat = Task.Category.SCHOOL;
-            else if (lower.contains("#medical")) cat = Task.Category.MEDICAL;
-            else if (lower.contains("#social"))  cat = Task.Category.SOCIAL;
-            else if (lower.contains("#fitness")) cat = Task.Category.FITNESS;
+            try {
+                Task task = taskExtractor.extract(raw);
 
-            Task.Priority pri = Task.Priority.MEDIUM;
-            if      (lower.contains("#high")) pri = Task.Priority.HIGH;
-            else if (lower.contains("#low"))  pri = Task.Priority.LOW;
+                // ensure userId is set
+                task.setUserId(TaskStore.getInstance().getLoggedInUserId());
 
-            LocalDate date = null;
-            if      (lower.contains("tomorrow")) date = LocalDate.now().plusDays(1);
-            else if (lower.contains("today"))    date = LocalDate.now();
-            else {
-                String[] days = {"sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
-                for (int i = 0; i < days.length; i++) {
-                    if (lower.contains(days[i])) {
-                        int diff = (i - LocalDate.now().getDayOfWeek().getValue() % 7 + 7) % 7;
-                        date = LocalDate.now().plusDays(diff == 0 ? 7 : diff);
-                        break;
-                    }
+                //
+                if (task.getStartDate() == null) {
+                    LocalDateTime now = LocalDateTime.now();
+                    task.setStartDate(now);
+                    task.setEndDate(now.plusHours(1));
                 }
+
+                taskDAO.addTask(task);
+                reloadTasks();
+
+                closeOverlay(shell);
+                inputField.clear();
+                renderTasks();
+
+                showToast("✨ Smart task added!");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                showToast("❌ AI failed to parse task");
             }
-
-            LocalTime time = null;
-            Matcher m = Pattern.compile("(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm)?",
-                    Pattern.CASE_INSENSITIVE).matcher(raw);
-            if (m.find()) {
-                try {
-                    int h   = Integer.parseInt(m.group(1));
-                    int min = m.group(2) != null ? Integer.parseInt(m.group(2)) : 0;
-                    if ("pm".equalsIgnoreCase(m.group(3)) && h < 12) h += 12;
-                    if ("am".equalsIgnoreCase(m.group(3)) && h == 12) h = 0;
-                    time = LocalTime.of(h, min);
-                } catch (Exception ignored) {}
-            }
-
-            LocalDate finalDate = date != null ? date : LocalDate.now();
-            LocalTime finalTime = time != null ? time : LocalTime.now();
-            LocalDateTime startDT = LocalDateTime.of(finalDate, finalTime);
-
-            Task newTask = new Task(taskName, startDT, startDT.plusHours(1),
-                    "", cat.name().toLowerCase(),
-                    TaskStore.getInstance().getLoggedInUserId());
-            newTask.setCategory(cat);
-            newTask.setPriority(pri);
-            newTask.setDate(finalDate);
-            newTask.setTime(finalTime);
-
-            taskDAO.addTask(newTask);
-            reloadTasks();
-            closeOverlay(shell);
-            inputField.clear();
-            renderTasks();
-            showToast("✨ Smart task added!");
         };
 
         submit.setOnAction(e -> doSubmit.run());

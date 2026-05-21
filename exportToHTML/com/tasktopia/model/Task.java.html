@@ -1,0 +1,132 @@
+<html>
+<head>
+<title>Task.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Task.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">tasktopia</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDateTime</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDate</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalTime</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">Task </span><span class="s2">{</span>
+
+    <span class="s0">public enum </span><span class="s1">Priority </span><span class="s2">{ </span><span class="s1">HIGH</span><span class="s2">, </span><span class="s1">MEDIUM</span><span class="s2">, </span><span class="s1">LOW </span><span class="s2">}</span>
+    <span class="s0">public enum </span><span class="s1">Category </span><span class="s2">{ </span><span class="s1">WORK</span><span class="s2">, </span><span class="s1">GROCERY</span><span class="s2">, </span><span class="s1">PERSONAL</span><span class="s2">, </span><span class="s1">SCHOOL</span><span class="s2">, </span><span class="s1">MEDICAL</span><span class="s2">, </span><span class="s1">SOCIAL</span><span class="s2">, </span><span class="s1">FITNESS </span><span class="s2">}</span>
+
+
+    <span class="s0">private int </span><span class="s1">id</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String title</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">LocalDateTime startDate</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">LocalDateTime endDate</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String description</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String tags</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">userId</span><span class="s2">;</span>
+
+
+    <span class="s0">private </span><span class="s1">LocalDate date</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">LocalTime time</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Category category</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Priority priority</span><span class="s2">;</span>
+    <span class="s0">private boolean </span><span class="s1">done</span><span class="s2">;</span>
+
+    <span class="s3">//  constructor used by SqliteTaskDAO</span>
+    <span class="s0">public </span><span class="s1">Task</span><span class="s2">(</span><span class="s1">String title</span><span class="s2">, </span><span class="s1">LocalDateTime startDate</span><span class="s2">, </span><span class="s1">LocalDateTime endDate</span><span class="s2">,</span>
+                <span class="s1">String description</span><span class="s2">, </span><span class="s1">String tags</span><span class="s2">, </span><span class="s0">int </span><span class="s1">userId</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">title </span><span class="s2">= </span><span class="s1">title</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">startDate </span><span class="s2">= </span><span class="s1">startDate</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">endDate </span><span class="s2">= </span><span class="s1">endDate</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">description </span><span class="s2">= </span><span class="s1">description</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">tags </span><span class="s2">= </span><span class="s1">tags</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">userId </span><span class="s2">= </span><span class="s1">userId</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">done </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s3">// ── GUI constructor (used by TaskStore) ─────────────────────</span>
+    <span class="s0">public </span><span class="s1">Task</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s1">String description</span><span class="s2">, </span><span class="s1">LocalDate date</span><span class="s2">, </span><span class="s1">LocalTime time</span><span class="s2">,</span>
+                <span class="s1">Category category</span><span class="s2">, </span><span class="s1">Priority priority</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">title </span><span class="s2">= </span><span class="s1">name</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">description </span><span class="s2">= </span><span class="s1">description</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">date </span><span class="s2">= </span><span class="s1">date</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">time </span><span class="s2">= </span><span class="s1">time</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">category </span><span class="s2">= </span><span class="s1">category</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">priority </span><span class="s2">= </span><span class="s1">priority</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">done </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">public int </span><span class="s1">getId</span><span class="s2">()                  { </span><span class="s0">return </span><span class="s1">id</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setId</span><span class="s2">(</span><span class="s0">int </span><span class="s1">id</span><span class="s2">)           { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">id </span><span class="s2">= </span><span class="s1">id</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getTitle</span><span class="s2">()            { </span><span class="s0">return </span><span class="s1">title</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setTitle</span><span class="s2">(</span><span class="s1">String title</span><span class="s2">)  { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">title </span><span class="s2">= </span><span class="s1">title</span><span class="s2">; }</span>
+
+    <span class="s3">// getName() alias so HomeController and TaskStore still work</span>
+    <span class="s0">public </span><span class="s1">String getName</span><span class="s2">()             { </span><span class="s0">return </span><span class="s1">title</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setName</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">)    { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">title </span><span class="s2">= </span><span class="s1">name</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">LocalDateTime getStartDate</span><span class="s2">()              { </span><span class="s0">return </span><span class="s1">startDate</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setStartDate</span><span class="s2">(</span><span class="s1">LocalDateTime startDate</span><span class="s2">){ </span><span class="s0">this</span><span class="s2">.</span><span class="s1">startDate </span><span class="s2">= </span><span class="s1">startDate</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">LocalDateTime getEndDate</span><span class="s2">()                { </span><span class="s0">return </span><span class="s1">endDate</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setEndDate</span><span class="s2">(</span><span class="s1">LocalDateTime endDate</span><span class="s2">)    { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">endDate </span><span class="s2">= </span><span class="s1">endDate</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getDescription</span><span class="s2">()                   { </span><span class="s0">return </span><span class="s1">description</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setDescription</span><span class="s2">(</span><span class="s1">String description</span><span class="s2">)   { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">description </span><span class="s2">= </span><span class="s1">description</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getTags</span><span class="s2">()             { </span><span class="s0">return </span><span class="s1">tags</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setTags</span><span class="s2">(</span><span class="s1">String tags</span><span class="s2">)    { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">tags </span><span class="s2">= </span><span class="s1">tags</span><span class="s2">; }</span>
+
+    <span class="s0">public int </span><span class="s1">getUserId</span><span class="s2">()              { </span><span class="s0">return </span><span class="s1">userId</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setUserId</span><span class="s2">(</span><span class="s0">int </span><span class="s1">userId</span><span class="s2">)   { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">userId </span><span class="s2">= </span><span class="s1">userId</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">LocalDate getDate</span><span class="s2">()          { </span><span class="s0">return </span><span class="s1">date</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setDate</span><span class="s2">(</span><span class="s1">LocalDate date</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">date </span><span class="s2">= </span><span class="s1">date</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">LocalTime getTime</span><span class="s2">()          { </span><span class="s0">return </span><span class="s1">time</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setTime</span><span class="s2">(</span><span class="s1">LocalTime time</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">time </span><span class="s2">= </span><span class="s1">time</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">Category getCategory</span><span class="s2">()               { </span><span class="s0">return </span><span class="s1">category</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setCategory</span><span class="s2">(</span><span class="s1">Category category</span><span class="s2">)  { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">category </span><span class="s2">= </span><span class="s1">category</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">Priority getPriority</span><span class="s2">()               { </span><span class="s0">return </span><span class="s1">priority</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setPriority</span><span class="s2">(</span><span class="s1">Priority priority</span><span class="s2">)  { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">priority </span><span class="s2">= </span><span class="s1">priority</span><span class="s2">; }</span>
+
+    <span class="s0">public boolean </span><span class="s1">isDone</span><span class="s2">()             { </span><span class="s0">return </span><span class="s1">done</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setDone</span><span class="s2">(</span><span class="s0">boolean </span><span class="s1">done</span><span class="s2">)   { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">done </span><span class="s2">= </span><span class="s1">done</span><span class="s2">; }</span>
+
+    <span class="s3">// ── Helper methods</span>
+
+    <span class="s0">public </span><span class="s1">String getTimeString</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">time </span><span class="s2">!= </span><span class="s0">null </span><span class="s2">? </span><span class="s1">time</span><span class="s2">.</span><span class="s1">toString</span><span class="s2">() : </span><span class="s4">&quot;&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">String getCategoryLabel</span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">category </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s0">return </span><span class="s4">&quot;&quot;</span><span class="s2">;</span>
+        <span class="s1">String s </span><span class="s2">= </span><span class="s1">category</span><span class="s2">.</span><span class="s1">name</span><span class="s2">();</span>
+        <span class="s0">return </span><span class="s1">s</span><span class="s2">.</span><span class="s1">charAt</span><span class="s2">(</span><span class="s5">0</span><span class="s2">) + </span><span class="s1">s</span><span class="s2">.</span><span class="s1">substring</span><span class="s2">(</span><span class="s5">1</span><span class="s2">).</span><span class="s1">toLowerCase</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">String getPriorityLabel</span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">priority </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s0">return </span><span class="s4">&quot;&quot;</span><span class="s2">;</span>
+        <span class="s1">String s </span><span class="s2">= </span><span class="s1">priority</span><span class="s2">.</span><span class="s1">name</span><span class="s2">();</span>
+        <span class="s0">return </span><span class="s1">s</span><span class="s2">.</span><span class="s1">charAt</span><span class="s2">(</span><span class="s5">0</span><span class="s2">) + </span><span class="s1">s</span><span class="s2">.</span><span class="s1">substring</span><span class="s2">(</span><span class="s5">1</span><span class="s2">).</span><span class="s1">toLowerCase</span><span class="s2">();</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

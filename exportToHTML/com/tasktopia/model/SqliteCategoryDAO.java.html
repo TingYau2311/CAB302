@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>SqliteCategoryDAO.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SqliteCategoryDAO.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">tasktopia</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">Connection</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">PreparedStatement</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">ResultSet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">SqliteCategoryDAO </span><span class="s2">{</span>
+
+    <span class="s0">private final </span><span class="s1">Connection connection</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">SqliteCategoryDAO</span><span class="s2">() {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">connection </span><span class="s2">= </span><span class="s1">SqliteConnection</span><span class="s2">.</span><span class="s1">getInstance</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">saveCategory</span><span class="s2">(</span><span class="s0">int </span><span class="s1">userId</span><span class="s2">, </span><span class="s1">CustomCategory category</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s3">// Guard against duplicates at the DB level</span>
+            <span class="s1">PreparedStatement check </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span>
+                    <span class="s4">&quot;SELECT COUNT(*) FROM user_categories WHERE userId = ? AND LOWER(name) = LOWER(?)&quot;</span><span class="s2">);</span>
+            <span class="s1">check</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s5">1</span><span class="s2">, </span><span class="s1">userId</span><span class="s2">);</span>
+            <span class="s1">check</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s1">category</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+            <span class="s1">ResultSet rs </span><span class="s2">= </span><span class="s1">check</span><span class="s2">.</span><span class="s1">executeQuery</span><span class="s2">();</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">rs</span><span class="s2">.</span><span class="s1">next</span><span class="s2">() &amp;&amp; </span><span class="s1">rs</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s5">1</span><span class="s2">) &gt; </span><span class="s5">0</span><span class="s2">) </span><span class="s0">return</span><span class="s2">; </span><span class="s3">// already saved</span>
+
+            <span class="s1">PreparedStatement insert </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span>
+                    <span class="s4">&quot;INSERT INTO user_categories (userId, name, colour) VALUES (?, ?, ?)&quot;</span><span class="s2">);</span>
+            <span class="s1">insert</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s5">1</span><span class="s2">, </span><span class="s1">userId</span><span class="s2">);</span>
+            <span class="s1">insert</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s1">category</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+            <span class="s1">insert</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">3</span><span class="s2">, </span><span class="s1">category</span><span class="s2">.</span><span class="s1">getColour</span><span class="s2">());</span>
+            <span class="s1">insert</span><span class="s2">.</span><span class="s1">executeUpdate</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CustomCategory</span><span class="s2">&gt; </span><span class="s1">getCategoriesByUser</span><span class="s2">(</span><span class="s0">int </span><span class="s1">userId</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CustomCategory</span><span class="s2">&gt; </span><span class="s1">result </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">PreparedStatement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span>
+                    <span class="s4">&quot;SELECT name, colour FROM user_categories WHERE userId = ? ORDER BY id ASC&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s5">1</span><span class="s2">, </span><span class="s1">userId</span><span class="s2">);</span>
+            <span class="s1">ResultSet rs </span><span class="s2">= </span><span class="s1">statement</span><span class="s2">.</span><span class="s1">executeQuery</span><span class="s2">();</span>
+            <span class="s0">while </span><span class="s2">(</span><span class="s1">rs</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()) {</span>
+                <span class="s1">result</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s0">new </span><span class="s1">CustomCategory</span><span class="s2">(</span><span class="s1">rs</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s4">&quot;name&quot;</span><span class="s2">), </span><span class="s1">rs</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s4">&quot;colour&quot;</span><span class="s2">)));</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">result</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">public void </span><span class="s1">deleteCategory</span><span class="s2">(</span><span class="s0">int </span><span class="s1">userId</span><span class="s2">, </span><span class="s1">String categoryName</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">PreparedStatement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span>
+                    <span class="s4">&quot;DELETE FROM user_categories WHERE userId = ? AND LOWER(name) = LOWER(?)&quot;</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setInt</span><span class="s2">(</span><span class="s5">1</span><span class="s2">, </span><span class="s1">userId</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s1">categoryName</span><span class="s2">);</span>
+            <span class="s1">statement</span><span class="s2">.</span><span class="s1">executeUpdate</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>
