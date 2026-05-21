@@ -36,4 +36,19 @@ class ContactTest {
         String fullName = c.getFirstName() + " " + c.getLastName();
         assertEquals("Jane Smith", fullName);
     }
+
+    @Test
+    void setIdUpdatesContactId() {
+        Contact c = new Contact("John", "Doe", "john@test.com", "pass");
+        c.setId(42);
+        assertEquals(42, c.getId());
+    }
+
+    @Test
+    void contactWithEmptyFieldsIsStillValid() {
+        Contact c = new Contact("", "", "", "");
+        assertEquals("", c.getFirstName());
+        assertEquals("", c.getLastName());
+        assertEquals("", c.getEmail());
+    }
 }
