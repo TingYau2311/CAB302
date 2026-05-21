@@ -64,12 +64,20 @@ public class TaskExtractor {
             task.setPriority(Task.Priority.valueOf(dto.priority));
         }
 
-        // making sure parsed category matches mapping
-        if (dto.category != null) {
-            if ("builtin".equalsIgnoreCase(dto.category.type)) {
-                task.setCategory(Task.Category.valueOf(dto.category.value.toUpperCase()));
-            } else {
-                task.setTags(dto.category.value.toLowerCase()); // custom category fallback
+        // if category is not null, and the type is built in or custom
+        if (dto.category != null && dto.category.value != null) {
+
+            String raw = dto.category.value.trim().toUpperCase();
+
+            try {
+                Task.Category cat = Task.Category.valueOf(raw);
+                task.setCategory(cat);
+                task.setTags(raw.toLowerCase()); // in case it is not parsed correctly
+
+            } catch (IllegalArgumentException e) {
+                System.out.println("Unknown category from AI: " + raw);
+                task.setCategory(Task.Category.PERSONAL); //  fallback
+                task.setTags(raw.toLowerCase());
             }
         }
 

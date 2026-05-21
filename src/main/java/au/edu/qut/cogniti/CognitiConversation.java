@@ -57,6 +57,8 @@ public class CognitiConversation {
     LocalDate today = LocalDate.now();
     LocalTime now = LocalTime.now();
 
+
+
     public String sendMessage(String message) throws IOException, InterruptedException {
 
         String prompt = """
@@ -67,9 +69,18 @@ public class CognitiConversation {
         - Return ONLY valid JSON
         - Never return null
         - Do NOT include explanations
+        - Keep title short
+        
+        DESCRIPTION RULES:
+        - The description MUST include extra context, requirements, and notes
+        - Include anything that is NOT the main task action
+        - Include items, ingredients, reminders, or context
+        - Do NOT repeat the title
+        - If there are no extra details, use empty string ""
+        
+        DATE AND TIME RULES:
         - If date is missing, use today's date in ISO format yyyy-MM-dd (always required) 
             CURRENT SYSTEM DATE: %s
-            
         - If time is missing, use now in HH:mm (always required).
             CURRENT SYSTEM TIME: %s
         

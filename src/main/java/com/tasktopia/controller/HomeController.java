@@ -264,7 +264,7 @@ public class HomeController {
         card.setOnMouseExited(e  -> card.setStyle(fs));
         card.setOnMouseClicked(e -> openDetail(task));
 
-        // Debug to see why tasks aren't going into correct category
+        // WORKING: debug to see how tasks are parsed with Cogniti after giving prompt
         System.out.println("TASK: " + task.getTitle()
                 + " CATEGORY: " + task.getCategory()
                 + " TAGS: " + task.getTags());
@@ -424,11 +424,11 @@ public class HomeController {
         HBox header = modalHeader("✨ Add Smart Task");
         Button closeBtn = (Button) header.getChildren().get(1);
 
-        TextField inputField = field("e.g. Call boss next tuesday #work #high");
+        TextField inputField = field("");
 
-        Label hint = new Label(
-                "Use #category and #priority tags with a natural date.\n" +
-                        "Example:  \"Buy milk tomorrow at 3pm #grocery #medium\"");
+        // changing hint to match AI features (no need for hashtags)
+        Label hint = new Label("Examples: \n\"Buy milk tomorrow morning as soon as possible!\"" +
+                "\n\"Call boss next friday.\"");
         hint.setStyle(Styles.aiHint());
         hint.setWrapText(true);
         hint.setMaxWidth(Double.MAX_VALUE);
