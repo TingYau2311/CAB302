@@ -69,7 +69,7 @@ public class TaskExtractor {
             if ("builtin".equalsIgnoreCase(dto.category.type)) {
                 task.setCategory(Task.Category.valueOf(dto.category.value.toUpperCase()));
             } else {
-                task.setTags(dto.category.value); // custom category fallback
+                task.setTags(dto.category.value.toLowerCase()); // custom category fallback
             }
         }
 
