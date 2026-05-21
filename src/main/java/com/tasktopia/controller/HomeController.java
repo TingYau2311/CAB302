@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -26,6 +27,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+// imports for Ai task management
+import ai.TaskExtractor;
+import au.edu.qut.cogniti.CognitiConversation;
+import au.edu.qut.cogniti.Secrets;
 
 public class HomeController {
 
@@ -44,6 +50,11 @@ public class HomeController {
     private String currentCategory = "all";
     private Task   selectedTask    = null;
     private final CategoryManager categoryManager = new CategoryManager();
+
+    // Ai states
+    private TaskExtractor taskExtractor;
+    private static final String AGENT_ID = "6a046b7d369faae92bfcd391";
+    private static final String BEARER_TOKEN = Secrets.getBearerToken();
 
     // Overlays
     private StackPane manualOverlay;
@@ -70,6 +81,24 @@ public class HomeController {
 
         headerDate.setText(LocalDate.now().format(
                 DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy")));
+
+        /*
+        taskExtractor = new TaskExtractor(
+                CognitiConversation.initialise(
+                        AGENT_ID, BEARER_TOKEN
+                )
+            );
+
+         */
+
+        try {
+            taskExtractor = new TaskExtractor(
+                    CognitiConversation.initialise(AGENT_ID, BEARER_TOKEN)
+            );
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            showToast("AI system failed to start");
+        }
 
         buildOverlays();
         loadSavedCategories();
@@ -143,7 +172,7 @@ public class HomeController {
                         if (t.getTags() != null &&
                                 t.getTags().toLowerCase().contains(currentCategory)) return true;
                         if (t.getCategory() != null &&
-                                t.getCategory().equalsIgnoreCase(currentCategory)) return true;
+                                t.getCategory().name().equalsIgnoreCase(currentCategory)) return true;
                         return false;
                     })
                     .collect(Collectors.toList());
@@ -419,6 +448,44 @@ public class HomeController {
 
         Runnable doSubmit = () -> {
             String raw = inputField.getText().trim();
+
+            if (raw.isEmpty()) {
+                showToast("Please describe your task");
+                return;
+            }
+
+            try {
+                // 🔥 AI MAGIC HAPPENS HERE
+                Task task = taskExtractor.extract(raw);
+
+                // ensure userId is set
+                task.setUserId(TaskStore.getInstance().getLoggedInUserId());
+
+                // default fallback safety
+                if (task.getStartDate() == null) {
+                    LocalDateTime now = LocalDateTime.now();
+                    task.setStartDate(now);
+                    task.setEndDate(now.plusHours(1));
+                }
+
+                taskDAO.addTask(task);
+                reloadTasks();
+
+                closeOverlay(shell);
+                inputField.clear();
+                renderTasks();
+
+                showToast("✨ Smart task added!");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                showToast("❌ AI failed to parse task");
+            }
+        };
+
+        /*
+        Runnable doSubmit = () -> {
+            String raw = inputField.getText().trim();
             if (raw.isEmpty()) { showToast("Please describe your task"); return; }
 
             String taskName = raw.replaceAll("#\\w+", "").trim();
@@ -482,6 +549,8 @@ public class HomeController {
             renderTasks();
             showToast("✨ Smart task added!");
         };
+
+        */
 
         submit.setOnAction(e -> doSubmit.run());
         inputField.setOnAction(e -> doSubmit.run());

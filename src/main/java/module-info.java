@@ -21,4 +21,6 @@ module com.tasktopia {
 
     exports au.edu.qut;
     exports au.edu.qut.cogniti;
+
+    opens ai to com.google.gson;
 }
