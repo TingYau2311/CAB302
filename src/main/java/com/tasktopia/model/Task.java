@@ -16,7 +16,6 @@ import java.time.LocalTime;
  * </ul>
  * Both paths share the same underlying fields; unused fields remain {@code null}
  * or default-valued.
- * </p>
  */
 public class Task {
 

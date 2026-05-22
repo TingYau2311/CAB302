@@ -44,7 +44,6 @@ import au.edu.qut.cogniti.Secrets;
  *   <li>Integrating the AI-powered {@link TaskExtractor} (via Cogniti) to parse
  *       natural-language task descriptions into {@link Task} objects.</li>
  * </ul>
- * </p>
  *
  * <p>All overlays are built once during {@link #initialize()} and toggled
  * visible/invisible rather than being recreated on each open, to preserve their
@@ -169,7 +168,6 @@ public class HomeController {
      *   <li>Loads and adds navigation buttons for any previously saved custom categories.</li>
      *   <li>Renders the initial task list.</li>
      * </ol>
-     * </p>
      */
     @FXML
     public void initialize() {

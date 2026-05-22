@@ -372,7 +372,6 @@ public class MainController {
      * </ol>
      * The spinners must be initialised before {@link #syncTasks()} is called to
      * avoid a {@link NullPointerException} when a task is auto-selected.
-     * </p>
      */
     @FXML
     public void initialize() {
