@@ -7,9 +7,9 @@ import java.util.List;
  * In-memory implementation of {@link IContactDAO} for use in unit tests
  * and development scenarios where a real database is not available.
  * <p>
- * Contacts are stored in a plain {@link ArrayList} and IDs are assigned
+ * Contacts are stored in a plain and IDs are assigned
  * via a simple auto-incrementing counter, mirroring the behaviour of a
- * database {@code AUTOINCREMENT} primary key.
+ * database primary key.
  * </p>
  */
 public class MockContactDAO implements IContactDAO {
