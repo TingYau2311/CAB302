@@ -41,4 +41,37 @@ class TaskStoreTest {
     void initialLoggedInUserIdIsNegative() {
         assertTrue(TaskStore.getInstance().getLoggedInUserId() < 0);
     }
+
+    @Test
+    void setLoggedInUserToNullWorks() {
+        TaskStore.getInstance().setLoggedInUser("Test");
+        TaskStore.getInstance().setLoggedInUser(null);
+        assertNull(TaskStore.getInstance().getLoggedInUser());
+    }
+
+    @Test
+    void setLoggedInUserIdToZeroWorks() {
+        TaskStore.getInstance().setLoggedInUserId(0);
+        assertEquals(0, TaskStore.getInstance().getLoggedInUserId());
+    }
+
+    @Test
+    void multipleSetLoggedInUserCallsOverwrite() {
+        TaskStore.getInstance().setLoggedInUser("First");
+        TaskStore.getInstance().setLoggedInUser("Second");
+        assertEquals("Second", TaskStore.getInstance().getLoggedInUser());
+    }
+
+    @Test
+    void multipleSetLoggedInUserIdCallsOverwrite() {
+        TaskStore.getInstance().setLoggedInUserId(1);
+        TaskStore.getInstance().setLoggedInUserId(2);
+        assertEquals(2, TaskStore.getInstance().getLoggedInUserId());
+    }
+
+    @Test
+    void setLoggedInUserWithEmptyStringWorks() {
+        TaskStore.getInstance().setLoggedInUser("");
+        assertEquals("", TaskStore.getInstance().getLoggedInUser());
+    }
 }

@@ -2,7 +2,6 @@ package com.tasktopia.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,45 +15,140 @@ class MockContactDAOTest {
         dao = new MockContactDAO();
     }
 
-    private Contact sample(String email) {
-        return new Contact("Test", "User", email, "pass123");
-    }
-
     @Test
     void addContactStoresContact() {
-        Contact c = sample("a@test.com");
+        Contact c = new Contact("John", "Doe", "john@test.com", "pass");
         dao.addContact(c);
 
-        List<Contact> all = dao.getAllContacts();
-        assertEquals(1, all.size());
-        assertEquals("a@test.com", all.get(0).getEmail());
+        assertEquals(1, dao.getAllContacts().size());
     }
 
     @Test
-    void updateContactReplacesExisting() {
-        Contact c = sample("a@test.com");
+    void getAllContactsReturnsAllAdded() {
+        dao.addContact(new Contact("A", "B", "a@test.com", "pass"));
+        dao.addContact(new Contact("C", "D", "c@test.com", "pass"));
+
+        assertEquals(2, dao.getAllContacts().size());
+    }
+
+    @Test
+    void getContactByIdFindsCorrectContact() {
+        Contact c = new Contact("John", "Doe", "john@test.com", "pass");
+        c.setId(1);
         dao.addContact(c);
 
-        c.setFirstName("Updated");
+        Contact found = dao.getContact(1);
+        assertNotNull(found);
+        assertEquals("John", found.getFirstName());
+    }
+
+    @Test
+    void getContactByIdReturnsNullWhenNotFound() {
+        Contact found = dao.getContact(999);
+        assertNull(found);
+    }
+
+    @Test
+    void updateContactModifiesExisting() {
+        Contact c = new Contact("John", "Doe", "john@test.com", "pass");
+        c.setId(1);
+        dao.addContact(c);
+
+        c.setFirstName("Jane");
         dao.updateContact(c);
 
-        Contact fetched = dao.getContact(c.getId());
-        assertNotNull(fetched);
-        assertEquals("Updated", fetched.getFirstName());
+        Contact found = dao.getContact(1);
+        assertEquals("Jane", found.getFirstName());
     }
 
     @Test
-    void deleteContactRemovesCorrectItem() {
-        Contact c1 = sample("a@test.com");
-        Contact c2 = sample("b@test.com");
+    void deleteContactRemovesFromList() {
+        Contact c = new Contact("John", "Doe", "john@test.com", "pass");
+        dao.addContact(c);
+
+        dao.deleteContact(c);
+
+        assertEquals(0, dao.getAllContacts().size());
+    }
+
+    @Test
+    void addMultipleContactsWithDifferentEmails() {
+        dao.addContact(new Contact("A", "B", "a@test.com", "pass"));
+        dao.addContact(new Contact("C", "D", "c@test.com", "pass"));
+        dao.addContact(new Contact("E", "F", "e@test.com", "pass"));
+
+        assertEquals(3, dao.getAllContacts().size());
+    }
+
+    @Test
+    void deleteNonExistentContactDoesNothing() {
+        dao.addContact(new Contact("A", "B", "a@test.com", "pass"));
+        Contact fake = new Contact("Fake", "User", "fake@test.com", "pass");
+
+        dao.deleteContact(fake);
+
+        assertEquals(1, dao.getAllContacts().size());
+    }
+
+    @Test
+    void getAllContactsReturnsEmptyListInitially() {
+        assertEquals(0, dao.getAllContacts().size());
+    }
+
+    @Test
+    void updateNonExistentContactAddsIt() {
+        Contact c = new Contact("A", "B", "a@test.com", "pass");
+        c.setId(1);
+
+        dao.updateContact(c);
+
+        assertEquals(1, dao.getAllContacts().size());
+    }
+
+    @Test
+    void addContactWithSameEmailCreatesMultipleEntries() {
+        dao.addContact(new Contact("A", "B", "same@test.com", "pass1"));
+        dao.addContact(new Contact("C", "D", "same@test.com", "pass2"));
+
+        assertEquals(2, dao.getAllContacts().size());
+    }
+
+    @Test
+    void deleteContactTwiceDoesNotCauseError() {
+        Contact c = new Contact("A", "B", "a@test.com", "pass");
+        dao.addContact(c);
+
+        dao.deleteContact(c);
+        dao.deleteContact(c); // Delete again
+
+        assertEquals(0, dao.getAllContacts().size());
+    }
+
+    @Test
+    void getContactReturnsCorrectContactById() {
+        Contact c1 = new Contact("First", "User", "first@test.com", "pass");
+        Contact c2 = new Contact("Second", "User", "second@test.com", "pass");
+        c1.setId(1);
+        c2.setId(2);
 
         dao.addContact(c1);
         dao.addContact(c2);
 
-        dao.deleteContact(c1);
+        Contact found = dao.getContact(2);
+        assertEquals("Second", found.getFirstName());
+    }
 
-        List<Contact> all = dao.getAllContacts();
-        assertEquals(1, all.size());
-        assertEquals("b@test.com", all.get(0).getEmail());
+    @Test
+    void updateContactRemovesOldVersionAndAddsNew() {
+        Contact c = new Contact("Old", "Name", "old@test.com", "pass");
+        c.setId(1);
+        dao.addContact(c);
+
+        c.setFirstName("New");
+        dao.updateContact(c);
+
+        // Should still only have 1 contact
+        assertEquals(1, dao.getAllContacts().size());
+        assertEquals("New", dao.getAllContacts().get(0).getFirstName());
     }
 }
