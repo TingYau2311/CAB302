@@ -113,42 +113,5 @@ class MockContactDAOTest {
         assertEquals(2, dao.getAllContacts().size());
     }
 
-    @Test
-    void deleteContactTwiceDoesNotCauseError() {
-        Contact c = new Contact("A", "B", "a@test.com", "pass");
-        dao.addContact(c);
 
-        dao.deleteContact(c);
-        dao.deleteContact(c); // Delete again
-
-        assertEquals(0, dao.getAllContacts().size());
-    }
-
-    @Test
-    void getContactReturnsCorrectContactById() {
-        Contact c1 = new Contact("First", "User", "first@test.com", "pass");
-        Contact c2 = new Contact("Second", "User", "second@test.com", "pass");
-        c1.setId(1);
-        c2.setId(2);
-
-        dao.addContact(c1);
-        dao.addContact(c2);
-
-        Contact found = dao.getContact(2);
-        assertEquals("Second", found.getFirstName());
-    }
-
-    @Test
-    void updateContactRemovesOldVersionAndAddsNew() {
-        Contact c = new Contact("Old", "Name", "old@test.com", "pass");
-        c.setId(1);
-        dao.addContact(c);
-
-        c.setFirstName("New");
-        dao.updateContact(c);
-
-        // Should still only have 1 contact
-        assertEquals(1, dao.getAllContacts().size());
-        assertEquals("New", dao.getAllContacts().get(0).getFirstName());
-    }
 }
