@@ -1,12 +1,33 @@
 package com.tasktopia.model;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Singleton that manages the application's single SQLite database connection.
+ * <p>
+ * On first access, the class loads the SQLite JDBC driver, opens a connection
+ * to {@code Cab302db.db} in the working directory, and creates the required
+ * tables ({@code contacts}, {@code user_categories}, {@code tasks}) if they do
+ * not already exist.
+ * </p>
+ *
+ * <p>Use {@link #getInstance()} to obtain the shared {@link Connection} object.</p>
+ *
+ * <p><strong>Thread safety:</strong> This implementation is not thread-safe.
+ * For a multi-threaded environment, additional synchronisation would be required.</p>
+ */
 public class SqliteConnection {
+
+    /** The single shared database connection. */
     private static Connection instance = null;
 
+    /**
+     * Private constructor that initialises the SQLite driver, opens the
+     * connection, and bootstraps the database schema.
+     */
     private SqliteConnection() {
         try {
             // Force the SQLite driver to load
@@ -21,6 +42,17 @@ public class SqliteConnection {
         }
     }
 
+    /**
+     * Creates the application's database tables if they do not already exist.
+     * <p>
+     * Tables created:
+     * <ul>
+     *   <li>{@code contacts} — stores registered user accounts</li>
+     *   <li>{@code user_categories} — stores user-defined task categories</li>
+     *   <li>{@code tasks} — stores task records linked to a contact</li>
+     * </ul>
+     * </p>
+     */
     private void createTables() {
         try {
             Statement statement = instance.createStatement();
@@ -34,7 +66,7 @@ public class SqliteConnection {
                     + "password VARCHAR NOT NULL"
                     + ")");
 
-            // New categories table
+            // User-defined categories table
             statement.execute("CREATE TABLE IF NOT EXISTS user_categories ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "userId INTEGER NOT NULL,"
@@ -61,6 +93,12 @@ public class SqliteConnection {
         }
     }
 
+    /**
+     * Returns the shared {@link Connection} instance, creating it on first call.
+     *
+     * @return the application's single SQLite {@link Connection}; never {@code null}
+     *         after successful initialisation
+     */
     public static Connection getInstance() {
         if (instance == null) {
             new SqliteConnection();

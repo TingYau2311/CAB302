@@ -77,4 +77,62 @@ class MockTaskDAOTest {
         assertEquals(2, user1.size());
         assertTrue(user1.stream().allMatch(t -> t.getUserId() == 1));
     }
+
+    @Test
+    void getTaskReturnsNullWhenNotFound() {
+        Task found = dao.getTask(999);
+        assertNull(found);
+    }
+
+    @Test
+    void getTasksByUserReturnsEmptyWhenNoTasks() {
+        List<Task> tasks = dao.getTasksByUser(1);
+        assertEquals(0, tasks.size());
+    }
+
+    @Test
+    void deleteNonExistentTaskDoesNothing() {
+        dao.addTask(sample("Task", 1));
+        Task fake = sample("Fake", 1);
+        fake.setId(999);
+
+        dao.deleteTask(fake);
+        assertEquals(1, dao.getAllTasks().size());
+    }
+
+    @Test
+    void getAllTasksReturnsEmptyInitially() {
+        assertEquals(0, dao.getAllTasks().size());
+    }
+
+    @Test
+    void addTaskWithSameNameCreatesMultipleTasks() {
+        dao.addTask(sample("Same Name", 1));
+        dao.addTask(sample("Same Name", 1));
+
+        assertEquals(2, dao.getAllTasks().size());
+    }
+
+    @Test
+    void updateTaskWithNonExistentIdDoesNothing() {
+        Task t = sample("Original", 1);
+        t.setId(999);
+
+        dao.updateTask(t);
+        assertEquals(0, dao.getAllTasks().size());
+    }
+
+    @Test
+    void getTasksByUserWithMultipleUsersFiltersCorrectly() {
+        dao.addTask(sample("User1-Task1", 1));
+        dao.addTask(sample("User2-Task1", 2));
+        dao.addTask(sample("User1-Task2", 1));
+        dao.addTask(sample("User3-Task1", 3));
+
+        List<Task> user1Tasks = dao.getTasksByUser(1);
+        List<Task> user2Tasks = dao.getTasksByUser(2);
+
+        assertEquals(2, user1Tasks.size());
+        assertEquals(1, user2Tasks.size());
+    }
 }

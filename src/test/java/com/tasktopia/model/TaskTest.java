@@ -35,7 +35,7 @@ class TaskTest {
     @Test
     void idIsAssignedSomePositiveValue() {
         Task t = sampleTask();
-        assertTrue(t.getId() >= 0);   // safe: works with any ID system
+        assertTrue(t.getId() >= 0);
     }
 
     @Test
@@ -95,5 +95,26 @@ class TaskTest {
         );
 
         assertEquals("High", t.getPriorityLabel());
+    }
+
+    @Test
+    void setUserIdUpdatesUserId() {
+        Task t = sampleTask();
+        t.setUserId(100);
+        assertEquals(100, t.getUserId());
+    }
+
+    @Test
+    void taskWithNullDateStillCreates() {
+        Task t = new Task(
+                "Test",
+                "Description",
+                null,  // null date
+                LocalTime.NOON,
+                Task.Category.WORK,
+                Task.Priority.LOW
+        );
+        assertEquals("Test", t.getName());
+        assertNull(t.getDate());
     }
 }

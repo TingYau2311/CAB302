@@ -26,51 +26,149 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// imports for Ai task management
+// imports for AI task management
 import ai.TaskExtractor;
 import au.edu.qut.cogniti.CognitiConversation;
 import au.edu.qut.cogniti.Secrets;
 
+/**
+ * JavaFX controller for the main Home screen of the Tasktopia application.
+ * <p>
+ * This is the primary user-facing screen after login. It is responsible for:
+ * <ul>
+ *   <li>Displaying the current user's tasks, filtered by category.</li>
+ *   <li>Building and managing all modal overlays (Add Manual, Add AI, Task Detail,
+ *       Edit Task, Add Category, Settings).</li>
+ *   <li>Handling category navigation, including custom user-defined categories
+ *       persisted via {@link SqliteCategoryDAO}.</li>
+ *   <li>Integrating the AI-powered {@link TaskExtractor} (via Cogniti) to parse
+ *       natural-language task descriptions into {@link Task} objects.</li>
+ * </ul>
+ *
+ * <p>All overlays are built once during {@link #initialize()} and toggled
+ * visible/invisible rather than being recreated on each open, to preserve their
+ * state across interactions.</p>
+ */
 public class HomeController {
 
-    // ── FXML ─────────────────────────────────────────────────
+    // ── FXML fields ───────────────────────────────────────────────────────
+
+    /** Horizontal navigation bar at the top of the screen for category buttons. */
     @FXML private HBox      topbarNav;
+
+    /** Label displaying the title of the currently selected category. */
     @FXML private Label     pageTitle;
+
+    /** Label displaying a subtitle / description for the current category. */
     @FXML private Label     pageSubtitle;
+
+    /** Label showing the current date in a human-readable format. */
     @FXML private Label     headerDate;
+
+    /** Vertical container into which individual task cards are rendered. */
     @FXML private VBox      tasksCard;
+
+    /** Root {@link StackPane} used as the host for all modal overlays. */
     @FXML private StackPane rootStack;
 
-    // ── State ─────────────────────────────────────────────────
+    // ── State ─────────────────────────────────────────────────────────────
+
+    /** DAO used to load and persist tasks. */
     private ITaskDAO taskDAO;
+
+    /** DAO used to load, save, and delete custom user-defined categories. */
     private SqliteCategoryDAO categoryDAO;
+
+    /** In-memory cache of all tasks belonging to the current user. */
     private List<Task> allTasks;
+
+    /**
+     * Key of the currently active category filter.
+     * {@code "all"} shows every task; any other value filters by that category key.
+     */
     private String currentCategory = "all";
-    private Task   selectedTask    = null;
+
+    /**
+     * The task currently displayed in the detail or edit modal, or {@code null}
+     * if no task is selected.
+     */
+    private Task selectedTask = null;
+
+    /** Manages in-memory custom categories for the current session. */
     private final CategoryManager categoryManager = new CategoryManager();
 
-    // Ai states
+    // ── AI state ──────────────────────────────────────────────────────────
+
+    /**
+     * AI component that parses a natural-language string into a {@link Task}.
+     * May be {@code null} if the AI service fails to initialise.
+     */
     private TaskExtractor taskExtractor;
+
+    /** Cogniti agent ID used to initialise the AI conversation. */
     private static final String AGENT_ID = "6a046b7d369faae92bfcd391";
+
+    /** Bearer token for authenticating with the Cogniti API. */
     private static final String BEARER_TOKEN = Secrets.getBearerToken();
 
-    // Overlays
+    // ── Overlay StackPanes ────────────────────────────────────────────────
+
+    /** Overlay for manually creating a new task. */
     private StackPane manualOverlay;
+
+    /** Overlay for creating a task via AI natural-language input. */
     private StackPane aiOverlay;
+
+    /** Overlay showing the full details of a selected task. */
     private StackPane detailOverlay;
+
+    /** Overlay for application settings and help information. */
     private StackPane settingsOverlay;
+
+    /** Overlay for editing an existing task's details. */
     private StackPane editOverlay;
+
+    /** Overlay for adding a new custom category with a colour picker. */
     private StackPane addCategoryOverlay;
 
-    // Detail modal labels
+    // ── Detail modal labels (reused across openings) ──────────────────────
+
+    /** Label showing the selected task's name in the detail modal. */
     private Label  detailNameLbl;
+
+    /** Large label showing the selected task's time in the detail modal. */
     private Label  detailTimeLbl;
+
+    /** Label showing the selected task's date in the detail modal. */
     private Label  detailDateLbl;
+
+    /** Label showing the selected task's description in the detail modal. */
     private Label  detailDescLbl;
+
+    /** Row of badge labels for category, priority, and done status in the detail modal. */
     private HBox   detailBadges;
+
+    /** Button to toggle the selected task's done/incomplete state in the detail modal. */
     private Button detailDoneBtn;
 
-    // ── Initialise ────────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════════════════
+    // INITIALISE
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Called by the JavaFX runtime after all {@code @FXML} fields are injected.
+     * <p>
+     * Performs the following in order:
+     * <ol>
+     *   <li>Initialises the task and category DAOs.</li>
+     *   <li>Loads the current user's tasks from the database.</li>
+     *   <li>Sets the header date label to today's date.</li>
+     *   <li>Attempts to initialise the AI {@link TaskExtractor}; shows a toast on failure.</li>
+     *   <li>Builds all modal overlays.</li>
+     *   <li>Loads and adds navigation buttons for any previously saved custom categories.</li>
+     *   <li>Renders the initial task list.</li>
+     * </ol>
+     */
     @FXML
     public void initialize() {
         taskDAO     = new SqliteTaskDAO();
@@ -94,7 +192,10 @@ public class HomeController {
         renderTasks();
     }
 
-    // ── Load persisted custom categories for this user ────────
+    /**
+     * Loads any custom categories persisted for the current user and adds a
+     * navigation button to the top bar for each one.
+     */
     private void loadSavedCategories() {
         int userId = TaskStore.getInstance().getLoggedInUserId();
         List<CustomCategory> saved = categoryDAO.getCategoriesByUser(userId);
@@ -104,37 +205,77 @@ public class HomeController {
         }
     }
 
-    // ── Reload tasks from DB ──────────────────────────────────
+    /**
+     * Reloads the current user's tasks from the database into {@link #allTasks}.
+     * Call this after any add, edit, or delete operation to keep the cache current.
+     */
     private void reloadTasks() {
         allTasks = taskDAO.getTasksByUser(TaskStore.getInstance().getLoggedInUserId());
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  SIDEBAR ACTIONS
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // SIDEBAR ACTIONS
+    // ═══════════════════════════════════════════════════════════════════
+
+    /** Switches the view to show all tasks. */
     @FXML private void onAllTasks()    { selectCategory("all",      "All Tasks",      "All your tasks"); }
+
+    /** Switches the view to show Work-category tasks. */
     @FXML private void onWork()        { selectCategory("work",     "Work Tasks",     "Tasks in the Work category"); }
+
+    /** Switches the view to show Grocery-category tasks. */
     @FXML private void onGrocery()     { selectCategory("grocery",  "Grocery Tasks",  "Tasks in the Grocery category"); }
+
+    /** Switches the view to show Personal-category tasks. */
     @FXML private void onPersonal()    { selectCategory("personal", "Personal Tasks", "Tasks in the Personal category"); }
+
+    /** Switches the view to show School-category tasks. */
     @FXML private void onSchool()      { selectCategory("school",   "School Tasks",   "Tasks in the School category"); }
+
+    /** Switches the view to show Medical-category tasks. */
     @FXML private void onMedical()     { selectCategory("medical",  "Medical Tasks",  "Tasks in the Medical category"); }
+
+    /** Switches the view to show Social-category tasks. */
     @FXML private void onSocial()      { selectCategory("social",   "Social Tasks",   "Tasks in the Social category"); }
+
+    /** Switches the view to show Fitness-category tasks. */
     @FXML private void onFitness()     { selectCategory("fitness",  "Fitness Tasks",  "Tasks in the Fitness category"); }
+
+    /** Opens the Add Category overlay. */
     @FXML private void onAddCategory() { openOverlay(addCategoryOverlay); }
+
+    /** Opens the Settings overlay. */
     @FXML private void onSettings()    { openOverlay(settingsOverlay); }
 
+    /**
+     * Logs the current user out and navigates back to the login screen.
+     * Any navigation exception is printed to standard error.
+     */
     @FXML
     private void onLogout() {
         try { MainApp.showLogin(); }
         catch (Exception e) { e.printStackTrace(); }
     }
 
+    /** Opens the AI Smart Task overlay. */
     @FXML private void onAddAI()     { openOverlay(aiOverlay); }
+
+    /** Opens the Manual Add Task overlay. */
     @FXML private void onAddManual() { openOverlay(manualOverlay); }
 
-    // ══════════════════════════════════════════════════════════
-    //  CATEGORY SELECTION
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // CATEGORY SELECTION
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Updates the active category, refreshes the page title and subtitle,
+     * updates navigation highlighting, and re-renders the task list.
+     *
+     * @param key      the category key used for filtering (e.g. {@code "work"});
+     *                 use {@code "all"} to show every task
+     * @param title    the human-readable title to display in the page header
+     * @param subtitle the descriptive subtitle to display below the title
+     */
     private void selectCategory(String key, String title, String subtitle) {
         currentCategory = key;
         pageTitle.setText(title);
@@ -143,12 +284,32 @@ public class HomeController {
         renderTasks();
     }
 
+    /**
+     * Updates the visual highlight state of navigation buttons to indicate
+     * the currently active category.
+     * <p><strong>Note:</strong> Currently a no-op stub; highlighting logic
+     * is pending implementation.</p>
+     *
+     * @param activeKey the key of the currently selected category
+     */
     private void refreshNavHighlights(String activeKey) {
+        // TODO: implement nav button highlight toggling
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  RENDER TASK LIST
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // RENDER TASK LIST
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Clears and rebuilds the task card list for the currently active category.
+     * <p>
+     * If {@link #currentCategory} is {@code "all"}, every task in {@link #allTasks}
+     * is shown. Otherwise, tasks are included if their {@link Task#getTags() tags}
+     * contain the category key (case-insensitive) or their
+     * {@link Task#getCategory() category} enum name matches it.
+     * </p>
+     * An empty-state label is shown when no tasks match the current filter.
+     */
     private void renderTasks() {
         tasksCard.getChildren().clear();
 
@@ -180,7 +341,25 @@ public class HomeController {
         }
     }
 
-    // ── Build a single task card ──────────────────────────────
+    /**
+     * Constructs an {@link HBox} card representing a single task for display
+     * in the task list.
+     * <p>
+     * The card includes:
+     * <ul>
+     *   <li>A checkbox {@link Button} that toggles {@link Task#isDone()} and
+     *       persists the change.</li>
+     *   <li>An info section showing the task name, category/tag badge, priority
+     *       badge, and scheduled date.</li>
+     *   <li>A time label derived from {@link Task#getTimeString()} or the start date.</li>
+     *   <li>An edit button that opens the edit modal.</li>
+     * </ul>
+     * Clicking the card itself opens the detail modal via {@link #openDetail(Task)}.
+     * </p>
+     *
+     * @param task the {@link Task} to render; must not be {@code null}
+     * @return the constructed {@link HBox} card node
+     */
     private HBox buildTaskCard(Task task) {
         HBox card = new HBox(16);
         card.setAlignment(Pos.CENTER_LEFT);
@@ -191,7 +370,7 @@ public class HomeController {
         card.setStyle(cardStyle);
         HBox.setHgrow(card, Priority.ALWAYS);
 
-        // Checkbox
+        // Checkbox button
         Button check = new Button(task.isDone() ? "✓" : "");
         check.setStyle(Styles.checkCircle(task.isDone()));
         check.setOnAction(e -> {
@@ -201,7 +380,7 @@ public class HomeController {
             showToast(task.isDone() ? "✅ Task completed!" : "Task marked incomplete");
         });
 
-        // Info
+        // Info section
         VBox info = new VBox(5);
         HBox.setHgrow(info, Priority.ALWAYS);
 
@@ -264,7 +443,7 @@ public class HomeController {
         card.setOnMouseExited(e  -> card.setStyle(fs));
         card.setOnMouseClicked(e -> openDetail(task));
 
-        // WORKING: debug to see how tasks are parsed with Cogniti after giving prompt
+        // Debug: log task category and tag parsing from Cogniti
         System.out.println("TASK: " + task.getTitle()
                 + " CATEGORY: " + task.getCategory()
                 + " TAGS: " + task.getTags());
@@ -272,9 +451,14 @@ public class HomeController {
         return card;
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  BUILD OVERLAYS
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // BUILD OVERLAYS
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Constructs all modal overlays and stores references to them.
+     * Called once during {@link #initialize()}.
+     */
     private void buildOverlays() {
         manualOverlay      = buildManualModal();
         aiOverlay          = buildAiModal();
@@ -284,6 +468,12 @@ public class HomeController {
         addCategoryOverlay = buildAddCategoryModal();
     }
 
+    /**
+     * Makes the given overlay visible, adds it to the root stack if not already
+     * present, and plays a scale + fade-in animation on the inner card.
+     *
+     * @param overlay the {@link StackPane} overlay to open; must not be {@code null}
+     */
     private void openOverlay(StackPane overlay) {
         if (!rootStack.getChildren().contains(overlay))
             rootStack.getChildren().add(overlay);
@@ -299,10 +489,24 @@ public class HomeController {
         new ParallelTransition(st, ft).play();
     }
 
+    /**
+     * Hides the given overlay by setting it invisible.
+     *
+     * @param overlay the {@link StackPane} overlay to close; must not be {@code null}
+     */
     private void closeOverlay(StackPane overlay) {
         overlay.setVisible(false);
     }
 
+    /**
+     * Wraps a modal card {@link VBox} in a full-screen {@link StackPane} that acts
+     * as a dimmed backdrop. Clicking the backdrop (but not the card itself) closes
+     * the overlay.
+     *
+     * @param card the modal content card to wrap; must not be {@code null}
+     * @return the backdrop {@link StackPane} with the card as its child,
+     *         initially invisible
+     */
     private StackPane wrapOverlay(VBox card) {
         StackPane shell = new StackPane(card);
         shell.setStyle(Styles.overlayBg());
@@ -311,9 +515,21 @@ public class HomeController {
         return shell;
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  MANUAL ADD MODAL
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // MANUAL ADD MODAL
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Builds the manual task creation modal.
+     * <p>
+     * The modal collects task name, description, date ({@code yyyy-MM-dd}),
+     * time ({@code HH:mm}), category, and priority. Custom categories are appended
+     * to the category combo box dynamically when it is opened. On submission, a
+     * new {@link Task} is persisted, the task list is reloaded, and a toast is shown.
+     * </p>
+     *
+     * @return the modal wrapped in a backdrop {@link StackPane}
+     */
     private StackPane buildManualModal() {
         VBox card = new VBox(14);
         card.setStyle(Styles.modalCard());
@@ -412,9 +628,23 @@ public class HomeController {
         return shell;
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  AI SMART TASK MODAL
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // AI SMART TASK MODAL
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Builds the AI Smart Task modal.
+     * <p>
+     * The user types a natural-language task description (e.g. "Buy milk tomorrow
+     * morning"). On submission, the text is passed to {@link TaskExtractor#extract(String)},
+     * which uses the Cogniti AI to parse it into a {@link Task}. The task is then
+     * assigned the current user's ID, given a default start time if one was not
+     * extracted, persisted, and added to the task list.
+     * </p>
+     * <p>The modal can be submitted with either the Submit button or the Enter key.</p>
+     *
+     * @return the AI modal wrapped in a backdrop {@link StackPane}
+     */
     private StackPane buildAiModal() {
         VBox card = new VBox(14);
         card.setStyle(Styles.modalCard());
@@ -426,9 +656,8 @@ public class HomeController {
 
         TextField inputField = field("");
 
-        // changing hint to match AI features (no need for hashtags)
-        Label hint = new Label("Examples: \n\"Buy milk tomorrow morning as soon as possible!\"" +
-                "\n\"Call boss next friday.\"");
+        Label hint = new Label("Examples: \n\"Buy milk tomorrow morning as soon as possible!\""
+                + "\n\"Call boss next friday.\"");
         hint.setStyle(Styles.aiHint());
         hint.setWrapText(true);
         hint.setMaxWidth(Double.MAX_VALUE);
@@ -451,10 +680,8 @@ public class HomeController {
             try {
                 Task task = taskExtractor.extract(raw);
 
-                // ensure userId is set
                 task.setUserId(TaskStore.getInstance().getLoggedInUserId());
 
-                //
                 if (task.getStartDate() == null) {
                     LocalDateTime now = LocalDateTime.now();
                     task.setStartDate(now);
@@ -485,9 +712,28 @@ public class HomeController {
         return shell;
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  TASK DETAIL MODAL
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // TASK DETAIL MODAL
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Builds the task detail modal shell.
+     * <p>
+     * The modal displays the selected task's name, time, date, description, and
+     * status/priority badges. It provides three action buttons:
+     * <ul>
+     *   <li><strong>Mark as Done / Incomplete</strong> — toggles {@link Task#isDone()}
+     *       and persists the change.</li>
+     *   <li><strong>Delete</strong> — removes the task from the database and
+     *       refreshes the list.</li>
+     *   <li><strong>Edit</strong> — closes this modal and opens the edit modal.</li>
+     * </ul>
+     * The modal's label references ({@link #detailNameLbl}, {@link #detailTimeLbl},
+     * etc.) are stored as fields so they can be updated by {@link #openDetail(Task)}.
+     * </p>
+     *
+     * @return the detail modal wrapped in a backdrop {@link StackPane}
+     */
     private StackPane buildDetailModal() {
         VBox card = new VBox(12);
         card.setStyle(Styles.modalCard());
@@ -570,6 +816,15 @@ public class HomeController {
         return shell;
     }
 
+    /**
+     * Populates the detail modal with the given task's data and opens it.
+     * <p>
+     * Sets {@link #selectedTask}, updates all detail labels and badges, and
+     * adjusts the done/incomplete button text to reflect the task's current state.
+     * </p>
+     *
+     * @param task the {@link Task} to display; must not be {@code null}
+     */
     private void openDetail(Task task) {
         selectedTask = task;
         String displayName = task.getTitle() != null ? task.getTitle() : task.getName();
@@ -617,9 +872,22 @@ public class HomeController {
         openOverlay(detailOverlay);
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  EDIT TASK MODAL
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // EDIT TASK MODAL
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Builds the edit task modal shell.
+     * <p>
+     * The structure mirrors the manual add modal. The card's {@code userData}
+     * is set to an array of the six editable controls so that
+     * {@link #openEditModal(Task)} can retrieve and pre-populate them without
+     * keeping separate field references.
+     * </p>
+     * On submission, the changes are applied to {@link #selectedTask} and persisted.
+     *
+     * @return the edit modal wrapped in a backdrop {@link StackPane}
+     */
     private StackPane buildEditModal() {
         VBox card = new VBox(14);
         card.setStyle(Styles.modalCard());
@@ -659,6 +927,7 @@ public class HomeController {
         StackPane shell = wrapOverlay(card);
         closeBtn.setOnAction(e -> closeOverlay(shell));
 
+        // Store field references in userData for retrieval by openEditModal()
         card.setUserData(new Object[]{nameField, descField, dateField, timeField, catBox, priBox});
 
         submit.setOnAction(e -> {
@@ -719,6 +988,17 @@ public class HomeController {
         return shell;
     }
 
+    /**
+     * Pre-populates the edit modal fields with the given task's current values
+     * and opens the modal.
+     * <p>
+     * Field references are retrieved from the card's {@code userData} array
+     * (set by {@link #buildEditModal()}). The category combo box is also updated
+     * with any custom categories from {@link #categoryManager} before opening.
+     * </p>
+     *
+     * @param task the {@link Task} to edit; must not be {@code null}
+     */
     private void openEditModal(Task task) {
         selectedTask = task;
 
@@ -771,9 +1051,23 @@ public class HomeController {
         openOverlay(editOverlay);
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  ADD CATEGORY MODAL
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // ADD CATEGORY MODAL
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Builds the Add Category modal with a name field, a 16-colour palette picker,
+     * and a live chip preview.
+     * <p>
+     * On submission, a {@link CustomCategory} is created and validated for
+     * duplicates (case-insensitive key check). If unique, it is added to
+     * {@link #categoryManager}, persisted to the database, and a navigation
+     * button is appended to the top bar. The modal resets its state after
+     * a successful submission.
+     * </p>
+     *
+     * @return the add-category modal wrapped in a backdrop {@link StackPane}
+     */
     private StackPane buildAddCategoryModal() {
         VBox card = new VBox(16);
         card.setStyle(Styles.modalCard());
@@ -869,6 +1163,7 @@ public class HomeController {
             closeOverlay(shell);
             showToast("✅ Category \"" + catName + "\" added!");
 
+            // Reset modal state
             nameField.clear();
             selectedColour[0] = palette[0];
             if (selectedRect[0] != null) selectedRect[0].setStroke(javafx.scene.paint.Color.TRANSPARENT);
@@ -890,6 +1185,18 @@ public class HomeController {
         return shell;
     }
 
+    /**
+     * Creates a styled navigation {@link Button} for the given custom category
+     * and appends it to {@link #topbarNav}.
+     * <p>
+     * The button's text colour is automatically set to white or black based on
+     * the perceived luminance of the category's background colour, to ensure
+     * readable contrast.
+     * </p>
+     *
+     * @param cat the {@link CustomCategory} for which to create the button;
+     *            must not be {@code null}
+     */
     private void addNavButton(CustomCategory cat) {
         javafx.scene.paint.Color fill = javafx.scene.paint.Color.web(cat.getColour());
         double luminance = 0.2126 * fill.getRed() + 0.7152 * fill.getGreen() + 0.0722 * fill.getBlue();
@@ -912,9 +1219,23 @@ public class HomeController {
         topbarNav.getChildren().add(btn);
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  SETTINGS MODAL
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // SETTINGS MODAL
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Builds the Settings / Help modal.
+     * <p>
+     * Displays three read-only sections:
+     * <ul>
+     *   <li><strong>Account</strong> — shows the currently logged-in user's name.</li>
+     *   <li><strong>Help</strong> — brief usage hints.</li>
+     *   <li><strong>About</strong> — application version information.</li>
+     * </ul>
+     * </p>
+     *
+     * @return the settings modal wrapped in a backdrop {@link StackPane}
+     */
     private StackPane buildSettingsModal() {
         VBox card = new VBox(14);
         card.setStyle(Styles.modalCard());
@@ -956,9 +1277,17 @@ public class HomeController {
         return shell;
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  SHARED HELPERS
-    // ══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // SHARED UI HELPERS
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Creates a standard modal header row containing a title label and a close (✕) button.
+     * The title label grows to fill available horizontal space.
+     *
+     * @param titleText the text to display as the modal title
+     * @return an {@link HBox} containing the title and close button
+     */
     private HBox modalHeader(String titleText) {
         Label title = new Label(titleText);
         title.setStyle(Styles.modalTitle());
@@ -973,6 +1302,13 @@ public class HomeController {
         return header;
     }
 
+    /**
+     * Creates a styled single-line {@link TextField} with a focus listener that
+     * swaps between the default and focused input styles.
+     *
+     * @param prompt the placeholder text shown when the field is empty
+     * @return the configured {@link TextField}
+     */
     private TextField field(String prompt) {
         TextField f = new TextField();
         f.setPromptText(prompt);
@@ -983,6 +1319,13 @@ public class HomeController {
         return f;
     }
 
+    /**
+     * Creates a styled multi-line {@link TextArea} with word wrapping and a
+     * default height of three rows.
+     *
+     * @param prompt the placeholder text shown when the area is empty
+     * @return the configured {@link TextArea}
+     */
     private TextArea area(String prompt) {
         TextArea a = new TextArea();
         a.setPromptText(prompt);
@@ -993,6 +1336,14 @@ public class HomeController {
         return a;
     }
 
+    /**
+     * Creates a styled {@link ComboBox} pre-populated with the given items and
+     * configured to fill its container width.
+     *
+     * @param prompt the placeholder text shown when no item is selected
+     * @param items  the initial items to populate the combo box with
+     * @return the configured {@link ComboBox}
+     */
     private ComboBox<String> combo(String prompt, String... items) {
         ComboBox<String> cb = new ComboBox<>();
         cb.getItems().addAll(items);
@@ -1002,6 +1353,14 @@ public class HomeController {
         return cb;
     }
 
+    /**
+     * Wraps a form control in a {@link VBox} with an uppercase label above it.
+     * The container grows horizontally to fill available space.
+     *
+     * @param labelText the label text to display above the control (will be uppercased)
+     * @param field     the JavaFX {@link javafx.scene.Node} to place below the label
+     * @return a {@link VBox} containing the label and field
+     */
     private VBox labeled(String labelText, javafx.scene.Node field) {
         Label lbl = new Label(labelText.toUpperCase());
         lbl.setStyle(Styles.formLabel());
@@ -1011,6 +1370,15 @@ public class HomeController {
         return box;
     }
 
+    /**
+     * Displays a brief toast notification in the bottom-right corner of the screen.
+     * <p>
+     * The toast fades in over 250 ms, stays visible for approximately 2.4 seconds,
+     * then fades out over 400 ms before being removed from the scene graph.
+     * </p>
+     *
+     * @param message the message to display in the toast; must not be {@code null}
+     */
     private void showToast(String message) {
         Label toast = new Label(message);
         toast.setStyle(Styles.toastStyle());

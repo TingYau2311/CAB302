@@ -2,78 +2,76 @@ package com.tasktopia.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskStoreTest {
 
-    private TaskStore store;
-
     @BeforeEach
     void setUp() {
-        store = TaskStore.getInstance();
-        store.getTasks().clear(); // reset list
-        store.setLoggedInUser("");
-    }
-
-    private Task sample(String name) {
-        return new Task(
-                name,
-                "Desc",
-                LocalDate.now(),
-                LocalTime.NOON,
-                Task.Category.WORK,
-                Task.Priority.MEDIUM
-        );
+        TaskStore.getInstance().setLoggedInUser(null);
+        TaskStore.getInstance().setLoggedInUserId(-1);
     }
 
     @Test
-    void addTaskStoresTask() {
-        Task t = sample("A");
-        store.addTask(t);
+    void singletonReturnsSameInstance() {
+        TaskStore instance1 = TaskStore.getInstance();
+        TaskStore instance2 = TaskStore.getInstance();
 
-        assertEquals(1, store.getTasks().size());
-        assertEquals("A", store.getTasks().get(0).getName());
+        assertSame(instance1, instance2);
     }
 
     @Test
-    void removeTaskRemovesCorrectItem() {
-        Task a = sample("A");
-        Task b = sample("B");
-
-        store.addTask(a);
-        store.addTask(b);
-
-        store.removeTask(a);
-
-        assertEquals(1, store.getTasks().size());
-        assertEquals("B", store.getTasks().get(0).getName());
+    void setLoggedInUserStoresValue() {
+        TaskStore.getInstance().setLoggedInUser("Test User");
+        assertEquals("Test User", TaskStore.getInstance().getLoggedInUser());
     }
 
     @Test
-    void removeTaskOnMissingDoesNothing() {
-        Task a = sample("A");
-
-        store.removeTask(a);
-
-        assertEquals(0, store.getTasks().size());
+    void setLoggedInUserIdStoresValue() {
+        TaskStore.getInstance().setLoggedInUserId(42);
+        assertEquals(42, TaskStore.getInstance().getLoggedInUserId());
     }
 
     @Test
-    void loggedInUserStoresCorrectly() {
-        store.setLoggedInUser("angela@example.com");
-        assertEquals("angela@example.com", store.getLoggedInUser());
+    void initialLoggedInUserIsNull() {
+        assertNull(TaskStore.getInstance().getLoggedInUser());
     }
 
     @Test
-    void getInstanceReturnsSameSingleton() {
-        TaskStore s1 = TaskStore.getInstance();
-        TaskStore s2 = TaskStore.getInstance();
+    void initialLoggedInUserIdIsNegative() {
+        assertTrue(TaskStore.getInstance().getLoggedInUserId() < 0);
+    }
 
-        assertSame(s1, s2);
+    @Test
+    void setLoggedInUserToNullWorks() {
+        TaskStore.getInstance().setLoggedInUser("Test");
+        TaskStore.getInstance().setLoggedInUser(null);
+        assertNull(TaskStore.getInstance().getLoggedInUser());
+    }
+
+    @Test
+    void setLoggedInUserIdToZeroWorks() {
+        TaskStore.getInstance().setLoggedInUserId(0);
+        assertEquals(0, TaskStore.getInstance().getLoggedInUserId());
+    }
+
+    @Test
+    void multipleSetLoggedInUserCallsOverwrite() {
+        TaskStore.getInstance().setLoggedInUser("First");
+        TaskStore.getInstance().setLoggedInUser("Second");
+        assertEquals("Second", TaskStore.getInstance().getLoggedInUser());
+    }
+
+    @Test
+    void multipleSetLoggedInUserIdCallsOverwrite() {
+        TaskStore.getInstance().setLoggedInUserId(1);
+        TaskStore.getInstance().setLoggedInUserId(2);
+        assertEquals(2, TaskStore.getInstance().getLoggedInUserId());
+    }
+
+    @Test
+    void setLoggedInUserWithEmptyStringWorks() {
+        TaskStore.getInstance().setLoggedInUser("");
+        assertEquals("", TaskStore.getInstance().getLoggedInUser());
     }
 }
-
