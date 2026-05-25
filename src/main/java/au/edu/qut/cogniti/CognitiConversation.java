@@ -115,6 +115,7 @@ public class CognitiConversation {
         JSON/OUTPUT FORMAT:
         {
           "title": "",
+          "description": "",
           "date": "",
           "time": "",
           "category": {
